@@ -1,0 +1,8 @@
+echo
+clear
+clear
+echo
+echo jklfjalf
+echo jklfjalf "fjkahgfa"
+echo -g fkjakf
+echo -n fkjakf
