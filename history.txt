@@ -1,8 +1,1 @@
-echo
-clear
-clear
-echo
-echo jklfjalf
-echo jklfjalf "fjkahgfa"
-echo -g fkjakf
-echo -n fkjakf
+echo 1$ $ $\"c\" $'c' \"$\"c \"$a $ab\"c '$a'c \"$a '$a' $ab\"c

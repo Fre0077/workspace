@@ -3,33 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 10:57:05 by alborghi          #+#    #+#             */
-/*   Updated: 2025/01/23 18:29:22 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/01/24 11:22:31 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+
 extern int g_signal;
 
 void	init_signals(void)
 {
-	signal(SIGC, new_prompt);  // Ctrl+C
+	struct sigaction	sa_func;
+
+	sa_func.sa_sigaction = new_prompt;
+	sigemptyset(&sa_func.sa_mask);
+	sa_func.sa_flags = 0;
+
+	//signal(SIGC, new_prompt);  // Ctrl+C
+	sigaction(SIGC, &sa_func, NULL);  // Ctrl+C
 	signal(SIGQUIT, SIG_IGN); // Ctrl+backslash
 	signal(ARR_UP, get_history); 
 	signal(ARR_DOWN, get_history); 
 }
 
-void	new_prompt(int signum)
+void	new_prompt(int signum, siginfo_t *info, void *context)
 {
 	(void)signum;
+	(void)context;
 	// rl_replace_line("\n" CYAN BOLD "minishell" RED BOLD " > " END, 0);
-	rl_replace_line("", 0);
 	// ft_printf("\n" CYAN BOLD "minishell" RED BOLD " > " END);
+	kill(info->si_pid, SIGKILL);
 	ft_printf("\n");
 	rl_on_new_line();
+	rl_replace_line("", 0);
 	rl_redisplay();
 	g_signal = 1;
 }

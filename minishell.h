@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/01/23 17:31:06 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/01/24 11:19:41 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,15 @@
 
 extern int	g_signal;
 
+typedef struct s_marks
+{
+	int	mark_1;
+	int	mark_2;
+}		t_marks;
+
 // signal.c
 void	init_signals(void);
-void	new_prompt(int signum);
+void	new_prompt(int signum, siginfo_t *info, void *context);
 void	get_history(int signum);
 
 // ft_readline.c
