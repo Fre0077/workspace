@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/01/24 11:19:41 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/01/25 09:50:13 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ extern int	g_signal;
 
 typedef struct s_marks
 {
-	int	mark_1;
-	int	mark_2;
+	int	_1;
+	int	_2;
 }		t_marks;
 
 // signal.c
