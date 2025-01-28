@@ -5,7 +5,7 @@ main.c \
 signal.c \
 parsing.c \
 
-CFLAGS = -Wall -Wextra -Werror -g -lreadline
+CFLAGS = -Wall -Wextra -Werror -g
 
 LIBFTA = my_libft/libft.a
 
@@ -13,7 +13,7 @@ all: $(NAME)
 
 $(NAME): $(SRCS)
 	make -C my_libft
-	$(CC) $(CFLAGS) -o $(NAME) $(SRCS) $(LIBFTA)
+	$(CC) $(CFLAGS) -o $(NAME) $(SRCS) $(LIBFTA)  -lreadline
 
 clean: libft_clean
 

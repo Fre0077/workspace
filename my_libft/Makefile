@@ -95,7 +95,7 @@ OBJS = $(SRCS:.c=.o)
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -I./my_headers
+CFLAGS = -Wall -Wextra -Werror -I./my_headers 
 
 all: $(NAME)
 
@@ -104,7 +104,7 @@ $(NAME): $(OBJS)
 	@ranlib $(NAME)
 
 %.o: %.c
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -fPIE -c $< -o $@
 
 clean: 
 	@rm -f $(OBJS) $(OBJS_BONUS)
