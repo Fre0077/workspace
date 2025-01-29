@@ -1,10 +1,10 @@
-cioa
-come
-va
-la
-vita
-a
-vida
-
-loca
-clear
+echo d\"ciao"d
+echo d\"ciao"d
+echo d\"ciao"d
+echo d\"ciao"d
+echo d\"ciao"d
+echo "ciao " ciao
+echo "ciao q" ciao
+echo "c'iao q" ciao'
+echo '"ciao q" ciao'
+echo '"ciao 'q" ciao

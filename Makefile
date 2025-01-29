@@ -4,6 +4,7 @@ SRCS = \
 main.c \
 signal.c \
 parsing.c \
+parse_words.c \
 
 CFLAGS = -Wall -Wextra -Werror -g
 

@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/01/23 18:34:34 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/01/29 11:53:49 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int main(int ac, char **av, char **env)
 		g_signal = 0;
 		free(line);
 		line = readline(CYAN BOLD "minishell" RED BOLD " > " END);
+		printf("%s\n", line);
 		if (line == NULL)
 		{
 			ft_printf("\nexit");
