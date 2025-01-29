@@ -1,0 +1,21 @@
+-divisione argomenti:
+
+1)	Gli spazi dividono sempre gli argomenti.
+
+-GESTIONE DEGLI "" E '':
+1}	a"cioa"b  questo vale come argomento singolo
+2}	a"ci""oa"b  questo vale come argomento singolo
+3}	a"ci" "oa"b  questo vale come due argomenti
+4}	a"ci' 'oa"b  questo vale come argomento singolo
+5}	all'interno dei "" il simbolo $ vale come metacarattere, 
+		all'interno dei '' no
+6}	lo \ viene preso come carattere eccetto che non sia l'ultimo
+		carattere
+7}	il $ seguito da uno spazio viene preso come dollaro
+8}	$"cioa" stampa ciao e nient'altro
+9}	$$ stampa il pid del processo
+
+-SCRITTURA E LETTURA DA FILE:
+1}	se il > "outfile" ha altri argomenti dopo li include comunque.
+
+leggere le priorita' di bash
