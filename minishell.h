@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/01/29 11:51:28 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/01/31 15:54:00 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,7 @@ int					count_arg(char *line);
 char				*copy_arg(char *start, char *end);
 char				**slice_args(char *line);
 t_words				*parse_words(char *line);
+
+t_cmd				*parsing(char *line);
 
 #endif

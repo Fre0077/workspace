@@ -5,6 +5,7 @@ main.c \
 signal.c \
 parsing.c \
 parse_words.c \
+new_list_parsing.c \
 
 CFLAGS = -Wall -Wextra -Werror -g
 

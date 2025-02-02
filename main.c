@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/01/29 11:53:49 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/02 16:07:59 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int main(int ac, char **av, char **env)
 {
 	(void)ac;
 	(void)av;
+	(void)env;
 	char	*line;
 	char	*history;
 
@@ -36,7 +37,13 @@ int main(int ac, char **av, char **env)
 			ft_printf("\nexit");
 			exit(0);
 		}
-		parse_command(line, env);
+		//testing...
+		t_cmd	*cmds;
+		cmds = parsing(line);
+		(void)cmds;
+		//print_cmq(cmds);
+		//testing...
+		//parse_command(line, env);
 		history = ft_strtrim(line, "\n ");
 		add_history(history);
 		write_history("history.txt");
