@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/02 16:25:48 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/03 15:26:50 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,8 @@ char	*pipe_manager(int *i)
 }
 
 //divide la linea in parti considerando le quote (funzionante)
-//no piglia le virgolette se sono all'inizio
+//non piglia le virgolette se sono all'inizio
+//l'ultimo elemento non è nul ma un nodo vuoto, sarebbe meglio fixare questa cosa
 t_words	*word_slicer(char *line)
 {
 	int		i;
@@ -140,49 +141,89 @@ t_words	*word_slicer(char *line)
 	return (first);
 }
 
-//printa tutta al  lista dei comandi (da testare)
-void	print_cmd(t_cmd *cmd)
+//printa tutta al  lista dei comandi (funzia)
+void	print_cmd(t_cmd *cmds)
 {
-	(void)cmd;
-}
+	int	i = 0;
 
-//funzione per la scrittura dei comandi nella lista e per la creazione dei nuovi nodi
-void	new_command(t_cmd *cmds, t_words **words)
-{
-	(void)cmds;
-	(void)words;
+	while (cmds != NULL)
+	{
+		ft_printf("cmd: %s\n", cmds->cmd);
+		i = -1;
+		while (cmds->args[++i] != NULL)
+			ft_printf("%s ", cmds->args[i]);
+		ft_printf("\n");
+		cmds = cmds->next;
+	}
 }
 
 //funzione per controllare che il comando e gli argomenti dati siano corretti
+//includere il finding
 int	error_checker(t_cmd *cmd)
 {
 	(void)cmd;
 	return 0;
 }
 
+//funzione per la scrittura dei comandi nella lista e per la creazione dei nuovi nodi (funzia)
+void	command_slicer(t_cmd *cmds, t_words **words)
+{
+	t_words	*arg;
+	int		i;
+	int		j;
+
+	error_checker(cmds);
+	cmds->cmd = (*words)->word;
+	arg = (*words)->next;
+	(*words) = (*words)->next;
+	i = 0;
+	while ((*words)->next != NULL) //dpossibile aggiunta dell '&&'
+	{
+		if ((*words)->word[0] == '|')
+			return ;
+		(*words) = (*words)->next;
+		i++;
+	}
+	cmds->args = malloc(sizeof(char *) * (i + 1));
+	cmds->args[i] = NULL;
+	j = -1;
+	while (--i >= 0)
+	{
+		cmds->args[++j] = arg->word;
+		arg = arg->next;
+	}
+}
+
+//funzione lanciata per creare un nodo della lista cmds, setta anche gli argomenti
+t_cmd	*new_command(t_cmd *cmds, t_words **words)
+{
+	t_cmd	*new_cmd;
+	
+	new_cmd = malloc(sizeof(t_cmd));
+	cmds->next = new_cmd;
+	command_slicer(new_cmd, words);
+	return (new_cmd);
+}
+
 //funzione principale per la gestione di tutto il parsing (da testare)
 t_cmd	*parsing(char *line)
 {
-	//int		i;
 	t_words	*words;
-	//t_cmd	*cmds;
-	//t_cmd	*first;
+	t_cmd	*cmds;
+	t_cmd	*first;
 
 	words = word_slicer(line);
 	ft_printf("--------\n");
 	print_word(words);
 	ft_printf("--------\n");
-	//i = 0;
-	//cmds = malloc(sizeof(t_cmd));
-	//first = cmds;
-	//while (words != NULL)
-	//{
-	//	new_command(cmds, &words);
-	//	if (error_checker(cmds))
-	//		break ;
-	//	cmds = cmds->next;
-	//}
-	//ft_printf("--------\n");
+	cmds = malloc(sizeof(t_cmd));
+	command_slicer(cmds, &words);
+	first = cmds;
+	while (words->next != NULL)
+		cmds = new_command(cmds, &words);
+	cmds->next = NULL;
+	print_cmd(first);
+	ft_printf("--------\n");
 	//return (first);
 	return (NULL);
 }
