@@ -1,1 +1,2 @@
-echo ciao come va
+$ciao
+$ciao sahfgja sahfjha fsajfhsa fkfgajskja hgsdj sdjhjsdhgkjsd fdsjhgjkhdsjhjkghdsjhgjkdshgkjshdjkgjdshjkghdsjkhgjshdjhgjdshjghjksdhjfhsdjkgfjshdjfkjshdfkjhdsjkfjkdshù

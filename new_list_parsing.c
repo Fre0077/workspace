@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/03 15:26:50 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/08 15:50:03 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	print_word(t_words *words)
 }
 
 //funzione che tiene controllato se si è all'interno di virgolette (funzionante)
-//ATTENZIONE: possibili problemi con quote non chiuse (e invece funziona)
 int	quote_checker(char *line, int *i)
 {
 	static int	mark;
@@ -32,16 +31,16 @@ int	quote_checker(char *line, int *i)
 		return (mark = 0, 0);
 	if (line[*i] == '\'')
 	{
-		if (*i != 0 && line[*i - 1] != '\\' && mark == 0)
+		if (*i == 0 || (line[*i - 1] != '\\' && mark == 0))
 			mark = 1;
-		else if (*i != 0 && line[*i - 1] != '\\' && mark == 1)
+		else if (line[*i - 1] != '\\' && mark == 1)
 			mark = 0;
 	}
 	if (line[*i] == '\"')
 	{
-		if (*i != 0 && line[*i - 1] != '\\' && mark == 0)
+		if (*i == 0 || (line[*i - 1] != '\\' && mark == 0))
 			mark = 2;
-		else if (*i != 0 && line[*i - 1] != '\\' && mark == 2)
+		else if (line[*i - 1] != '\\' && mark == 2)
 			mark = 0;
 	}
 	if (mark != 0)
@@ -60,42 +59,86 @@ char	*dup_till_n(char *start, int n)
 	return (str);
 }
 
-//rimuove solo le quote più esterne dalle varie parole
-//FUNZIONA MA TROPPO LUNGA, METTENDO SOLO L'ALLOCAZIONE MAGGIORE UFNZIONA MA NON MI PIACE
-char	*quote_remover(char *word)
+char	*copy_in_str(char *word, char *word_$, int i_$, char *env)
 {
+	printf("@@@@@@%s\n@@@@@@%s\n", word_$, env);
 	int		i;
 	int		j;
-	int		y;
-	int		t;
 	char	*new_word;
 
-	i = -1;
-	while (word[++i])
-		if (word[i] == '\"' || word[i] == '\'')
-			break;
+	if (env == NULL)
+		return (word);
+	i = 1;
+	while (isalpha(word_$[i]))
+		i++;
+	new_word = ft_calloc(1, ft_strlen(env) + ft_strlen(&word_$[i]) + i_$ + 2);
+	i_$ = -1;
+	while (word[++i_$] != '$')
+		new_word[i_$] = word[i_$];
 	j = -1;
-	while (word[++j])
-		if ((word[j] == '\"' || word[j] == '\'') && j != i && word[i] == word[j])
-			break;
-	ft_printf("i:%d   j:%d\n", i, j);
+	while (env[++j])
+		new_word[i_$++] = env[j];
+	while (word_$[i])
+		new_word[i_$++] = word_$[i++];
+	return (free (word), new_word);
+}
+
+char	*dollar_manager(char *word)
+{
+	int		i;
+	int		i_$;
+	int		j;
+	char	*str;
+
+	i = 0;
+	while (word[i] != '$' && word[i])
+		i++;
 	if (!word[i])
 		return (word);
-	else if (!word[j])
+	i_$ = i;
+	j = 0;
+	while (isalpha(word[++i]))
+		j++;
+	str = ft_calloc(1, j + 1);
+	while (--j >= 0)
+		str[j] = word[--i];
+	word = copy_in_str(word, &word[i_$], i_$, getenv(str));
+	ft_printf("######: %s\n", str);
+	return (free (str), word);
+}
+
+//rimuove solo le quote più esterne dalle varie parole
+char	*quote_remover(char *word)
+{
+	int		i[4];
+	char	*new_word;
+
+	i[0] = -1;
+	while (word[++i[0]])
+		if (quote_checker(word, &i[0]) == 1)
+			break;
+	i[1] = i[0];
+	while (word[++i[1]])
+		if (quote_checker(word, &i[1]) == 0)
+			break;
+	if (!word[i[0]])
+		return (word);
+	else if (!word[i[1]])
 		new_word = ft_calloc(1, ft_strlen(word));
 	else
 		new_word = ft_calloc(1, ft_strlen(word) - 1);
-	y = -1;
-	t = -1;
-	while (word[++y])
-		if (y != i && y != j)
-			new_word[++t] = word[y];
+	i[2] = -1;
+	i[3] = -1;
+	while (word[++i[2]])
+		if (i[2] != i[0] && i[2] != i[1])
+			new_word[++i[3]] = word[i[2]];
 	return (new_word);
 }
 
 //crea nuovo nodo della lista e scorre ad esso dopo aver impostato la parola appena trovata (funzionante)
 t_words	*new_word(char *word, t_words *words)
 {
+	word = dollar_manager(word); //usare getenv
 	words->word = quote_remover(word);
 	words->next = malloc(sizeof(t_words));
 	words = words->next;
@@ -113,7 +156,7 @@ char	*pipe_manager(int *i)
 }
 
 //divide la linea in parti considerando le quote (funzionante)
-//non piglia le virgolette se sono all'inizio
+//non piglia le virgolette se sono all'inizio (risolto)
 //l'ultimo elemento non è nul ma un nodo vuoto, sarebbe meglio fixare questa cosa
 t_words	*word_slicer(char *line)
 {
@@ -150,8 +193,9 @@ void	print_cmd(t_cmd *cmds)
 	{
 		ft_printf("cmd: %s\n", cmds->cmd);
 		i = -1;
+		ft_printf("arg: ");
 		while (cmds->args[++i] != NULL)
-			ft_printf("%s ", cmds->args[i]);
+			ft_printf("%s, ", cmds->args[i]);
 		ft_printf("\n");
 		cmds = cmds->next;
 	}
@@ -177,7 +221,7 @@ void	command_slicer(t_cmd *cmds, t_words **words)
 	arg = (*words)->next;
 	(*words) = (*words)->next;
 	i = 0;
-	while ((*words)->next != NULL) //dpossibile aggiunta dell '&&'
+	while ((*words)->next != NULL) //possibile aggiunta dell '&&'
 	{
 		if ((*words)->word[0] == '|')
 			return ;
@@ -212,6 +256,8 @@ t_cmd	*parsing(char *line)
 	t_cmd	*cmds;
 	t_cmd	*first;
 
+	if (line[0] == '\0')
+		return (NULL);
 	words = word_slicer(line);
 	ft_printf("--------\n");
 	print_word(words);
@@ -224,6 +270,5 @@ t_cmd	*parsing(char *line)
 	cmds->next = NULL;
 	print_cmd(first);
 	ft_printf("--------\n");
-	//return (first);
-	return (NULL);
+	return (first);
 }
