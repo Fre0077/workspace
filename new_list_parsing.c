@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/08 15:50:03 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/12 20:28:20 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,30 +22,21 @@ void	print_word(t_words *words)
 	}
 }
 
-//funzione che tiene controllato se si è all'interno di virgolette (funzionante)
-int	quote_checker(char *line, int *i)
+//printa tutta la lista dei comandi (funzia)
+void	print_cmd(t_cmd *cmds)
 {
-	static int	mark;
+	int	i = 0;
 
-	if (!line[*i])
-		return (mark = 0, 0);
-	if (line[*i] == '\'')
+	while (cmds != NULL)
 	{
-		if (*i == 0 || (line[*i - 1] != '\\' && mark == 0))
-			mark = 1;
-		else if (line[*i - 1] != '\\' && mark == 1)
-			mark = 0;
+		ft_printf("cmd: %s\n", cmds->cmd);
+		i = -1;
+		ft_printf("arg: ");
+		while (cmds->args[++i] != NULL)
+			ft_printf("%s, ", cmds->args[i]);
+		ft_printf("\n");
+		cmds = cmds->next;
 	}
-	if (line[*i] == '\"')
-	{
-		if (*i == 0 || (line[*i - 1] != '\\' && mark == 0))
-			mark = 2;
-		else if (line[*i - 1] != '\\' && mark == 2)
-			mark = 0;
-	}
-	if (mark != 0)
-		return (1);
-	return (0);
 }
 
 //duplica per n cartterei (funzionante)
@@ -59,80 +50,125 @@ char	*dup_till_n(char *start, int n)
 	return (str);
 }
 
-char	*copy_in_str(char *word, char *word_$, int i_$, char *env)
+//funzione che tiene controllato se si è all'interno di virgolette (funzionante)
+int	quote_checker(char *line, int i)
 {
-	printf("@@@@@@%s\n@@@@@@%s\n", word_$, env);
-	int		i;
-	int		j;
-	char	*new_word;
+	static int	mark;
 
+	if (!line[i])
+		return (mark = 0, 0);
+	if (line[i] == '\'')
+	{
+		if (i == 0 || (line[i - 1] != '\\' && mark == 0))
+			mark = 1;
+		else if (line[i - 1] != '\\' && mark == 1)
+			mark = 0;
+	}
+	if (line[i] == '\"')
+	{
+		if (i == 0 || (line[i - 1] != '\\' && mark == 0))
+			mark = 2;
+		else if (line[i - 1] != '\\' && mark == 2)
+			mark = 0;
+	}
+	if (mark != 0)
+		return (1);
+	return (0);
+}
+
+//data la stringa rimuove il carattere ocrrispondente al numero dato (funzia)
+char	*remove_char(char *word, int i)
+{
+	char	*new_word;
+	int		j;
+	int		l;
+
+	new_word = ft_calloc(1, ft_strlen(word));
+	j = -1;
+	l = -1;
+	while (word[++j])
+	{
+		if (i == j)
+		j++;
+		new_word[++l] = word[j];
+	}
+	return (free(word), new_word);
+}
+
+//elimina le quote identificate da quote_checker
+char	*quote_remover(char *word)
+{
+	int	i;
+	int	check;
+	int	pre;
+
+	i = -1;
+	check = 0;
+	while (word[++i])
+	{
+		pre = check;
+		check = quote_checker(word, i);
+		if (pre != check)
+		{
+			word = remove_char(word, i);
+			i--;
+		}
+	}
+	return (word);
+}
+
+char	*copy_in_str(char *word, int *i, int j)
+{
+	char	*new_word;
+	char	*env;
+	char	*str;
+	int		l;
+	int		y;
+	
+	str = dup_till_n(&word[j + 1],  *i - j - 1),
+	env = getenv(str);
 	if (env == NULL)
-		return (word);
-	i = 1;
-	while (isalpha(word_$[i]))
-		i++;
-	new_word = ft_calloc(1, ft_strlen(env) + ft_strlen(&word_$[i]) + i_$ + 2);
-	i_$ = -1;
-	while (word[++i_$] != '$')
-		new_word[i_$] = word[i_$];
+	return (word);
+	new_word = ft_calloc(1, ft_strlen(env) + ft_strlen(&word[*i]) + j + 1);
+	l = -1;
+	while (word[++l] != '$')
+		new_word[l] = word[l];
 	j = -1;
 	while (env[++j])
-		new_word[i_$++] = env[j];
-	while (word_$[i])
-		new_word[i_$++] = word_$[i++];
-	return (free (word), new_word);
+		new_word[l++] = env[j];
+	y = *i;
+	*i = l;
+	while (word[y])
+		new_word[l++] =word[y++];
+	return (free (word), free (str), new_word);
 }
 
 char	*dollar_manager(char *word)
 {
-	int		i;
-	int		i_$;
-	int		j;
-	char	*str;
+	int	i;
+	int	j;
 
 	i = 0;
-	while (word[i] != '$' && word[i])
-		i++;
-	if (!word[i])
-		return (word);
-	i_$ = i;
-	j = 0;
-	while (isalpha(word[++i]))
-		j++;
-	str = ft_calloc(1, j + 1);
-	while (--j >= 0)
-		str[j] = word[--i];
-	word = copy_in_str(word, &word[i_$], i_$, getenv(str));
-	ft_printf("######: %s\n", str);
-	return (free (str), word);
-}
-
-//rimuove solo le quote più esterne dalle varie parole
-char	*quote_remover(char *word)
-{
-	int		i[4];
-	char	*new_word;
-
-	i[0] = -1;
-	while (word[++i[0]])
-		if (quote_checker(word, &i[0]) == 1)
-			break;
-	i[1] = i[0];
-	while (word[++i[1]])
-		if (quote_checker(word, &i[1]) == 0)
-			break;
-	if (!word[i[0]])
-		return (word);
-	else if (!word[i[1]])
-		new_word = ft_calloc(1, ft_strlen(word));
-	else
-		new_word = ft_calloc(1, ft_strlen(word) - 1);
-	i[2] = -1;
-	i[3] = -1;
-	while (word[++i[2]])
-		if (i[2] != i[0] && i[2] != i[1])
-			new_word[++i[3]] = word[i[2]];
-	return (new_word);
+	while (word[i])
+	{
+		if (word[i] == '\'')
+		{
+			while (quote_checker(word, i))
+				i++;
+			
+		}
+		if (word[i] == '$')
+		{
+			j = i;
+			i++;
+			while (isalpha(word[i]))
+				i++;
+			word = copy_in_str(word, &i, j);
+		}
+		else
+			i++;
+	}
+	return (word);
 }
 
 //crea nuovo nodo della lista e scorre ad esso dopo aver impostato la parola appena trovata (funzionante)
@@ -173,7 +209,7 @@ t_words	*word_slicer(char *line)
 		if (line[i] != ' ' && line[i] != '|')
 		{
 			start = i;
-			while ((quote_checker(line, &i) || (line[i] != ' ' && line[i] != '|')) && line[i])
+			while ((quote_checker(line, i) || (line[i] != ' ' && line[i] != '|')) && line[i])
 				i++;
 			words = new_word(dup_till_n(&line[start], i - start), words);
 		}
@@ -184,31 +220,6 @@ t_words	*word_slicer(char *line)
 	return (first);
 }
 
-//printa tutta al  lista dei comandi (funzia)
-void	print_cmd(t_cmd *cmds)
-{
-	int	i = 0;
-
-	while (cmds != NULL)
-	{
-		ft_printf("cmd: %s\n", cmds->cmd);
-		i = -1;
-		ft_printf("arg: ");
-		while (cmds->args[++i] != NULL)
-			ft_printf("%s, ", cmds->args[i]);
-		ft_printf("\n");
-		cmds = cmds->next;
-	}
-}
-
-//funzione per controllare che il comando e gli argomenti dati siano corretti
-//includere il finding
-int	error_checker(t_cmd *cmd)
-{
-	(void)cmd;
-	return 0;
-}
-
 //funzione per la scrittura dei comandi nella lista e per la creazione dei nuovi nodi (funzia)
 void	command_slicer(t_cmd *cmds, t_words **words)
 {
@@ -216,7 +227,6 @@ void	command_slicer(t_cmd *cmds, t_words **words)
 	int		i;
 	int		j;
 
-	error_checker(cmds);
 	cmds->cmd = (*words)->word;
 	arg = (*words)->next;
 	(*words) = (*words)->next;
