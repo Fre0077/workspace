@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/12 20:28:20 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/13 18:43:25 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,10 +201,10 @@ t_words	*word_slicer(char *line)
 	t_words	*first;
 	t_words	*words;
 
-	i = -1;
+	i = 0;
 	words = malloc(sizeof(t_words));
 	first = words;
-	while (line[++i])
+	while (line[i])
 	{
 		if (line[i] != ' ' && line[i] != '|')
 		{
@@ -213,6 +213,8 @@ t_words	*word_slicer(char *line)
 				i++;
 			words = new_word(dup_till_n(&line[start], i - start), words);
 		}
+		else
+			i++;
 		if (line[i] == '|')
 			words = new_word(pipe_manager(&i), words);
 	}
