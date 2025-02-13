@@ -2,10 +2,15 @@ NAME = minishell
 
 SRCS = \
 main.c \
+init.c \
 signal.c \
 parsing.c \
 parse_words.c \
 new_list_parsing.c \
+exec.c \
+echo.c \
+cd.c \
+export.c \
 
 CFLAGS = -Wall -Wextra -Werror -g
 
@@ -29,3 +34,7 @@ libft_clean:
 
 libft_fclean: libft_clean
 	make -C my_libft fclean
+
+run: all
+	clear
+	@./$(NAME)

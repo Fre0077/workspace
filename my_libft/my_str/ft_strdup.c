@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:58:34 by alborghi          #+#    #+#             */
-/*   Updated: 2025/01/23 18:06:20 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:51:39 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ char	*str_dup_till_charset(const char *str, const char *charset)
 	i = 0;
 	while (str[i] && !ft_strchr(charset, str[i]))
 		i++;
-	// if (!str[i])
-	// 	return (ft_strdup(""));
 	ret = ft_calloc(i + 1, sizeof(char));
 	if (!ret)
 		return (NULL);

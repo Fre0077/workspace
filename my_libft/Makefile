@@ -53,6 +53,7 @@ ft_split.c \
 ft_strchr.c \
 ft_strdup.c \
 ft_striteri.c \
+ft_strjoin_mat.c \
 ft_strjoin.c \
 ft_strlcat.c \
 ft_strlcpy.c \

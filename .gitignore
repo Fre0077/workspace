@@ -3,6 +3,7 @@
 .*
 *.txt
 minishell
+.vscode/
 
 !.gitignore
 !appunti.txt

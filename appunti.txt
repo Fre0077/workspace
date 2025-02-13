@@ -12,7 +12,7 @@
 6}	lo \ viene preso come carattere eccetto che non sia l'ultimo
 		carattere
 7}	il $ seguito da uno spazio viene preso come dollaro
-8}	$"cioa" stampa ciao e nient'altro
+8}	$"ciao" stampa ciao e nient'altro
 9}	$$ stampa il pid del processo
 
 -SCRITTURA E LETTURA DA FILE:

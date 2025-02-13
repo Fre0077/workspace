@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_list_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/08 15:50:03 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/13 14:54:12 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,12 @@ void	print_cmd(t_cmd *cmds)
 		ft_printf("cmd: %s\n", cmds->cmd);
 		i = -1;
 		ft_printf("arg: ");
+		if (cmds->args == NULL)
+		{
+			cmds = cmds->next;
+			ft_printf("\n");
+			continue ;
+		}
 		while (cmds->args[++i] != NULL)
 			ft_printf("%s, ", cmds->args[i]);
 		ft_printf("\n");

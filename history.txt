@@ -1,2 +1,14 @@
-$ciao
-$ciao sahfgja sahfjha fsajfhsa fkfgajskja hgsdj sdjhjsdhgkjsd fdsjhgjkhdsjhjkghdsjhgjkdshgkjshdjkgjdshjkghdsjkhgjshdjhgjdshjghjksdhjfhsdjkgfjshdjfkjshdfkjhdsjkfjkdshù
+cd
+pwd
+cd -
+cd -
+cd -
+pwd
+cd -
+pwd
+cd -
+pwd
+cd -
+pwd
+cd -
+pwd
