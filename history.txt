@@ -1,5 +1,9 @@
-caio$'come'va
-ciao$PWD'$PWD'come"c$caio"
-ciao$PWD$'$PWD'come"c$caio"
-caio$PWDcomeva
-caio"$PWD"comeva
+cioa$"$come"l
+cioa$'la'"$come"l
+cioa$"voda"'la'"$come"l
+cioa$"$voda"$'la'"$come"l
+cioa$"$voda"$'$PWD$PWD'"$come"l
+cioa$"$voda"$'$PWD$PWD'"$PWD$come"l
+cioa$"$voda"$'$PWD$PWD'"$PWD$come"l $
+cioa$"$voda"$'$PWD$PWD'"$PWD$come"l $$
+cioa$"$voda"$'$PWD$PWD'"$PWD$come"l $$PWD$

@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:10 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/17 15:10:32 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/17 18:43:19 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,7 @@ char	*quote_remover(char *word)
 		pre = check;
 		check = quote_checker(word, i);
 		if (pre != check)
-		{
-			word = remove_char(word, i);
-			i--;
-		}
+			word = remove_char(word, &i);
 	}
 	return (word);
 }

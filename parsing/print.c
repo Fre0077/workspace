@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:13 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/17 14:33:23 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/17 18:26:47 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	print_cmd(t_cmd *cmds)
 		ft_printf("cmd: %s\n", cmds->cmd);
 		i = -1;
 		ft_printf("arg: ");
-		while (cmds->args[++i + 1] != NULL)
+		while (cmds->args[++i] != NULL)
 			ft_printf("%s, ", cmds->args[i]);
 		ft_printf("%s\n", cmds->args[i]);
 		cmds = cmds->next;
