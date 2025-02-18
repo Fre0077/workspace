@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/18 17:52:54 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:44:19 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,8 @@
 
 void	ft_put_env(t_env *env, int is_env)
 {
-	int	i;
-
 	if (!env)
 		return ;
-	i = 0;
 	while (env)
 	{
 		if (!(is_env == TRUE && env->is_env == FALSE))

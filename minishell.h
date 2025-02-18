@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/18 18:07:27 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:44:39 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,6 @@
 # define CUSTOM 2
 
 extern int			g_signal;
-
-typedef struct s_marks //cambiare nomi in q (qhote) e dq (double quote)
-{
-	int				_1;
-	int				_2;
-}					t_marks;
 
 typedef struct s_words
 {
@@ -108,6 +102,7 @@ char	*remove_char(char *word, int *i);
 char	*copy_in_str(char *word, int *i, int j);
 
 //word.c
+char	*space_remove(char *line);
 char	*pipe_manager(int *i);
 char	*next_word(char *line, int *i);
 t_words	*new_word(t_words *words, char *str);

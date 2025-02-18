@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:12:42 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/18 10:55:44 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:44:01 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ t_words	*word_slicer(char *line)
 	t_words	*words;
 
 	i = 0;
+	while (line[i] == ' ')
+		i++;
 	words = malloc(sizeof(t_words));
 	words->word = next_word(line, &i);
 	first = words;
