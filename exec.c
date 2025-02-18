@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/13 16:16:12 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:52:54 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,17 @@ int	call_function(t_data *data)
 	else if (ft_strncmp(data->cmds->cmd, "cd", 3) == 0)
 		exec_cd(data);
 	else if (ft_strncmp(data->cmds->cmd, "pwd", 4) == 0)
-		printf("%s\n", get_env(data->env, "PWD"));
+		printf("%s\n", data->pwd);
 	else if (ft_strncmp(data->cmds->cmd, "export", 7) == 0)
 		exec_export(data->cmds, data->env);
 	else if (ft_strncmp(data->cmds->cmd, "unset", 6) == 0)
-		printf("unset\n");
+		exec_unset(data);
 	else if (ft_strncmp(data->cmds->cmd, "env", 4) == 0)
 		ft_put_env(data->env, TRUE);
 	else if (ft_strncmp(data->cmds->cmd, "exit", 5) == 0)
 		return (printf("exit\n"), -1);
 	else
-		printf("execve\n");
+		exec_execve(data);
 	// do check on data->status and if value is -1 exit program with status 1
 	return (0);
 }

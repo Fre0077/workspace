@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:01:27 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/18 10:01:27 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/18 10:08:40 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,9 @@ void	ft_put_export(t_env *env)
 		{
 			write(1, "\"", 1);
 			write(1, &tmp->var[i], ft_strlen(&tmp->var[i]));
-			write(1, "\"\n", 2);
+			write(1, "\"", 1);
 		}
+		write(1, "\n", 1);
 		tmp = tmp->next;
 	}
 }

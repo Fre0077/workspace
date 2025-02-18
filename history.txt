@@ -1,5 +1,3 @@
-exoprt
-export
-export ciao=mondo
-export
-echo $ciao
+ls
+ciao
+clear

@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/18 09:56:42 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:07:27 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/wait.h>
 
 # define ARR_UP 65364
 # define ARR_DOWN 65362
@@ -128,5 +129,11 @@ int					exec_cd(t_data *data);
 
 // export.c
 int					exec_export(t_cmd *cmds, t_env *env);
+
+// unset.c
+int					exec_unset(t_data *data);
+
+// execve.c
+int					exec_execve(t_data *data);
 
 #endif

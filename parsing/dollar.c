@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/17 19:00:41 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/18 10:43:59 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*copy_in_str(char *word, int *i, int j)
 	return (free (word), free (str), new_word);
 }
 
-//rimuove i $ prima dei ' e "
+//rimuove i $ prima dei ' e " (funzia)
 char	*dollar_remover(char *word)
 {
 	int	i;
@@ -57,7 +57,7 @@ char	*dollar_remover(char *word)
 	return (word);
 }
 
-//sostituisce la variabile che gli vinee indicata tramite l'indice
+//sostituisce la variabile che gli vinee indicata tramite l'indice (funzia)
 char	*dollar_converter(char *word, int *i)
 {
 	int	j;
@@ -71,7 +71,6 @@ char	*dollar_converter(char *word, int *i)
 		*i += 1;
 		while (isalpha(word[*i]))
 			*i += 1;
-		//ft_printf("--%s %d %d %c %c\n", word, *i, j, word[*i], word[j]);
 		word = copy_in_str(word, i, j);
 	}
 	else
@@ -79,7 +78,7 @@ char	*dollar_converter(char *word, int *i)
 	return (word);
 }
 
-//funzione per la gestione completa del dollaro
+//funzione per la gestione completa del dollaro (funzia)
 char	*dollar_manager(char *word)
 {
 	int	i;

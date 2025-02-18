@@ -6,7 +6,7 @@
 #    By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/17 09:04:50 by fre007            #+#    #+#              #
-#    Updated: 2025/02/18 09:58:14 by alborghi         ###   ########.fr        #
+#    Updated: 2025/02/18 17:51:41 by alborghi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ export.c \
 cd.c \
 echo.c \
 unset.c \
+execve.c \
 parsing/parsing.c \
 parsing/char_manager.c \
 parsing/dollar.c \
