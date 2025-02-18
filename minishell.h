@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/13 15:54:45 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/18 09:56:42 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,17 +87,30 @@ void				get_history(int signum);
 char				*ft_strjoin_readline(char *s1, char *s2);
 char				*ft_readline(char *prompt);
 
-// parsing.c
-int					parse_command(char *line, char **env);
-
-// parse_words.c
-int					check_mark(t_marks *marks, char *c, int i);
-int					count_arg(char *line);
-char				*copy_arg(char *start, char *end);
-char				**slice_args(char *line);
-t_words				*parse_words(char *line);
-
+//parsing.c
 t_cmd				*parsing(char *line);
+
+//print.c
+void	print_word(t_words *words);
+void	print_cmd(t_cmd *cmds);
+
+//quote.c
+int		quote_checker(char *line, int i);
+char	*quote_remover(char *word);
+
+//dollar.c
+char	*dollar_manager(char *word);
+
+//char_manager.c
+char	*dup_till_n(char *start, int n);
+char	*remove_char(char *word, int *i);
+char	*copy_in_str(char *word, int *i, int j);
+
+//word.c
+char	*pipe_manager(int *i);
+char	*next_word(char *line, int *i);
+t_words	*new_word(t_words *words, char *str);
+t_words	*word_slicer(char *line);
 
 // exec.c
 void				ft_put_env(t_env *env, int is_env);

@@ -1,16 +1,32 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/02/17 09:04:50 by fre007            #+#    #+#              #
+#    Updated: 2025/02/18 09:58:14 by alborghi         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = minishell
 
 SRCS = \
 main.c \
 init.c \
 signal.c \
-parsing.c \
-parse_words.c \
-new_list_parsing.c \
 exec.c \
-echo.c \
-cd.c \
 export.c \
+cd.c \
+echo.c \
+unset.c \
+parsing/parsing.c \
+parsing/char_manager.c \
+parsing/dollar.c \
+parsing/print.c \
+parsing/quote.c \
+parsing/word.c \
 
 CFLAGS = -Wall -Wextra -Werror -g
 

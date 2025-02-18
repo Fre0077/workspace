@@ -1,16 +1,5 @@
-cd
-pwd
-cd -
-cd -
-cd -
-pwd
-cd -
-pwd
-cd -
-pwd
-cd -
-pwd
-cd -
-pwd
-"ciao
-ciao"
+exoprt
+export
+export ciao=mondo
+export
+echo $ciao
