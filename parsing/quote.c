@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:10 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/17 18:43:19 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/19 15:20:27 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ int	quote_checker(char *line, int i)
 		return (mark = 0, 0);
 	if (line[i] == '\'')
 	{
-		if (i == 0 || (line[i - 1] != '\\' && mark == 0))
+		if ((i == 0 && mark == 0) || (line[i - 1] != '\\' && mark == 0))
 			mark = 1;
-		else if (line[i - 1] != '\\' && mark == 1)
+		else if (i == 0 || (line[i - 1] != '\\' && mark == 1))
 			mark = 0;
 	}
 	if (line[i] == '\"')
 	{
-		if (i == 0 || (line[i - 1] != '\\' && mark == 0))
+		if ((i == 0 && mark == 0) || (line[i - 1] != '\\' && mark == 0))
 			mark = 2;
-		else if (line[i - 1] != '\\' && mark == 2)
+		else if (i == 0 || (line[i - 1] != '\\' && mark == 2))
 			mark = 0;
 	}
 	if (mark == 2)
@@ -41,24 +41,23 @@ int	quote_checker(char *line, int i)
 }
 
 //elimina le quote identificate da quote_checker eccetto quando c'è $(funziona)
-char	*quote_remover(char *word)
-{
-	int	i;
-	int	check;
-	int	pre;
-
-	i = -1;
-	while (word[++i])
-		if (word[i] == '$')
-			return (word);
-	i = -1;
-	check = 0;
-	while (word[++i])
-	{
-		pre = check;
-		check = quote_checker(word, i);
-		if (pre != check)
-			word = remove_char(word, &i);
-	}
-	return (word);
-}
+//char	*quote_remover(char *word)
+//{
+//	int	i;
+//	int	check;
+//	int	pre;
+//	i = -1;
+//	while (word[++i])
+//		if (word[i] == '$')
+//			return (word);
+//	i = -1;
+//	check = 0;
+//	while (word[++i])
+//	{
+//		pre = check;
+//		check = quote_checker(word, i);
+//		if (pre != check)
+//			word = remove_char(word, &i);
+//	}
+//	return (word);
+//}

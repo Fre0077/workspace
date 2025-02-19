@@ -6,8 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/18 10:27:22 by fre007           ###   ########.fr       *
->>>>>>> 37233fc (a)
+/*   Updated: 2025/02/19 15:38:06 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +39,9 @@ int main(int ac, char **av, char **env)
 			exit(0);
 		}
 		//testing...
-		data.cmds = parsing(line);
-		exec_cmd(&data);
+		data.cmds = parsing(line, &data);
+		if (data.cmds != NULL)
+			exec_cmd(&data);
 		//testing...
 		history = ft_strtrim(line, "\n ");
 		add_history(history);

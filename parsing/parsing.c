@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/17 09:18:22 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/19 15:37:23 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,15 @@ t_cmd	*new_command(t_cmd *cmds, t_words **words)
 }
 
 //funzione principale per la gestione di tutto il parsing (da testare)
-t_cmd	*parsing(char *line)
+t_cmd	*parsing(char *line, t_data *data)
 {
 	t_words	*words;
 	t_cmd	*cmds;
 	t_cmd	*first;
 
-	if (line[0] == '\0')
+	if (line[0] == '\0' || line == NULL || line[0] == '\n')
 		return (NULL);
-	words = word_slicer(line);
+	words = word_slicer(line, data);
 	ft_printf("--------\n");
 	print_word(words);
 	ft_printf("--------\n");

@@ -3,18 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/18 10:43:59 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/19 15:35:08 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+char	*ft_getenv(char *str, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (data->env != NULL)
+	{
+		if (!ft_strncmp((data->env)->var, str, ft_strlen(str)))
+		{
+			while ((data->env)->var[i] != '=')
+				i++;
+			return (ft_strdup(&(data->env)->var[i + 1]));
+		}
+		data->env = (data->env)->next;
+	}
+	return (NULL);
+}
+
 //funzione che serve a copiare una stringa data all'interno di un'altra stringa (funzia)
 //FORSE CI SONO TROPPE VARIBILI CONTROLLARE!!!
-char	*copy_in_str(char *word, int *i, int j)
+char	*copy_in_str(char *word, int *i, int j, t_data *data)
 {
 	char	*new_word;
 	char	*env;
@@ -23,15 +41,13 @@ char	*copy_in_str(char *word, int *i, int j)
 	int		y;
 	
 	str = dup_till_n(&word[j + 1],  *i - j - 1),
-	env = getenv(str);
-	if (env == NULL)
-		env = ft_calloc(1, 1);
+	env = ft_getenv(str, data);
 	new_word = ft_calloc(1, ft_strlen(env) + ft_strlen(&word[*i]) + j + 1);
 	l = -1;
 	while (++l != j)
 		new_word[l] = word[l];
 	j = -1;
-	while (env[++j])
+	while (env != NULL && env[++j])
 		new_word[l++] = env[j];
 	y = *i;
 	*i = l;
@@ -40,69 +56,58 @@ char	*copy_in_str(char *word, int *i, int j)
 	return (free (word), free (str), new_word);
 }
 
-//rimuove i $ prima dei ' e " (funzia)
-char	*dollar_remover(char *word)
-{
-	int	i;
-
-	i = -1;
-	while (word[++i + 1])
-	{
-		if (word[i] == '$' && ft_strchr("\'\"", word[i + 1]))
-		{
-			word = remove_char(word, &i);
-			i--;
-		}
-	}
-	return (word);
-}
-
 //sostituisce la variabile che gli vinee indicata tramite l'indice (funzia)
-char	*dollar_converter(char *word, int *i)
+char	*dollar_converter(char *word, int *i, t_data *data)
 {
 	int	j;
+	(void)data;
 
 	j = *i;
-	if (*i > 0)
-		if (word[*i - 1] == '\\')
-			return(remove_char(word, i - 1));
-	if (word[*i + 1] != ' ' && word[*i + 1])
+	if (*i > 0 && word[*i - 1] == '\\')
+		return(remove_char(word, i - 1));
+	if (ft_isalpha(word[*i + 1]))
 	{
 		*i += 1;
-		while (isalpha(word[*i]))
+		while (ft_isalpha(word[*i]))
 			*i += 1;
-		word = copy_in_str(word, i, j);
+		word = copy_in_str(word, i, j, data);
 	}
 	else
 		*i += 1;
 	return (word);
 }
 
+//rimuove i $ prima dei ' e " (funzia)<-NO (ora funzia)
+char	*dollar_remover(char *word, int *i, int check)
+{
+	if (word[*i] == '$' && (word[*i + 1] == '\'' || word[*i + 1] == '\"')
+		&& (*i == 0 || word[*i - 1] != '\\') && check == 0)
+	{
+		ft_printf("##: %s\n", &word[*i]);
+		word = remove_char(word, i);
+		ft_printf("##: %s\n", &word[*i]);
+	}
+	return (word);
+}
+
 //funzione per la gestione completa del dollaro (funzia)
-char	*dollar_manager(char *word)
+char	*dollar_manager(char *word, t_data *data)
 {
 	int	i;
 	int	check;
 	int	pre;
 
-	word = dollar_remover(word);
 	i = 0;
 	check = 0;
 	while (word[i])
 	{
+		word = dollar_remover(word, &i, check);
 		pre = check;
 		check = quote_checker(word, i);
-		if (check == 1)
-		{
+		if (check != pre)
 			word = remove_char(word, &i);
-			while (quote_checker(word, i) == 1)
-				i++;
-			word = remove_char(word, &i);
-		}
-		else if (check != pre)
-			word = remove_char(word, &i);
-		if (word[i] == '$' && (i == 0 || word[i - 1] != '\\'))
-			word = dollar_converter(word, &i);
+		else if (check != 1 && word[i] == '$' && (i == 0 || word[i - 1] != '\\'))
+			word = dollar_converter(word, &i, data);
 		else
 			i++;
 	}
