@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:13 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/20 12:48:05 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/20 16:03:34 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	print_word(t_words *words)
 //printa tutta la lista dei comandi
 void	print_cmd(t_cmd *cmds)
 {
-	int	i = 0;
+	int	i;
 
 	while (cmds != NULL)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/20 13:11:51 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/20 16:09:35 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,18 @@
 # define FALSE 0
 # define CUSTOM 2
 
+# define MINI "\001"CYAN BOLD"\002minishell\001"RED BOLD"\002 > \001"END"\002"
+
 extern int			g_signal;
 
+//contiene le parole già modificate
 typedef struct s_words
 {
 	char			*word;
 	struct s_words	*next;
 }					t_words;
 
+//contine i comandi da la
 typedef struct s_cmd
 {
 	char			*cmd;
@@ -47,6 +51,7 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
+//contiene l'env del minishell
 typedef struct s_env
 {
 	char			*var;
@@ -54,6 +59,7 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
+//struttura principale che contine TUTTO
 typedef struct s_data
 {
 	t_env			*env;
@@ -67,14 +73,13 @@ typedef struct s_data
 // main.c
 
 // init.c
-void				free_env(t_env *env);
 t_env				*init_env(char **env);
 int					init_data(t_data *data, char **env);
 
 // signal.c
 void				init_signals(void);
 void				new_prompt_sigact(int signum, siginfo_t *info,
-		void *context);
+						void *context);
 void				new_prompt(int signum);
 void				get_history(int signum);
 
@@ -86,39 +91,42 @@ char				*ft_readline(char *prompt);
 
 //parsing.c
 
-void	command_slicer(t_cmd *cmds, t_words **words, t_data *data);
-t_cmd	*new_command(t_cmd *cmds, t_words **words, t_data *data);
-t_cmd	*parsing(char *line, t_data *data);
+void				command_slicer(t_cmd *cmds, t_words **words, t_data *data);
+t_cmd				*new_command(t_cmd *cmds, t_words **words, t_data *data);
+t_cmd				*parsing(char *line, t_data *data);
 
 //word.c
 
-char	*pipe_manager(int *i, t_data *data);
-char	*next_word(char *line, int *i, t_data *data);
-t_words	*new_word(t_words *words, char *str, t_data *data);
-t_words	*word_slicer(char *line, t_data *data);
+char				*pipe_manager(int *i, t_data *data);
+char				*next_word(char *line, int *i, t_data *data);
+t_words				*new_word(t_words *words, char *str, t_data *data);
+t_words				*word_slicer(char *line, t_data *data);
 
 //dollar.c
 
-char	*copy_in_str(char *word, int *i, int j, t_data *data);
-char	*dollar_converter(char *word, int *i, t_data *data);
-char	*dollar_remover(char *word, int *i, int check, t_data *data);
-char	*dollar_manager(char *word, t_data *data);
+char				*copy_in_str(char *word, int *i, int j, t_data *data);
+char				*dollar_converter(char *word, int *i, t_data *data);
+char				*dollar_remover(char *word, int *i, int check,
+						t_data *data);
+char				*dollar_manager(char *word, t_data *data);
 
 //char_manager.c
 
-int		quote_checker(char *line, int i);
-char	*dup_till_n(char *start, int n, t_data *data);
-char	*remove_char(char *word, int i, t_data *data);
+int					quote_checker(char *line, int i);
+char				*dup_till_n(char *start, int n, t_data *data);
+char				*remove_char(char *word, int i, t_data *data);
 
 //print.c
 
-void	print_word(t_words *words);
-void	print_cmd(t_cmd *cmds);
+void				print_word(t_words *words);
+void				print_cmd(t_cmd *cmds);
 
 //exit.c
 
-void	free_words(t_words *words);
-void	ft_exit(t_data *data);
+void				free_words(t_words *words);
+void				free_cmds(t_cmd *cmds);
+void				free_env(t_env *env);
+void				ft_exit(t_data *data);
 
 //------------------------------------------------------------
 

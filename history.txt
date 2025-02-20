@@ -1,5 +1,3 @@
-git status
+export ciao=
+export
 clear
-ls
-ls | wc
-ls | ls

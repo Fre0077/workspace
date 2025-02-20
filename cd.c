@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 10:52:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/20 10:39:27 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:59:15 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	exec_cd(t_data *data)
 		return (printf("cd: too many arguments\n"), 1);
 	oldpwd = getcwd(NULL, 0);
 	if (!data->cmds->args || data->cmds->args[0] == NULL
-			|| data->cmds->args[0][0] == '\0')
+		|| data->cmds->args[0][0] == '\0')
 	{
 		if (chdir(getenv("HOME")) == -1)
 			printf("cd: HOME not set\n");

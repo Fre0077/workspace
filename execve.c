@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:23:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/18 18:24:05 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:00:36 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	**get_args(t_cmd *cmds)
 		i++;
 	}
 	argv[i + 1] = NULL;
-	return (argv); 
+	return (argv);
 }
 
 char	**env_to_mat(t_env *env)
@@ -84,14 +84,15 @@ char	**env_to_mat(t_env *env)
 	return (mat);
 }
 
-int execute_command(char *path, char **argv, char **env)
+// + 128 to get the signal number
+int	execute_command(char *path, char **argv, char **env)
 {
 	pid_t	pid;
 	int		status;
 
 	pid = fork();
 	if (pid == -1)
-        return (perror("fork"), 1);
+		return (perror("fork"), 1);
 	if (pid == 0)
 	{
 		execve(path, argv, env);
@@ -104,7 +105,7 @@ int execute_command(char *path, char **argv, char **env)
 		if (WIFEXITED(status))
 			return (WEXITSTATUS(status));
 		else if (WIFSIGNALED(status))
-			return (WTERMSIG(status) + 128); // + 128 to get the signal number
+			return (WTERMSIG(status) + 128);
 		return (1);
 	}
 	return (0);

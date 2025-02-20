@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/20 13:59:57 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:07:50 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ char	*copy_in_str(char *word, int *i, int j, t_data *data)
 	char	*str;
 	int		l;
 	int		y;
-	
-	str = dup_till_n(&word[j + 1],  *i - j - 1, data),
+
+	str = dup_till_n(&word[j + 1], *i - j - 1, data);
 	env = get_env(data->env, str);
 	new_word = ft_calloc(1, ft_strlen(env) + ft_strlen(&word[*i]) + j + 1);
 	if (!new_word)
@@ -35,7 +35,7 @@ char	*copy_in_str(char *word, int *i, int j, t_data *data)
 	y = *i;
 	*i = l;
 	while (word[y])
-		new_word[l++] =word[y++];
+		new_word[l++] = word[y++];
 	return (free (word), free (str), new_word);
 }
 
@@ -46,7 +46,7 @@ char	*dollar_converter(char *word, int *i, t_data *data)
 
 	j = *i;
 	if (*i > 0 && word[*i - 1] == '\\')
-		return(remove_char(word, *i - 1, data));
+		return (remove_char(word, *i - 1, data));
 	if (ft_isalpha(word[*i + 1]))
 	{
 		*i += 1;
@@ -84,7 +84,8 @@ char	*dollar_manager(char *word, t_data *data)
 		check = quote_checker(word, i);
 		if (check != pre)
 			word = remove_char(word, i, data);
-		else if (check != 1 && word[i] == '$' && (i == 0 || word[i - 1] != '\\'))
+		else if (check != 1 && word[i] == '$'
+			&& (i == 0 || word[i - 1] != '\\'))
 			word = dollar_converter(word, &i, data);
 		else if (((check != 1 && word[i] == '$') || word[i] == '\''
 				|| word[i] == '\"') && i != 0 && word[i - 1] == '\\')

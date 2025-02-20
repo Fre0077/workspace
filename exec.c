@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/20 14:00:22 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:04:39 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ int	check_pipe(t_cmd *cmds)
 	return (0);
 }
 
+//TODO: do check on data->status and if value is -1 exit program with status 1
 int	call_function(t_data *data)
 {
-	// char	*const argv[] = {cmds->cmd, cmds->args, NULL};
 	if (ft_strncmp(data->cmds->cmd, "echo", 5) == 0)
 		exec_echo(data->cmds->args);
 	else if (ft_strncmp(data->cmds->cmd, "cd", 3) == 0)
@@ -59,7 +59,6 @@ int	call_function(t_data *data)
 		return (printf("exit\n"), -1);
 	else
 		exec_execve(data);
-	// do check on data->status and if value is -1 exit program with status 1
 	return (0);
 }
 

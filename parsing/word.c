@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:12:42 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/20 13:13:50 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/20 16:06:46 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ char	*next_word(char *line, int *i, t_data *data)
 	if (line == NULL)
 		return (NULL);
 	start = *i;
-	while ((quote_checker(line, *i) || (line[*i] != ' ' && line[*i] != '|')) && line[*i])
+	while ((quote_checker(line, *i)
+			|| (line[*i] != ' ' && line[*i] != '|')) && line[*i])
 		*i += 1;
 	word = dup_till_n(&line[start], *i - start, data);
 	word = dollar_manager(word, data);

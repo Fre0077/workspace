@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/20 12:52:24 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/20 16:05:10 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	command_slicer(t_cmd *cmds, t_words **words, t_data *data)
 	arg = (*words)->next;
 	(*words) = (*words)->next;
 	i = 0;
-	while ((*words) != NULL && (*words)->word[0] != '|') //possibile aggiunta dell '&&'
+	while ((*words) != NULL && (*words)->word[0] != '|')
 	{
 		(*words) = (*words)->next;
 		i++;
@@ -44,7 +44,7 @@ void	command_slicer(t_cmd *cmds, t_words **words, t_data *data)
 t_cmd	*new_command(t_cmd *cmds, t_words **words, t_data *data)
 {
 	t_cmd	*new_cmd;
-	
+
 	new_cmd = malloc(sizeof(t_cmd));
 	if (!new_cmd)
 		ft_exit(data);
@@ -63,9 +63,6 @@ t_cmd	*parsing(char *line, t_data *data)
 	if (line[0] == '\0' || line == NULL || line[0] == '\n')
 		return (NULL);
 	words = word_slicer(line, data);
-	//ft_printf("--------\n");
-	//print_word(words);
-	//ft_printf("--------\n");
 	cmds = malloc(sizeof(t_cmd));
 	if (!cmds)
 		ft_exit(data);
@@ -79,7 +76,5 @@ t_cmd	*parsing(char *line, t_data *data)
 			cmds = new_command(cmds, &words, data);
 	}
 	cmds->next = NULL;
-	//print_cmd(first);
-	//ft_printf("--------\n");
 	return (first);
 }

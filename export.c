@@ -6,15 +6,20 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:01:27 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/18 10:08:40 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:50:53 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ *  write(1, "\"", 1);
+ *  write(1, &tmp->var[i], ft_strlen(&tmp->var[i]));
+ *  write(1, "\"", 1);
+ */
 void	ft_put_export(t_env *env)
 {
-	int	i;
+	int		i;
 	t_env	*tmp;
 
 	tmp = env;
@@ -28,11 +33,9 @@ void	ft_put_export(t_env *env)
 		write(1, "declare -x ", 11);
 		write(1, tmp->var, i);
 		if (tmp->var[i])
-		{
-			write(1, "\"", 1);
-			write(1, &tmp->var[i], ft_strlen(&tmp->var[i]));
-			write(1, "\"", 1);
-		}
+			ft_printf("\"%s\"", &tmp->var[i]);
+		else if (tmp->var[i - 1] == '=')
+			write(1, "\"\"", 2);
 		write(1, "\n", 1);
 		tmp = tmp->next;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   char_manager.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:11:55 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/20 13:13:01 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/20 15:53:09 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,3 @@ char	*remove_char(char *word, int i, t_data *data)
 	}
 	return (free(word), new_word);
 }
-
