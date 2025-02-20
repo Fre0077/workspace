@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/20 16:04:39 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:44:34 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,9 @@ void	ft_put_env(t_env *env, int is_env)
 
 int	check_pipe(t_cmd *cmds)
 {
-	t_cmd	*tmp;
-
-	tmp = cmds;
-	while (tmp)
-	{
-		if (tmp->cmd == NULL)
-			return (0);
-		if (ft_strncmp(tmp->cmd, "|", 2) == 0)
-			return (1);
-		tmp = tmp->next;
-	}
-	return (0);
+	if (!cmds || !cmds->next)
+		return (0);
+	return (1);
 }
 
 //TODO: do check on data->status and if value is -1 exit program with status 1
@@ -62,14 +53,69 @@ int	call_function(t_data *data)
 	return (0);
 }
 
+//TODO: check if there is a way to remove the fork here
+//void	exec_cmd(t_data *data)
+//{
+//	if (check_pipe(data->cmds))
+//	{
+//		int fd[2];
+//		int pid;
+
+//		pipe(fd);
+//		pid = fork();
+//		if (pid == -1)
+//			return ;
+//		if (pid == 0)
+//		{
+//			close(fd[0]);
+//			if (dup2(fd[1], 1) == -1)
+//				exit(1);
+//			close(fd[1]);
+//			call_function(data);
+//			if (dup2(data->stdo, 1) == -1)
+//				exit(1);
+//			exit(0);
+//		}
+//		else
+//		{
+//			close(fd[1]);
+//			if (dup2(fd[0], 0) == -1)
+//				exit(1);
+//			close(fd[0]);
+//			data->cmds = data->cmds->next;
+//			exec_cmd(data);
+//			if (dup2(data->stdi, 0) == -1)
+//				exit(1);
+//		}
+//	}
+//	else
+//	{
+//		call_function(data);
+//	}
+//}
+
+
 void	exec_cmd(t_data *data)
 {
+	int fd[2];
+
 	if (check_pipe(data->cmds))
 	{
-		printf("handle pipe\n");
+		pipe(fd);
+		if (dup2(fd[1], 1) == -1)
+			exit(1);
+		call_function(data);
+		if (dup2(data->stdo, 1) == -1)
+			exit(1);
+		close(fd[1]);
+		data->cmds = data->cmds->next;
+		if (dup2(fd[0], 0) == -1)
+			exit(1);
+		close(fd[0]);
+		exec_cmd(data);
+		if (dup2(data->stdi, 0) == -1)
+			exit(1);
 	}
 	else
-	{
 		call_function(data);
-	}
 }

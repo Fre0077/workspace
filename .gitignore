@@ -4,6 +4,7 @@
 *.txt
 minishell
 .vscode/
+test*
 
 !.gitignore
 !appunti.txt

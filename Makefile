@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+         #
+#    By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/17 09:04:50 by fre007            #+#    #+#              #
-#    Updated: 2025/02/20 13:13:26 by fre007           ###   ########.fr        #
+#    Updated: 2025/02/20 17:32:55 by alborghi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ all: $(NAME)
 
 $(NAME): $(SRCS)
 	make -C my_libft
-	$(CC) $(CFLAGS) -o $(NAME) $(SRCS) $(LIBFTA)  -lreadline
+	$(CC) $(CFLAGS) -o $(NAME) $(SRCS) $(LIBFTA) -lreadline
 
 clean: libft_clean
 
@@ -54,4 +54,31 @@ libft_fclean: libft_clean
 
 run: all
 	clear
-	@./$(NAME)
+	./$(NAME)
+
+val: all
+	clear
+	valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp ./$(NAME)
+
+TEST = \
+init.c \
+signal.c \
+exec.c \
+export.c \
+cd.c \
+echo.c \
+unset.c \
+execve.c \
+parsing/parsing.c \
+parsing/char_manager.c \
+parsing/dollar.c \
+parsing/print.c \
+parsing/word.c \
+parsing/exit.c \
+test.c \
+
+test: test_clean
+	cc $(CFLAGS) -o test $(TEST) $(LIBFTA) -lreadline
+
+test_clean:
+	rm -f test

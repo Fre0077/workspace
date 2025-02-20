@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:12:42 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/20 16:06:46 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:31:31 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*pipe_manager(int *i, t_data *data)
 {
 	char	*str;
 
-	str = ft_calloc(1, 2);
+	str = (char *)ft_calloc(1, 2);
 	if (!str)
 		ft_exit(data);
 	str[0] = '|';

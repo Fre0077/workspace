@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/20 16:09:35 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:51:05 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ typedef struct s_cmd
 {
 	char			*cmd;
 	char			**args;
+	char			*file_i;
+	char			*file_o;
+	char			*file_d;
+	char			*file_a;
 	struct s_cmd	*next;
 }					t_cmd;
 
@@ -68,6 +72,8 @@ typedef struct s_data
 	char			*home;
 	char			*pwd;
 	char			*oldpwd;
+	int				stdo;
+	int				stdi;
 }					t_data;
 
 // main.c
