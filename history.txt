@@ -1,6 +1,1 @@
-export caio=come
-$ciao
-$caio
-$PWD
-$caio
-clear
+echo $PWD
