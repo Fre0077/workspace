@@ -1,16 +1,6 @@
-env
-export cosa=clear
-env
-$cosa
-clear
-cioa
-"$caio"
-"$$$"
-"$$$ciao"
-"$$come$ciao"
-"$va$come$ciao"
-"$va$come$ciao"$casa
-$va"$va$come$ciao"$casa
-'$va"$va$come$ciao"$casa'
-clear
+export caio=come
+$ciao
+$caio
+$PWD
+$caio
 clear

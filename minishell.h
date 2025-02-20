@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/18 19:16:16 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/19 20:20:39 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char	*dollar_manager(char *word, t_data *data);
 
 //char_manager.c
 char	*dup_till_n(char *start, int n);
-char	*remove_char(char *word, int *i);
+char	*remove_char(char *word, int i);
 char	*copy_in_str(char *word, int *i, int j, t_data *data);
 
 //word.c

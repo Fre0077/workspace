@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/19 15:38:06 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/19 16:46:04 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int main(int ac, char **av, char **env)
 {
 	(void)ac;
 	(void)av;
+	int		i = 10;
 	char	*line;
 	char	*history;
 	t_data	data;
@@ -28,7 +29,7 @@ int main(int ac, char **av, char **env)
 	using_history();
 	init_signals();
 	line = NULL;
-	while (1) // !(ft_strncmp(line, "exit", 4) == 0 && ft_strlen(line) == 4)
+	while (i--) // !(ft_strncmp(line, "exit", 4) == 0 && ft_strlen(line) == 4)
 	{
 		g_signal = 0;
 		free(line);

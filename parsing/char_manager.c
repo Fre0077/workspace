@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:11:55 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/19 15:04:48 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/19 20:20:23 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*dup_till_n(char *start, int n)
 }
 
 //data la stringa rimuove il carattere ocrrispondente al numero dato (funzia)
-char	*remove_char(char *word, int *i)
+char	*remove_char(char *word, int i)
 {
 	char	*new_word;
 	int		j;
@@ -35,7 +35,7 @@ char	*remove_char(char *word, int *i)
 	l = -1;
 	while (word[++j])
 	{
-		if (*i == j)
+		if (i == j)
 			j++;
 		new_word[++l] = word[j];
 	}

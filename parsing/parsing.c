@@ -6,13 +6,23 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/19 15:37:23 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/19 19:57:59 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-//funzione per la scrittura dei comandi nella lista e per la creazione dei nuovi nodi (funzia)
+void	free_words(t_words *words)
+{
+	while (words != NULL)
+	{
+		free (words->word);
+		words = words->next;
+	}
+	free (words);
+}
+
+//funzione per la scrittura dei comandi nella lista e per la creazione dei nuovi nodi
 void	command_slicer(t_cmd *cmds, t_words **words)
 {
 	t_words	*arg;
@@ -38,7 +48,7 @@ void	command_slicer(t_cmd *cmds, t_words **words)
 	}
 }
 
-//funzione lanciata per creare un nodo della lista cmds, setta anche gli argomenti
+//funzione lanciata per creare un nodo della lista cmds, setta anche gli argomenti 
 t_cmd	*new_command(t_cmd *cmds, t_words **words)
 {
 	t_cmd	*new_cmd;
@@ -49,7 +59,7 @@ t_cmd	*new_command(t_cmd *cmds, t_words **words)
 	return (new_cmd);
 }
 
-//funzione principale per la gestione di tutto il parsing (da testare)
+//funzione principale per la gestione di tutto il parsing 
 t_cmd	*parsing(char *line, t_data *data)
 {
 	t_words	*words;
