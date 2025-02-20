@@ -6,11 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/02/20 10:40:06 by alborghi         ###   ########.fr       */
-=======
-/*   Updated: 2025/02/20 13:12:36 by fre007           ###   ########.fr       */
->>>>>>> ef1532c296a6f93aef998f87d9653166e5553e8a
+/*   Updated: 2025/02/20 13:59:57 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +21,7 @@ char	*copy_in_str(char *word, int *i, int j, t_data *data)
 	int		l;
 	int		y;
 	
-<<<<<<< HEAD
-	str = dup_till_n(&word[j + 1],  *i - j - 1);
-=======
 	str = dup_till_n(&word[j + 1],  *i - j - 1, data),
->>>>>>> ef1532c296a6f93aef998f87d9653166e5553e8a
 	env = get_env(data->env, str);
 	new_word = ft_calloc(1, ft_strlen(env) + ft_strlen(&word[*i]) + j + 1);
 	if (!new_word)

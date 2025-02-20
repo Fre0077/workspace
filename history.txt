@@ -1,5 +1,5 @@
-export ciao
-echo $ciao
-echo come$ciao
-echo come$ciaocosa
-echo come$ciao cosa
+git status
+clear
+ls
+ls | wc
+ls | ls
