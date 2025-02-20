@@ -1,6 +1,5 @@
-export caio=come
-$ciao
-$caio
-$PWD
-$caio
-clear
+export ciao
+echo $ciao
+echo come$ciao
+echo come$ciaocosa
+echo come$ciao cosa

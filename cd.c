@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 10:52:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/13 16:15:05 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/20 10:39:27 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*get_env(t_env *env, char *key)
 	tmp = env;
 	while (tmp)
 	{
-		if (check_key(tmp->var, key) == TRUE)
+		if (check_key(tmp->var, key) == TRUE && tmp->is_env == TRUE)
 			return (ft_strchr(tmp->var, '=') + 1);
 		tmp = tmp->next;
 	}
