@@ -1,2 +1,5 @@
-clear
-git status
+echo "ciao" > a.txt
+echo  a.txt < caio
+a.txt < caio
+< a.txt wc -l
+wc < a.txt -l
