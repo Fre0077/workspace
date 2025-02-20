@@ -6,24 +6,14 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/19 19:57:59 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/20 12:52:24 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	free_words(t_words *words)
-{
-	while (words != NULL)
-	{
-		free (words->word);
-		words = words->next;
-	}
-	free (words);
-}
-
-//funzione per la scrittura dei comandi nella lista e per la creazione dei nuovi nodi
-void	command_slicer(t_cmd *cmds, t_words **words)
+//scrive il comando all'interno di un nodo della lista cmds
+void	command_slicer(t_cmd *cmds, t_words **words, t_data *data)
 {
 	t_words	*arg;
 	int		i;
@@ -39,6 +29,8 @@ void	command_slicer(t_cmd *cmds, t_words **words)
 		i++;
 	}
 	cmds->args = malloc(sizeof(char *) * (i + 1));
+	if (!(cmds->args))
+		ft_exit(data);
 	cmds->args[i] = NULL;
 	j = -1;
 	while (--i >= 0)
@@ -48,18 +40,20 @@ void	command_slicer(t_cmd *cmds, t_words **words)
 	}
 }
 
-//funzione lanciata per creare un nodo della lista cmds, setta anche gli argomenti 
-t_cmd	*new_command(t_cmd *cmds, t_words **words)
+//crea un nuovo nodo per la lista cmds
+t_cmd	*new_command(t_cmd *cmds, t_words **words, t_data *data)
 {
 	t_cmd	*new_cmd;
 	
 	new_cmd = malloc(sizeof(t_cmd));
+	if (!new_cmd)
+		ft_exit(data);
 	cmds->next = new_cmd;
-	command_slicer(new_cmd, words);
+	command_slicer(new_cmd, words, data);
 	return (new_cmd);
 }
 
-//funzione principale per la gestione di tutto il parsing 
+//crea la lista contenente la lista cmds facendo il parsing necessario
 t_cmd	*parsing(char *line, t_data *data)
 {
 	t_words	*words;
@@ -69,21 +63,23 @@ t_cmd	*parsing(char *line, t_data *data)
 	if (line[0] == '\0' || line == NULL || line[0] == '\n')
 		return (NULL);
 	words = word_slicer(line, data);
-	ft_printf("--------\n");
-	print_word(words);
-	ft_printf("--------\n");
+	//ft_printf("--------\n");
+	//print_word(words);
+	//ft_printf("--------\n");
 	cmds = malloc(sizeof(t_cmd));
-	command_slicer(cmds, &words);
+	if (!cmds)
+		ft_exit(data);
+	command_slicer(cmds, &words, data);
 	first = cmds;
 	while (words != NULL)
 	{
 		if (words->word[0] == '|')
 			words = words->next;
 		else
-			cmds = new_command(cmds, &words);
+			cmds = new_command(cmds, &words, data);
 	}
 	cmds->next = NULL;
-	print_cmd(first);
-	ft_printf("--------\n");
+	//print_cmd(first);
+	//ft_printf("--------\n");
 	return (first);
 }

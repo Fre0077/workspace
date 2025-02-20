@@ -6,13 +6,13 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:13 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/17 18:26:47 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/20 12:48:05 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-//printa tutta al  lista dei comandi (funzionante)
+//printa tutta al  lista delle parole
 void	print_word(t_words *words)
 {
 	while (words != NULL)
@@ -22,7 +22,7 @@ void	print_word(t_words *words)
 	}
 }
 
-//printa tutta la lista dei comandi (funzia)
+//printa tutta la lista dei comandi
 void	print_cmd(t_cmd *cmds)
 {
 	int	i = 0;

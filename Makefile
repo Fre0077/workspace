@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+         #
+#    By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/17 09:04:50 by fre007            #+#    #+#              #
-#    Updated: 2025/02/18 17:51:41 by alborghi         ###   ########.fr        #
+#    Updated: 2025/02/20 13:13:26 by fre007           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,8 @@ parsing/parsing.c \
 parsing/char_manager.c \
 parsing/dollar.c \
 parsing/print.c \
-parsing/quote.c \
 parsing/word.c \
+parsing/exit.c \
 
 CFLAGS = -Wall -Wextra -Werror -g
 

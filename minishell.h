@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/19 20:20:39 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/20 13:11:51 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,30 +82,45 @@ void				get_history(int signum);
 char				*ft_strjoin_readline(char *s1, char *s2);
 char				*ft_readline(char *prompt);
 
+//--------------------------------------------------------
+
 //parsing.c
-t_cmd				*parsing(char *line, t_data *data);
 
-//print.c
-void	print_word(t_words *words);
-void	print_cmd(t_cmd *cmds);
+void	command_slicer(t_cmd *cmds, t_words **words, t_data *data);
+t_cmd	*new_command(t_cmd *cmds, t_words **words, t_data *data);
+t_cmd	*parsing(char *line, t_data *data);
 
-//quote.c
-int		quote_checker(char *line, int i);
+//word.c
+
+char	*pipe_manager(int *i, t_data *data);
+char	*next_word(char *line, int *i, t_data *data);
+t_words	*new_word(t_words *words, char *str, t_data *data);
+t_words	*word_slicer(char *line, t_data *data);
 
 //dollar.c
+
+char	*copy_in_str(char *word, int *i, int j, t_data *data);
+char	*dollar_converter(char *word, int *i, t_data *data);
+char	*dollar_remover(char *word, int *i, int check, t_data *data);
 char	*dollar_manager(char *word, t_data *data);
 
 //char_manager.c
-char	*dup_till_n(char *start, int n);
-char	*remove_char(char *word, int i);
-char	*copy_in_str(char *word, int *i, int j, t_data *data);
 
-//word.c
-char	*space_remove(char *line);
-char	*pipe_manager(int *i);
-char	*next_word(char *line, int *i, t_data *data);
-t_words	*new_word(t_words *words, char *str);
-t_words	*word_slicer(char *line, t_data *data);
+int		quote_checker(char *line, int i);
+char	*dup_till_n(char *start, int n, t_data *data);
+char	*remove_char(char *word, int i, t_data *data);
+
+//print.c
+
+void	print_word(t_words *words);
+void	print_cmd(t_cmd *cmds);
+
+//exit.c
+
+void	free_words(t_words *words);
+void	ft_exit(t_data *data);
+
+//------------------------------------------------------------
 
 // exec.c
 void				ft_put_env(t_env *env, int is_env);
