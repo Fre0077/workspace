@@ -1,1 +1,7 @@
 echo $PWD
+git add .
+git commit -m "parsing completato"
+git push
+git pull
+git pull --rebase
+git pull --no-rebase
