@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/20 16:05:10 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/21 09:34:29 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ t_cmd	*parsing(char *line, t_data *data)
 	if (line[0] == '\0' || line == NULL || line[0] == '\n')
 		return (NULL);
 	words = word_slicer(line, data);
+	words = inout_manager(words, data);
 	cmds = malloc(sizeof(t_cmd));
 	if (!cmds)
 		ft_exit(data);
@@ -76,5 +77,5 @@ t_cmd	*parsing(char *line, t_data *data)
 			cmds = new_command(cmds, &words, data);
 	}
 	cmds->next = NULL;
-	return (first);
+	return (free(words), first);
 }
