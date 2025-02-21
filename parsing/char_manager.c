@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:11:55 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/20 15:53:09 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:11:12 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*dup_till_n(char *start, int n, t_data *data)
 {
 	char	*str;
 
-	str = ft_calloc(1, n + 1);
+	str = (char *)ft_calloc(1, n + 1);
 	if (!str)
 		ft_exit(data);
 	while (--n >= 0)

@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/20 18:13:49 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/21 14:42:20 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	check_pipe(t_cmd *cmds)
 //										   << is the same as here_doc in pipex
 int	call_function(t_data *data)
 {
-	print_cmd(data->cmds);
+	// print_cmd(data->cmds);
 	if (ft_strncmp(data->cmds->cmd, "echo", 5) == 0)
 		exec_echo(data->cmds->args);
 	else if (ft_strncmp(data->cmds->cmd, "cd", 3) == 0)
@@ -53,6 +53,7 @@ int	call_function(t_data *data)
 		return (printf("exit\n"), -1);
 	else
 		exec_execve(data);
+	// free_cmds(data->cmds);
 	return (0);
 }
 

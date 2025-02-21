@@ -31,7 +31,7 @@ void	*ft_free_mat_char(char **mat)
 	int	i;
 
 	i = 0;
-	while (mat[i])
+	while (mat && mat[i])
 	{
 		free(mat[i]);
 		i++;

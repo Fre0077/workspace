@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:12:42 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/20 17:31:31 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/21 14:18:36 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_words	*word_slicer(char *line, t_data *data)
 	i = 0;
 	while (line[i] == ' ')
 		i++;
-	words = malloc(sizeof(t_words));
+	words = (t_words *)malloc(sizeof(t_words));
 	if (!words)
 		ft_exit(data);
 	words->word = next_word(line, &i, data);

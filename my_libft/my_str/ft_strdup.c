@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:58:34 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/11 14:51:39 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:04:55 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*ft_strdup(const char *s)
 	char	*dup;
 	size_t	len;
 
+	if (!s)
+		return (NULL);
 	len = ft_strlen(s) + 1;
 	dup = (char *)ft_calloc(len, sizeof(char));
 	if (dup == NULL)

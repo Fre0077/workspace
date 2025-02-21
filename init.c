@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:29:44 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/20 17:23:00 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/21 14:41:37 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_env	*init_env(char **env)
 		tmp->is_env = TRUE;
 		if (env[i++ + 1])
 		{
-			tmp->next = (t_env *)malloc(sizeof(t_env));
+			tmp->next = (t_env *)ft_calloc(1, sizeof(t_env));
 			if (!tmp->next)
 				return (free_env(my_env), NULL);
 			tmp = tmp->next;
@@ -49,6 +49,7 @@ int	init_data(t_data *data, char **env)
 	if (!data->env)
 		return (1);
 	data->cmds = NULL;
+	data->head = NULL;
 	data->status = 0;
 	data->home = ft_strdup(get_env(data->env, "HOME"));
 	if (!data->home)

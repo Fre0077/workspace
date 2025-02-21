@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:04:44 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/20 20:12:44 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/21 14:47:36 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	free_words(t_words *words)
 	{
 		tmp = words;
 		words = words->next;
-		free (tmp->word);
+		free(tmp->word);
 		free(tmp);
 	}
 }
@@ -32,9 +32,9 @@ void	free_cmds(t_cmd *cmds)
 	while (cmds != NULL)
 	{
 		tmp = cmds;
-		free(cmds->cmd);
-		ft_free_mat_char(cmds->args);
 		cmds = cmds->next;
+		free(tmp->cmd);
+		ft_free_mat_char(tmp->args);
 		free(tmp);
 	}
 }
@@ -55,7 +55,7 @@ void	free_env(t_env *env)
 //funzione per interrompere tutto il programma freeando tutto
 void	ft_exit(t_data *data)
 {
-	free_cmds(data->cmds);
+	free_cmds(data->head);
 	free_env(data->env);
 	free(data->home);
 	free(data->pwd);

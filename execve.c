@@ -6,11 +6,18 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:23:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/20 16:00:36 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:05:04 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_execve(char *exec, char **argv, char **env)
+{
+	free(exec);
+	ft_free_mat_char(argv);
+	ft_free_mat_char(env);
+}
 
 char	*find_path(char *cmd, char *path)
 {
@@ -26,14 +33,16 @@ char	*find_path(char *cmd, char *path)
 	{
 		tmp = ft_strjoin(paths[i], "/");
 		if (!tmp)
-			return (NULL);
+			return (ft_free_mat_char(paths), NULL);
 		tmp = ft_strjoin_free_1(tmp, cmd);
 		if (!tmp)
-			return (NULL);
+			return (ft_free_mat_char(paths), NULL);
 		if (access(tmp, F_OK | X_OK) == 0)
-			return (tmp);
+			return (ft_free_mat_char(paths), tmp);
+		free(tmp);
 		i++;
 	}
+	ft_free_mat_char(paths);
 	return (NULL);
 }
 
@@ -45,11 +54,11 @@ char	**get_args(t_cmd *cmds)
 	argv = (char **)ft_calloc(ft_char_mat_len(cmds->args) + 2, sizeof(char *));
 	if (!argv)
 		return (NULL);
-	argv[0] = cmds->cmd;
+	argv[0] = ft_strdup(cmds->cmd);
 	i = 0;
 	while (cmds->args && cmds->args[i])
 	{
-		argv[i + 1] = cmds->args[i];
+		argv[i + 1] = ft_strdup(cmds->args[i]);
 		i++;
 	}
 	argv[i + 1] = NULL;
@@ -76,12 +85,24 @@ char	**env_to_mat(t_env *env)
 	tmp = env;
 	while (tmp)
 	{
-		mat[i] = tmp->var;
+		mat[i] = ft_strdup(tmp->var);
 		i++;
 		tmp = tmp->next;
 	}
 	mat[i] = NULL;
 	return (mat);
+}
+
+void	ft_put_char_mat(char **mat)
+{
+	int	i;
+
+	i = 0;
+	while (mat && mat[i])
+	{
+		printf("%s\n", mat[i]);
+		i++;
+	}
 }
 
 // + 128 to get the signal number
@@ -92,10 +113,11 @@ int	execute_command(char *path, char **argv, char **env)
 
 	pid = fork();
 	if (pid == -1)
-		return (perror("fork"), 1);
+		return (perror("fork"), -1);
 	if (pid == 0)
 	{
 		execve(path, argv, env);
+		free_execve(path, argv, env);
 		perror("execve");
 		exit(EXIT_FAILURE);
 	}
@@ -123,9 +145,12 @@ int	exec_execve(t_data *data)
 		return (1);
 	path += 1;
 	exec = find_path(data->cmds->cmd, path);
+	if (!exec)
+		return (printf("command not found: %s\n", data->cmds->cmd), 1);
 	argv = get_args(data->cmds);
 	env = env_to_mat(data->env);
 	if (execute_command(exec, argv, env) == -1)
-		return (printf("exec error!\n"), 1);
+		return (printf("exec error!\n"), free_execve(exec, argv, env), 1);
+	free_execve(exec, argv, env);
 	return (0);
 }

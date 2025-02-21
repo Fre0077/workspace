@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 10:52:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/20 15:59:15 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/21 14:31:44 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	check_key(char *var, char *key)
 {
 	int	i;
 
+	if (!var || !key)
+		return (FALSE);
 	i = 0;
 	while (var[i] && key[i] && var[i] == key[i] && var[i] != '=')
 		i++;
@@ -96,9 +98,17 @@ int	exec_cd(t_data *data)
 	}
 	else if (ft_strncmp(data->cmds->args[0], "-", 2) == 0)
 	{
-		if (chdir(data->oldpwd) == -1)
+		if (get_env(data->env, "OLDPWD"))
 		{
-			printf("cd: |%s| No such file or directory\n", data->oldpwd);
+			if (chdir(get_env(data->env, "OLDPWD")) == -1)
+			{
+				printf("cd: %s No such file or directory\n", get_env(data->env, "OLDPWD"));
+				return (1);
+			}
+		}
+		else if (!data->oldpwd || chdir(data->oldpwd) == -1)
+		{
+			printf("cd: %s No such file or directory\n", data->oldpwd);
 			return (1);
 		}
 	}

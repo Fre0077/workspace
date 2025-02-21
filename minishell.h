@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/20 18:17:07 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/21 14:39:15 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
+
+# define HISTORY "/nfs/homes/alborghi/miei_file/42_core/milestone_3/minishell/.history"
 
 # define ARR_UP 65364
 # define ARR_DOWN 65362
@@ -68,6 +70,7 @@ typedef struct s_data
 {
 	t_env			*env;
 	t_cmd			*cmds;
+	t_cmd			*head;
 	int				status;
 	char			*home;
 	char			*pwd;
