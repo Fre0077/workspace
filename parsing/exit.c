@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:04:44 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/20 17:26:40 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/20 20:12:44 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 
 void	free_words(t_words *words)
 {
+	t_words	*tmp;
+
 	while (words != NULL)
 	{
-		free (words->word);
+		tmp = words;
 		words = words->next;
+		free (tmp->word);
+		free(tmp);
 	}
-	free (words);
 }
 
 void	free_cmds(t_cmd *cmds)
 {
-	
 	t_cmd	*tmp;
-	int	i;
 
-	i = 0;
 	while (cmds != NULL)
 	{
 		tmp = cmds;
