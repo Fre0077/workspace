@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/21 14:39:15 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:06:38 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,26 +38,19 @@
 
 extern int			g_signal;
 
-//contiene le parole già modificate
 typedef struct s_words
 {
 	char			*word;
 	struct s_words	*next;
 }					t_words;
 
-//contine i comandi da la
 typedef struct s_cmd
 {
 	char			*cmd;
 	char			**args;
-	char			*file_i; // input
-	char			*file_o; // trunck (out)
-	char			*delimiter; // read till delimiter (here_doc)
-	char			*file_a; // append (out)
 	struct s_cmd	*next;
 }					t_cmd;
 
-//contiene l'env del minishell
 typedef struct s_env
 {
 	char			*var;
@@ -65,30 +58,34 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
-//struttura principale che contine TUTTO
 typedef struct s_data
 {
 	t_env			*env;
 	t_cmd			*cmds;
 	t_cmd			*head;
 	int				status;
+	int				stdo;
+	int				stdi;
 	char			*home;
 	char			*pwd;
 	char			*oldpwd;
-	int				stdo;
-	int				stdi;
+	char			*file_i; // input
+	char			*file_o; // trunck (out)
+	char			*delimiter; // read till delimiter (here_doc)
+	char			*file_a; // append (out)
 }					t_data;
 
 // main.c
 
 // init.c
+void				free_env(t_env *env);
 t_env				*init_env(char **env);
 int					init_data(t_data *data, char **env);
 
 // signal.c
 void				init_signals(void);
 void				new_prompt_sigact(int signum, siginfo_t *info,
-						void *context);
+		void *context);
 void				new_prompt(int signum);
 void				get_history(int signum);
 
@@ -115,8 +112,7 @@ t_words				*word_slicer(char *line, t_data *data);
 
 char				*copy_in_str(char *word, int *i, int j, t_data *data);
 char				*dollar_converter(char *word, int *i, t_data *data);
-char				*dollar_remover(char *word, int *i, int check,
-						t_data *data);
+char				*dollar_remover(char *word, int *i, int check, t_data *data);
 char				*dollar_manager(char *word, t_data *data);
 
 //char_manager.c
@@ -124,6 +120,10 @@ char				*dollar_manager(char *word, t_data *data);
 int					quote_checker(char *line, int i);
 char				*dup_till_n(char *start, int n, t_data *data);
 char				*remove_char(char *word, int i, t_data *data);
+
+//inout.c
+
+t_words				*inout_manager(t_words *words, t_data *data);
 
 //print.c
 
@@ -133,8 +133,6 @@ void				print_cmd(t_cmd *cmds);
 //exit.c
 
 void				free_words(t_words *words);
-void				free_cmds(t_cmd *cmds);
-void				free_env(t_env *env);
 void				ft_exit(t_data *data);
 
 //------------------------------------------------------------

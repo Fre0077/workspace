@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/02/17 09:04:50 by fre007            #+#    #+#              #
-#    Updated: 2025/02/21 14:22:35 by alborghi         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = minishell
 
 SRCS = \
@@ -28,6 +16,7 @@ parsing/dollar.c \
 parsing/print.c \
 parsing/word.c \
 parsing/exit.c \
+parsing/inout.c \
 
 CFLAGS = -Wall -Wextra -Werror -g
 
