@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/21 14:42:20 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/24 12:41:04 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,60 @@ int	check_pipe(t_cmd *cmds)
 	return (1);
 }
 
+int	dup_file(char *file, int std, int mode)
+{
+	int fd;
+
+	fd = open(file, mode, 0644);
+	if (fd == -1)
+		return (-1);
+	if (dup2(fd, std) == -1)
+		return (-1);
+	close(fd);
+	free(file);
+	return (0);
+}
+
+int	handle_files(t_data *data)
+{
+	if (data->file_i)
+	{
+		if (dup_file(data->file_i, 0, O_RDONLY) == -1)
+			return (-1);
+	}
+	if (data->file_o)
+	{
+		if (dup_file(data->file_o, 1, O_WRONLY | O_CREAT | O_TRUNC) == -1)
+			return (-1);
+	}
+	if (data->file_a)
+	{
+		if (dup_file(data->file_a, 1, O_WRONLY | O_CREAT | O_APPEND) == -1)
+			return (-1);
+	}
+	if (data->delimiter)
+	{
+		//heredoc
+		free(data->delimiter);
+	}
+	return (0);
+}
+
+int	reset_std(t_data *data)
+{
+	if (dup2(data->stdi, 0) == -1)
+		return (-1);
+	if (dup2(data->stdo, 1) == -1)
+		return (-1);
+	return (0);
+}
+
 //TODO: do check on data->status and if value is -1 exit program with status 1
 //TODO: add a function to handle <, >, >>, <<
 //										   << is the same as here_doc in pipex
 int	call_function(t_data *data)
 {
-	// print_cmd(data->cmds);
+	handle_files(data);
 	if (ft_strncmp(data->cmds->cmd, "echo", 5) == 0)
 		exec_echo(data->cmds->args);
 	else if (ft_strncmp(data->cmds->cmd, "cd", 3) == 0)
@@ -54,6 +102,7 @@ int	call_function(t_data *data)
 	else
 		exec_execve(data);
 	// free_cmds(data->cmds);
+	reset_std(data);
 	return (0);
 }
 

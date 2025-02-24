@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/24 10:05:07 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/24 12:45:58 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ t_words	*inout_manager(t_words *words, t_data *data)
 	else
 		data->file_i = NULL;
 	data->file_a = find_after_word(">>", &words, data);
-	if (data->delimiter == NULL)
+	if (data->file_a == NULL)
 		data->file_o = find_after_word(">", &words, data);
 	else
 		data->file_o = NULL;
