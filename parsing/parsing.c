@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/21 18:06:30 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/23 17:10:56 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ void	free_words_only_pointers(t_words *words)
 t_cmd	*parsing(char *line, t_data *data)
 {
 	t_words	*words;
-	t_words	*head;
 	t_cmd	*cmds;
 	t_cmd	*first;
 

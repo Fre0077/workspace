@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/21 18:06:38 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/23 17:11:32 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void				print_cmd(t_cmd *cmds);
 
 //exit.c
 
+void				free_cmds(t_cmd *cmds);
 void				free_words(t_words *words);
 void				ft_exit(t_data *data);
 
