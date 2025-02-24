@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   inout.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/02/24 17:16:03 by fre007           ###   ########.fr       */
+=======
+/*   Updated: 2025/02/24 17:04:07 by alborghi         ###   ########.fr       */
+>>>>>>> 967437606a2daf7b0457493f44b05dd4295e56a0
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,10 +183,10 @@ t_words	*inout_manager(t_words *words, t_data *data)
 	(void)data;
 	t_words	*tmp;
 
-	data->delimiter = NULL;
-	data->file_a = NULL;
 	data->file_i = NULL;
 	data->file_o = NULL;
+	data->file_a = NULL;
+	data->delimiter = NULL;
 	while (findable_file(words))
 	{
 		data->delimiter = find_after_word("<<", &words, data);
