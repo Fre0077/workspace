@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/24 12:41:04 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/24 12:50:29 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	check_pipe(t_cmd *cmds)
 	return (1);
 }
 
+// 0644 = rw-r--r-- (user: read, write; group: read; others: read)
 int	dup_file(char *file, int std, int mode)
 {
 	int fd;
