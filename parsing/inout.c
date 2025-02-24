@@ -3,16 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   inout.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/02/24 17:16:03 by fre007           ###   ########.fr       */
-=======
-/*   Updated: 2025/02/24 17:04:07 by alborghi         ###   ########.fr       */
->>>>>>> 967437606a2daf7b0457493f44b05dd4295e56a0
+/*   Updated: 2025/02/24 17:55:03 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../minishell.h"
 
@@ -31,11 +28,13 @@ char	*ft_strstr(char *big, char *little)
 		while (big[i + j] == little[j] && little[j] && !check)
 			j++;
 		if (!little[j])
+		{
+			quote_checker("1", 1);
 			return (&big[i]);
+		}
 		i++;
 	}
-	while (quote_checker(big, i++))
-		i++;
+	quote_checker("1", 1);
 	return (NULL);
 }
 
