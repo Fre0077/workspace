@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/24 16:52:53 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/24 16:59:44 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,18 +177,18 @@ t_words	*inout_manager(t_words *words, t_data *data)
 	(void)data;
 	t_words	*tmp;
 
+	data->delimiter = NULL;
+	data->file_a = NULL;
+	data->file_i = NULL;
+	data->file_o = NULL;
 	while (findable_file(words))
 	{
 		data->delimiter = find_after_word("<<", &words, data);
 		if (data->delimiter == NULL)
 			data->file_i = find_after_word("<", &words, data);
-		else
-			data->file_i = NULL;
 		data->file_a = find_after_word(">>", &words, data);
 		if (data->file_a == NULL)
 			data->file_o = find_after_word(">", &words, data);
-		else
-			data->file_o = NULL;
 	}
 	tmp = words;
 	while (tmp != NULL)
