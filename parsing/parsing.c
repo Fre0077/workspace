@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/24 11:34:39 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/24 12:00:09 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,14 @@ void	free_words_only_pointers(t_words *words)
 t_cmd	*parsing(char *line, t_data *data)
 {
 	t_words	*words;
+	t_words	*head;
 	t_cmd	*cmds;
 	t_cmd	*first;
 
 	if (line[0] == '\0' || line == NULL || line[0] == '\n')
 		return (NULL);
 	words = word_slicer(line, data);
+	head = words;
 	words = inout_manager(words, data);
 	cmds = malloc(sizeof(t_cmd));
 	if (!cmds)
@@ -91,5 +93,5 @@ t_cmd	*parsing(char *line, t_data *data)
 			cmds = new_command(cmds, &words, data);
 	}
 	cmds->next = NULL;
-	return (free(words), first);
+	return (free_words_only_pointers(head), first);
 }
