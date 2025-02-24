@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/21 18:06:38 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/24 10:04:44 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void				print_word(t_words *words);
 void				print_cmd(t_cmd *cmds);
 
 //exit.c
-
+void				free_cmds(t_cmd *cmds);
 void				free_words(t_words *words);
 void				ft_exit(t_data *data);
 

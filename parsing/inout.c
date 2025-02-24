@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inout.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/21 16:21:02 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/24 10:05:07 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ char	*find_after_word(char *find, t_words **tmp, t_data *data)
 	char	*ret;
 
 	first = (*tmp);
+	ret = NULL;
 	while ((*tmp) != NULL)
 	{
 		finded = ft_strstr((*tmp)->word, find);
