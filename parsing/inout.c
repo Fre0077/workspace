@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/24 13:31:58 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/24 16:52:53 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	*clear_2_node(t_words **tmp, t_words **first, t_data *data)
 	if ((*tmp) == (*first))
 		(*first) = (*tmp)->next;
 	(*tmp) = remove_node_words(*tmp, *first);
-	return (ret);
+	return (dollar_manager(ret, data));
 }
 
 char	*clear_next_node(t_words **tmp, char *finded, t_words **first, t_data *data)
@@ -94,7 +94,7 @@ char	*clear_next_node(t_words **tmp, char *finded, t_words **first, t_data *data
 		ft_exit(data);
 	remove_node_words((*tmp)->next, *first);
 	(*tmp)->word = remove_finded((*tmp)->word, finded, data);
-	return (ret);
+	return (dollar_manager(ret, data));
 }
 
 char	*clear_this_node(t_words **tmp, char *finded, t_words **first, t_data *data)
@@ -107,7 +107,7 @@ char	*clear_this_node(t_words **tmp, char *finded, t_words **first, t_data *data
 	if ((*tmp) == (*first))
 		(*first) = (*tmp)->next;
 	(*tmp) = remove_node_words(*tmp, *first);
-	return (ret);
+	return (dollar_manager(ret, data));
 }
 
 char	*remove_last_part(t_words **tmp, char *finded, char *find, t_data *data)
@@ -118,7 +118,7 @@ char	*remove_last_part(t_words **tmp, char *finded, char *find, t_data *data)
 	if (ret == NULL)
 		ft_exit(data);
 	(*tmp)->word = remove_finded((*tmp)->word, finded, data);
-	return (ret);
+	return (dollar_manager(ret, data));
 }
 
 //prende quello subito dopo alla stringa find
@@ -175,6 +175,7 @@ int	findable_file(t_words *words)
 t_words	*inout_manager(t_words *words, t_data *data)
 {
 	(void)data;
+	t_words	*tmp;
 
 	while (findable_file(words))
 	{
@@ -188,6 +189,12 @@ t_words	*inout_manager(t_words *words, t_data *data)
 			data->file_o = find_after_word(">", &words, data);
 		else
 			data->file_o = NULL;
+	}
+	tmp = words;
+	while (tmp != NULL)
+	{
+		tmp->word = dollar_manager(tmp->word, data);
+		tmp = tmp->next;
 	}
 	return (words);
 }

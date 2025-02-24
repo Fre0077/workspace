@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/24 12:08:35 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/24 16:46:55 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ t_cmd	*parsing(char *line, t_data *data)
 	if (line[0] == '\0' || line == NULL || line[0] == '\n')
 		return (NULL);
 	words = word_slicer(line, data);
-	head = words;
 	words = inout_manager(words, data);
+	head = words;
 	cmds = malloc(sizeof(t_cmd));
 	if (!cmds)
 		ft_exit(data);

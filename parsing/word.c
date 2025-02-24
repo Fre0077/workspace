@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:12:42 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/24 11:54:33 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/24 16:47:15 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*next_word(char *line, int *i, t_data *data)
 			|| (line[*i] != ' ' && line[*i] != '|')) && line[*i])
 		*i += 1;
 	word = dup_till_n(&line[start], *i - start, data);
-	word = dollar_manager(word, data);
+	//word = dollar_manager(word, data);
 	return (word);
 }
 
