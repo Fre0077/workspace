@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/24 15:35:45 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/24 17:47:56 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ char	*dollar_manager(char *word, t_data *data)
 			word = remove_char(word, i - 1, data);
 		else
 			i++;
-	}
+	}	
+	quote_checker("1", 1);
 	return (word);
 }

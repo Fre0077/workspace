@@ -6,9 +6,10 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/24 17:20:54 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/24 18:15:51 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../minishell.h"
 
@@ -27,11 +28,13 @@ char	*ft_strstr(char *big, char *little)
 		while (big[i + j] == little[j] && little[j] && !check)
 			j++;
 		if (!little[j])
+		{
+			quote_checker("1", 1);
 			return (&big[i]);
+		}
 		i++;
 	}
-	while (quote_checker(big, i++))
-		i++;
+	quote_checker("1", 1);
 	return (NULL);
 }
 
