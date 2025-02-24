@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/24 12:48:11 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/24 13:14:42 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,9 @@ char	*dollar_manager(char *word, t_data *data)
 		check = quote_checker(word, i);
 		if (check != 1 && word[i] == '$' && (i == 0 || word[i - 1] != '\\'))
 			word = dollar_converter(word, &i, data);
-		else if (((check != 1 && word[i] == '$') || word[i] == '\''
-				|| word[i] == '\"') && i != 0 && word[i - 1] == '\\')
-			word = remove_char(word, i - 1, data);
+		//else if (((check != 1 && word[i] == '$') || word[i] == '\''
+		//		|| word[i] == '\"') && i != 0 && word[i - 1] == '\\')
+		//	word = remove_char(word, i - 1, data);
 		else
 			i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/24 13:04:07 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/24 13:31:58 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@ char	*ft_strstr(char *big, char *little)
 {
 	int	i;
 	int	j;
+	int	check;
 
 	i = 0;
 	while (little != NULL && big[i])
 	{
+		check = quote_checker(big, i);
 		j = 0;
-		while (big[i + j] == little[j] && little[j])
+		while (big[i + j] == little[j] && little[j] && !check)
 			j++;
 		if (!little[j])
 			return (&big[i]);
@@ -148,20 +150,44 @@ char	*find_after_word(char *find, t_words **tmp, t_data *data)
 	return ((*tmp) = first, ret);
 }
 
+int	findable_file(t_words *words)
+{
+	t_words	*tmp;
+
+	tmp = words;
+	while (tmp != NULL)
+	{
+		if (ft_strstr(tmp->word, "<") != NULL)
+			return (1);
+		tmp = tmp->next;
+	}
+	tmp = words;
+	while (tmp != NULL)
+	{
+		if (ft_strstr(tmp->word, ">") != NULL)
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
 //verifica tutte le informazioni per i simboli: <, <<, >>, >
 t_words	*inout_manager(t_words *words, t_data *data)
 {
 	(void)data;
 
-	data->delimiter = find_after_word("<<", &words, data);
-	if (data->delimiter == NULL)
-		data->file_i = find_after_word("<", &words, data);
-	else
-		data->file_i = NULL;
-	data->file_a = find_after_word(">>", &words, data);
-	if (data->file_a == NULL)
-		data->file_o = find_after_word(">", &words, data);
-	else
-		data->file_o = NULL;
+	while (findable_file(words))
+	{
+		data->delimiter = find_after_word("<<", &words, data);
+		if (data->delimiter == NULL)
+			data->file_i = find_after_word("<", &words, data);
+		else
+			data->file_i = NULL;
+		data->file_a = find_after_word(">>", &words, data);
+		if (data->file_a == NULL)
+			data->file_o = find_after_word(">", &words, data);
+		else
+			data->file_o = NULL;
+	}
 	return (words);
 }
