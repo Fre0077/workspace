@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/24 16:59:44 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/24 17:16:03 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ char	*ft_strstr(char *big, char *little)
 			return (&big[i]);
 		i++;
 	}
+	while (quote_checker(big, i++))
+		i++;
 	return (NULL);
 }
 
