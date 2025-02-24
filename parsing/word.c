@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:12:42 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/21 14:18:36 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/24 11:54:33 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ char	*next_word(char *line, int *i, t_data *data)
 }
 
 //crea il prossimo nodo della lista words e imposta il valore passatogli
+//TODO: fix the malloc check
 t_words	*new_word(t_words *words, char *str, t_data *data)
 {
 	words->next = malloc(sizeof(t_words));
