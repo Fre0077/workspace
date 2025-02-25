@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:04:44 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/24 23:30:26 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/25 11:01:57 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,6 @@ void	ft_exit(t_data *data)
 	free(data->home);
 	free(data->pwd);
 	free(data->oldpwd);
-	free(data->delimiter);
-	free(data->file_a);
-	free(data->file_i);
-	free(data->file_o);
 	close(data->stdi);
 	close(data->stdo);
 	exit(0);

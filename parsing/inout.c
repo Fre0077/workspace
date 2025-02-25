@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inout.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/25 10:45:38 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/25 12:34:45 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,21 @@ char	*ft_strstr(char *big, char *little)
 t_words	*remove_node_words(t_words *words, t_words *first)
 {
 	t_words *tmp;
-	t_words *tmp_first;
 
-	tmp_first = first;
-	while (tmp_first->next != words)
-		tmp_first = tmp_first->next;
+	if (first == words)
+	{
+		ft_printf("patate\n");
+		tmp = words->next;
+		free (words->word);
+		free (words);
+		return (tmp);
+	}
+	while (first && first->next != words)
+		first = first->next;
+	if (first == NULL)
+		return (first);
 	tmp = words;
-	tmp_first->next = words->next;
+	first->next = words->next;
 	free (words->word);
 	words = words->next;
 	free (tmp);
@@ -77,27 +85,38 @@ char	*remove_finded(char *word, char *finded, t_data *data)
 char	*clear_2_node(t_words **tmp, t_words **first, t_data *data)
 {
 	char	*ret;
+	t_words	*tmp_first;
 
+	//ft_printf("gatto: \n");
+	//print_word((*first));
+	tmp_first = *first;
 	if ((*tmp) == (*first))
-		(*first) = (*tmp)->next;
-	(*tmp) = remove_node_words(*tmp, *first);
+		(*first) = (*first)->next;
+	print_word(*tmp);
+	(*tmp) = remove_node_words(*tmp, tmp_first);
 	ret = ft_strdup((*tmp)->word);
 	if (ret == NULL)
 		ft_exit(data);
+	//ft_printf("gatto2\n");
+	//print_word((*tmp));
+	tmp_first = *first;
 	if ((*tmp) == (*first))
-		(*first) = (*tmp)->next;
-	(*tmp) = remove_node_words(*tmp, *first);
+		(*first) = (*first)->next;
+	(*tmp) = remove_node_words(*tmp, tmp_first);
+	print_word(*tmp);
 	return (dollar_manager(ret, data));
 }
 
 char	*clear_next_node(t_words **tmp, char *finded, t_words **first, t_data *data)
 {
 	char	*ret;
+	t_words	*tmp_first;
 
+	tmp_first = *first;
 	ret = ft_strdup((*tmp)->next->word);
 	if (ret == NULL)
 		ft_exit(data);
-	remove_node_words((*tmp)->next, *first);
+	remove_node_words((*tmp)->next, tmp_first);
 	(*tmp)->word = remove_finded((*tmp)->word, finded, data);
 	return (dollar_manager(ret, data));
 }
@@ -105,13 +124,15 @@ char	*clear_next_node(t_words **tmp, char *finded, t_words **first, t_data *data
 char	*clear_this_node(t_words **tmp, char *finded, t_words **first, t_data *data)
 {
 	char	*ret;
+	t_words	*tmp_first;
 
+	tmp_first = *first;
 	ret = ft_strdup(finded);
 	if (ret == NULL)
 		ft_exit(data);
 	if ((*tmp) == (*first))
 		(*first) = (*tmp)->next;
-	(*tmp) = remove_node_words(*tmp, *first);
+	(*tmp) = remove_node_words(*tmp, tmp_first);
 	return (dollar_manager(ret, data));
 }
 
@@ -135,7 +156,7 @@ char	*find_after_word(char *find, t_words **tmp, t_data *data)
 
 	first = (*tmp);
 	ret = NULL;
-	while ((*tmp) != NULL && ft_strncmp((*tmp)->word, "|", ft_strlen((*tmp)->word)))
+	while ((*tmp) != NULL && ft_strncmp((*tmp)->word, "|", 2))
 	{
 		finded = ft_strstr((*tmp)->word, find);
 		if (finded != NULL)
@@ -160,19 +181,20 @@ int	findable_file(t_words *words)
 	t_words	*tmp;
 
 	tmp = words;
-	while (tmp != NULL && ft_strncmp(tmp->word, "|", ft_strlen(tmp->word)))
+	while (tmp != NULL && ft_strncmp(tmp->word, "|", 2))
 	{
-		if (ft_strstr(tmp->word, "<") != NULL)
+		if (ft_strstr(tmp->word, "<") != NULL
+			|| ft_strstr(tmp->word, ">") != NULL)
 			return (1);
 		tmp = tmp->next;
 	}
-	tmp = words;
-	while (tmp != NULL && ft_strncmp(tmp->word, "|", ft_strlen(tmp->word)))
-	{
-		if (ft_strstr(tmp->word, ">") != NULL)
-			return (1);
-		tmp = tmp->next;
-	}
+	//tmp = words;
+	//while (tmp != NULL && ft_strncmp(tmp->word, "|", 2))
+	//{
+	//	if (ft_strstr(tmp->word, ">") != NULL)
+	//		return (1);
+	//	tmp = tmp->next;
+	//}
 	return (0);
 }
 

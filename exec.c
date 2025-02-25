@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/24 12:50:29 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/25 11:02:57 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,27 +46,27 @@ int	dup_file(char *file, int std, int mode)
 	return (0);
 }
 
-int	handle_files(t_data *data)
+int	handle_files(t_cmd *cmd)
 {
-	if (data->file_i)
+	if (cmd->file_i)
 	{
-		if (dup_file(data->file_i, 0, O_RDONLY) == -1)
+		if (dup_file(cmd->file_i, 0, O_RDONLY) == -1)
 			return (-1);
 	}
-	if (data->file_o)
+	if (cmd->file_o)
 	{
-		if (dup_file(data->file_o, 1, O_WRONLY | O_CREAT | O_TRUNC) == -1)
+		if (dup_file(cmd->file_o, 1, O_WRONLY | O_CREAT | O_TRUNC) == -1)
 			return (-1);
 	}
-	if (data->file_a)
+	if (cmd->file_a)
 	{
-		if (dup_file(data->file_a, 1, O_WRONLY | O_CREAT | O_APPEND) == -1)
+		if (dup_file(cmd->file_a, 1, O_WRONLY | O_CREAT | O_APPEND) == -1)
 			return (-1);
 	}
-	if (data->delimiter)
+	if (cmd->delimiter)
 	{
 		//heredoc
-		free(data->delimiter);
+		free(cmd->delimiter);
 	}
 	return (0);
 }
@@ -85,7 +85,7 @@ int	reset_std(t_data *data)
 //										   << is the same as here_doc in pipex
 int	call_function(t_data *data)
 {
-	handle_files(data);
+	handle_files(data->cmds);
 	if (ft_strncmp(data->cmds->cmd, "echo", 5) == 0)
 		exec_echo(data->cmds->args);
 	else if (ft_strncmp(data->cmds->cmd, "cd", 3) == 0)
