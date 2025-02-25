@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/25 10:46:40 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/25 12:57:28 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char				*ft_readline(char *prompt);
 
 //parsing.c
 
-void				command_slicer(t_cmd *cmds, t_words **words, t_data *data);
+void				command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h);
 t_cmd				*new_command(t_cmd *cmds, t_words **words, t_data *data);
 t_cmd				*parsing(char *line, t_data *data);
 

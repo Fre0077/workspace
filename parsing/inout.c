@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inout.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/25 12:34:45 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/25 12:47:51 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char	*clear_2_node(t_words **tmp, t_words **first, t_data *data)
 	tmp_first = *first;
 	if ((*tmp) == (*first))
 		(*first) = (*first)->next;
-	print_word(*tmp);
+	//print_word(*tmp);
 	(*tmp) = remove_node_words(*tmp, tmp_first);
 	ret = ft_strdup((*tmp)->word);
 	if (ret == NULL)
@@ -103,7 +103,7 @@ char	*clear_2_node(t_words **tmp, t_words **first, t_data *data)
 	if ((*tmp) == (*first))
 		(*first) = (*first)->next;
 	(*tmp) = remove_node_words(*tmp, tmp_first);
-	print_word(*tmp);
+	//print_word(*tmp);
 	return (dollar_manager(ret, data));
 }
 
