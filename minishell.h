@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/24 11:34:10 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/25 10:46:40 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ typedef struct s_cmd
 {
 	char			*cmd;
 	char			**args;
+	char			*file_i; // input
+	char			*file_o; // trunck (out)
+	char			*delimiter; // read till delimiter (here_doc)
+	char			*file_a; // append (out)
 	struct s_cmd	*next;
 }					t_cmd;
 
@@ -69,10 +73,6 @@ typedef struct s_data
 	char			*home;
 	char			*pwd;
 	char			*oldpwd;
-	char			*file_i; // input
-	char			*file_o; // trunck (out)
-	char			*delimiter; // read till delimiter (here_doc)
-	char			*file_a; // append (out)
 }					t_data;
 
 // main.c
@@ -123,7 +123,7 @@ char				*remove_char(char *word, int i, t_data *data);
 
 //inout.c
 
-t_words				*inout_manager(t_words *words, t_data *data);
+t_words				*inout_manager(t_words *words, t_data *data, t_cmd *cmds);
 
 //print.c
 

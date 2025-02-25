@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inout.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/24 18:15:51 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/25 10:45:38 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ char	*find_after_word(char *find, t_words **tmp, t_data *data)
 
 	first = (*tmp);
 	ret = NULL;
-	while ((*tmp) != NULL)
+	while ((*tmp) != NULL && ft_strncmp((*tmp)->word, "|", ft_strlen((*tmp)->word)))
 	{
 		finded = ft_strstr((*tmp)->word, find);
 		if (finded != NULL)
@@ -160,14 +160,14 @@ int	findable_file(t_words *words)
 	t_words	*tmp;
 
 	tmp = words;
-	while (tmp != NULL)
+	while (tmp != NULL && ft_strncmp(tmp->word, "|", ft_strlen(tmp->word)))
 	{
 		if (ft_strstr(tmp->word, "<") != NULL)
 			return (1);
 		tmp = tmp->next;
 	}
 	tmp = words;
-	while (tmp != NULL)
+	while (tmp != NULL && ft_strncmp(tmp->word, "|", ft_strlen(tmp->word)))
 	{
 		if (ft_strstr(tmp->word, ">") != NULL)
 			return (1);
@@ -177,23 +177,22 @@ int	findable_file(t_words *words)
 }
 
 //verifica tutte le informazioni per i simboli: <, <<, >>, >
-t_words	*inout_manager(t_words *words, t_data *data)
+t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds)
 {
-	(void)data;
 	t_words	*tmp;
 
-	data->file_i = NULL;
-	data->file_o = NULL;
-	data->file_a = NULL;
-	data->delimiter = NULL;
+	cmds->file_i = NULL;
+	cmds->file_o = NULL;
+	cmds->file_a = NULL;
+	cmds->delimiter = NULL;
 	while (findable_file(words))
 	{
-		data->delimiter = find_after_word("<<", &words, data);
-		if (data->delimiter == NULL)
-			data->file_i = find_after_word("<", &words, data);
-		data->file_a = find_after_word(">>", &words, data);
-		if (data->file_a == NULL)
-			data->file_o = find_after_word(">", &words, data);
+		cmds->delimiter = find_after_word("<<", &words, data);
+		if (cmds->delimiter == NULL)
+			cmds->file_i = find_after_word("<", &words, data);
+		cmds->file_a = find_after_word(">>", &words, data);
+		if (cmds->file_a == NULL)
+			cmds->file_o = find_after_word(">", &words, data);
 	}
 	tmp = words;
 	while (tmp != NULL)
