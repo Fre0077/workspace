@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_append_line.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 10:53:10 by alborghi          #+#    #+#             */
-/*   Updated: 2024/12/18 10:56:35 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/27 18:18:34 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	**append_line(char **map, char *line)
 	char	**new_map;
 	int		i;
 
+	if (line == NULL)
+		return (map);
 	i = 0;
 	while (map && map[i])
 		i++;
