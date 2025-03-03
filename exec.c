@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/25 11:02:57 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/28 18:27:44 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_put_env(t_env *env, int is_env)
 	while (env)
 	{
 		if (!(is_env == TRUE && env->is_env == FALSE))
-			printf("%s\n", env->var);
+			ft_printf("%s\n", env->var);
 		env = env->next;
 	}
 }
@@ -99,76 +99,196 @@ int	call_function(t_data *data)
 	else if (ft_strncmp(data->cmds->cmd, "env", 4) == 0)
 		ft_put_env(data->env, TRUE);
 	else if (ft_strncmp(data->cmds->cmd, "exit", 5) == 0)
-		return (printf("exit\n"), -1);
+		return (printf("exit\n"), data->status = 1, -1);
 	else
 		exec_execve(data);
 	// free_cmds(data->cmds);
-	reset_std(data);
+	// reset_std(data);
 	return (0);
 }
 
 //TODO: check if there is a way to remove the fork here
-//void	exec_cmd(t_data *data)
-//{
-//	if (check_pipe(data->cmds))
-//	{
-//		int fd[2];
-//		int pid;
+// void	exec_cmd(t_data *data)
+// {
+// 	int fd[2];
+// 	int pid;
 
-//		pipe(fd);
-//		pid = fork();
-//		if (pid == -1)
-//			return ;
-//		if (pid == 0)
-//		{
-//			close(fd[0]);
-//			if (dup2(fd[1], 1) == -1)
-//				exit(1);
-//			close(fd[1]);
-//			call_function(data);
-//			if (dup2(data->stdo, 1) == -1)
-//				exit(1);
-//			exit(0);
-//		}
-//		else
-//		{
-//			close(fd[1]);
-//			if (dup2(fd[0], 0) == -1)
-//				exit(1);
-//			close(fd[0]);
-//			data->cmds = data->cmds->next;
-//			exec_cmd(data);
-//			if (dup2(data->stdi, 0) == -1)
-//				exit(1);
-//		}
-//	}
-//	else
-//	{
-//		call_function(data);
-//	}
-//}
+// 	if (check_pipe(data->cmds))
+// 	{
+// 		pipe(fd);
+// 		pid = fork();
+// 		if (pid == -1)
+// 			return ;
+// 		if (pid == 0)
+// 		{
+// 			close(fd[0]);
+// 			if (dup2(fd[1], 1) == -1)
+// 				ft_exit(data);
+// 			call_function(data);
+// 			close(fd[1]);
+// 			// if (dup2(data->stdo, 1) == -1)
+// 			// 	ft_exit(data);
+// 			ft_exit(data);
+// 		}
+// 		else
+// 		{
+// 			close(fd[1]);
+// 			if (dup2(fd[0], 0) == -1)
+// 				exit(1);
+// 			data->cmds = data->cmds->next;
+// 			exec_cmd(data);
+// 			waitpid(pid, NULL, 0);
+// 			close(fd[0]);
+// 			// if (dup2(data->stdi, 0) == -1)
+// 			// 	exit(1);
+// 		}
+// 	}
+// 	else
+// 	{
+// 		call_function(data);
+// 	}
+// 	reset_std(data);
+// }
+
+int is_builtin(char *cmd)
+{
+	if (ft_strncmp(cmd, "echo", 5) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "cd", 3) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "pwd", 4) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "export", 7) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "unset", 6) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "env", 4) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "exit", 5) == 0)
+		return (1);
+	return (0);
+}
+
+int	check_cmds(t_cmd *cmds, t_env *env)
+{
+	char	*path;
+	char	*exec;
+	t_cmd	*tmp;
+
+	path = get_env(env, "PATH");
+	if (!path)
+		return (printf("command not found: %s\n", cmds->cmd), 1);
+	tmp = cmds;
+	while (tmp)
+	{
+		if (is_builtin(tmp->cmd) == 1)
+		{
+			tmp = tmp->next;
+			continue ;
+		}
+		exec = find_path(tmp->cmd, path);
+		if (!exec)
+			return (printf("command not found: %s\n", tmp->cmd), 1);
+		tmp = tmp->next;
+		free(exec);
+	}
+	return (0);
+}
 
 void	exec_cmd(t_data *data)
 {
 	int fd[2];
+	int pid;
 
+	if (check_cmds(data->cmds, data->env) == 1)
+		return ;
 	if (check_pipe(data->cmds))
 	{
-		pipe(fd);
-		if (dup2(fd[1], 1) == -1)
-			exit(1);
-		call_function(data);
-		if (dup2(data->stdo, 1) == -1)
-			exit(1);
-		close(fd[1]);
-		data->cmds = data->cmds->next;
-		if (dup2(fd[0], 0) == -1)
-			exit(1);
-		close(fd[0]);
-		exec_cmd(data);
-		if (dup2(data->stdi, 0) == -1)
-			exit(1);
+		if (pipe(fd) == -1)
+			return (perror("pipe"));
+		pid = fork();
+		if (pid == -1)
+			return (perror("fork"));
+		if (pid == 0)
+		{
+			close(fd[0]);
+			if (dup2(fd[1], STDOUT_FILENO) == -1)
+			{
+				close(fd[1]);
+				ft_exit(data);
+			}
+			close(fd[1]);
+			call_function(data);
+			close(STDOUT_FILENO);
+			ft_exit(data);
+		}
+		else
+		{
+			close(fd[1]);
+			if (dup2(fd[0], STDIN_FILENO) == -1)
+			{
+				close(fd[0]);
+				ft_exit(data);
+			}
+			close(fd[0]);
+			data->cmds = data->cmds->next;
+			exec_cmd(data);
+			waitpid(pid, NULL, 0);
+		}
 	}
 	else
+	{
 		call_function(data);
+		reset_std(data);
+	}
 }
+
+// void	exec_cmd(t_data *data)
+// {
+// 	int fd[2];
+
+// 	if (check_pipe(data->cmds))
+// 	{
+// 		pipe(fd);
+// 		if (dup2(fd[1], 1) == -1)
+// 			exit(1);
+// 		call_function(data);
+// 		if (dup2(data->stdo, 1) == -1)
+// 			exit(1);
+// 		close(fd[1]);
+// 		data->cmds = data->cmds->next;
+// 		if (dup2(fd[0], 0) == -1)
+// 			exit(1);
+// 		close(fd[0]);
+// 		exec_cmd(data);
+// 		if (dup2(data->stdi, 0) == -1)
+// 			exit(1);
+// 	}
+// 	else
+// 		call_function(data);
+// }
+
+// void	exec_cmd(t_data *data)
+// {
+// 	int fd[2];
+
+// 	if (check_pipe(data->cmds))
+// 	{
+// 		pipe(fd);
+// 		if (dup2(fd[1], 1) == -1)
+// 			exit(1);
+// 		call_function(data);
+// 		if (dup2(data->stdo, 1) == -1)
+// 			exit(1);
+// 		close(fd[1]);
+// 		data->cmds = data->cmds->next;
+// 		if (dup2(fd[0], 0) == -1)
+// 			exit(1);
+// 		close(fd[0]);
+// 		exec_cmd(data);
+// 		if (dup2(data->stdi, 0) == -1)
+// 			exit(1);
+// 	}
+// 	else
+// 		call_function(data);
+// }

@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:04:44 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/25 11:01:57 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/28 17:50:44 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,7 @@ void	ft_exit(t_data *data)
 	free(data->oldpwd);
 	close(data->stdi);
 	close(data->stdo);
+	close(0);
+	close(1);
 	exit(0);
 }

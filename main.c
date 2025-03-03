@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/24 12:34:34 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:53:11 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,10 @@ int	main(int ac, char **av, char **env)
 		if (line == NULL)
 		{
 			ft_printf("exit");
-			// ft_putdata(&data);
 			ft_exit(&data);
 		}
 		data.cmds = parsing(line, &data);
 		data.head = data.cmds;
-		// ft_printf("cmds parsed\n");
-		// print_cmd(data.cmds);
 		if (data.cmds != NULL)
 			exec_cmd(&data);
 		free_cmds(data.head);
@@ -65,7 +62,5 @@ int	main(int ac, char **av, char **env)
 		write_history(HISTORY);
 		free(history);
 	}
-	// free_env(data.env);
 	ft_exit(&data);
-	return (0);
 }
