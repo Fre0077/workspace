@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/25 12:57:28 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/28 17:09:53 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,11 @@ typedef struct s_cmd
 {
 	char			*cmd;
 	char			**args;
-	char			*file_i; // input
 	char			*file_o; // trunck (out)
-	char			*delimiter; // read till delimiter (here_doc)
 	char			*file_a; // append (out)
+	int				doi; //controll last readed input file (0 1 2)
+	char			**file_i; // input
+	char			**delimiter; // read till delimiter (here_doc)
 	struct s_cmd	*next;
 }					t_cmd;
 

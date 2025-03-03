@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/25 12:56:26 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/27 17:15:57 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h)
 	int		j;
 
 	(*words) = inout_manager(*words, data, cmds);
-	if ((*h) != NULL)
+	if (h != NULL)
 		(*h) = (*words);
 	cmds->cmd = (*words)->word;
 	arg = (*words)->next;

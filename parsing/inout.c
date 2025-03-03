@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/25 12:47:51 by fre007           ###   ########.fr       */
+/*   Updated: 2025/02/28 17:15:52 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,23 +87,17 @@ char	*clear_2_node(t_words **tmp, t_words **first, t_data *data)
 	char	*ret;
 	t_words	*tmp_first;
 
-	//ft_printf("gatto: \n");
-	//print_word((*first));
 	tmp_first = *first;
 	if ((*tmp) == (*first))
 		(*first) = (*first)->next;
-	//print_word(*tmp);
 	(*tmp) = remove_node_words(*tmp, tmp_first);
 	ret = ft_strdup((*tmp)->word);
 	if (ret == NULL)
 		ft_exit(data);
-	//ft_printf("gatto2\n");
-	//print_word((*tmp));
 	tmp_first = *first;
 	if ((*tmp) == (*first))
 		(*first) = (*first)->next;
 	(*tmp) = remove_node_words(*tmp, tmp_first);
-	//print_word(*tmp);
 	return (dollar_manager(ret, data));
 }
 
@@ -188,39 +182,84 @@ int	findable_file(t_words *words)
 			return (1);
 		tmp = tmp->next;
 	}
-	//tmp = words;
-	//while (tmp != NULL && ft_strncmp(tmp->word, "|", 2))
-	//{
-	//	if (ft_strstr(tmp->word, ">") != NULL)
-	//		return (1);
-	//	tmp = tmp->next;
-	//}
 	return (0);
 }
 
-//verifica tutte le informazioni per i simboli: <, <<, >>, >
-t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds)
+void	dollar_cicle(t_words *words, t_data	*data)
 {
 	t_words	*tmp;
 
-	cmds->file_i = NULL;
-	cmds->file_o = NULL;
-	cmds->file_a = NULL;
-	cmds->delimiter = NULL;
-	while (findable_file(words))
-	{
-		cmds->delimiter = find_after_word("<<", &words, data);
-		if (cmds->delimiter == NULL)
-			cmds->file_i = find_after_word("<", &words, data);
-		cmds->file_a = find_after_word(">>", &words, data);
-		if (cmds->file_a == NULL)
-			cmds->file_o = find_after_word(">", &words, data);
-	}
 	tmp = words;
 	while (tmp != NULL)
 	{
 		tmp->word = dollar_manager(tmp->word, data);
 		tmp = tmp->next;
+	}
+}
+
+// apre e chiude un file che non viene utilizzato
+void	open_useless_file(t_cmd *cmds)
+{
+	int	fd;
+
+	if (cmds->file_o != NULL)
+	{
+		fd = open(cmds->file_o, O_CREAT);
+		free (cmds->file_o);
+		clode(fd);
+	}
+	else if (cmds->file_a != NULL)
+	{
+		fd = open(cmds->file_a, O_CREAT);
+		free (cmds->file_a);
+		clode(fd);
+	}
+}
+
+//gestisce la sovrascittura di nuovi nomi file
+void	check_file(char *find, t_words **words, t_cmd *cmds, t_data *data)
+{
+	char	*finded;
+
+	finded = find_after_word(find, words, data);
+	if (finded == NULL)
+		return ;
+	if (ft_strncmp(find, ">", 2))
+	{
+		open_useless_file(cmds);
+		cmds->file_o = finded;
+	}
+	else if (ft_strncmp(find, ">>", 3))
+	{
+		open_useless_file(cmds);
+		cmds->file_a = finded;
+	}
+	else if (ft_strncmp(find, "<", 2))
+	{
+		cmds->doi = 1;
+		cmds->file_i = append_line(cmds->file_i, finded);
+	}
+	else if (ft_strncmp(find, "<<", 3))
+	{
+		cmds->doi = 2;
+		cmds->delimiter = append_line(cmds->delimiter, finded);
+	}
+}
+
+//verifica tutte le informazioni per i simboli: <, <<, >>, >
+t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds)
+{
+	cmds->file_i = NULL;
+	cmds->file_o = NULL;
+	cmds->file_a = NULL;
+	cmds->delimiter = NULL;
+	cmds->doi = 0;
+	while (findable_file(words))
+	{
+		cmds->delimiter = find_after_word("<<", &words, data);
+		cmds->file_i = find_after_word("<", &words, data);
+		cmds->file_a = find_after_word(">>", &words, data);
+		cmds->file_o = find_after_word(">", &words, data);
 	}
 	return (words);
 }
