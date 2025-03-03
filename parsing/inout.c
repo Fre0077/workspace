@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/28 17:15:52 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/03 10:17:30 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,10 +198,14 @@ void	dollar_cicle(t_words *words, t_data	*data)
 }
 
 // apre e chiude un file che non viene utilizzato
-void	open_useless_file(t_cmd *cmds)
+void	open_useless_file(t_cmd *cmds, int witch)
 {
 	int	fd;
 
+	if (witch == 1)
+		cmds->file_a = NULL;
+	else if (witch == 2)
+		cmds->file_i = NULL;
 	if (cmds->file_o != NULL)
 	{
 		fd = open(cmds->file_o, O_CREAT);
@@ -226,12 +230,12 @@ void	check_file(char *find, t_words **words, t_cmd *cmds, t_data *data)
 		return ;
 	if (ft_strncmp(find, ">", 2))
 	{
-		open_useless_file(cmds);
+		open_useless_file(cmds, 1);
 		cmds->file_o = finded;
 	}
 	else if (ft_strncmp(find, ">>", 3))
 	{
-		open_useless_file(cmds);
+		open_useless_file(cmds, 2);
 		cmds->file_a = finded;
 	}
 	else if (ft_strncmp(find, "<", 2))
