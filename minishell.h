@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/03 10:05:46 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/03 17:58:20 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,13 @@ char				*dollar_converter(char *word, int *i, t_data *data);
 char				*dollar_remover(char *word, int *i, int check, t_data *data);
 char				*dollar_manager(char *word, t_data *data);
 
+//dollar.c
+
+char				*copy_in_str_stupid(char *word, int *i, int j, t_data *data);
+char				*dollar_converter_stupid(char *word, int *i, t_data *data);
+char				*dollar_remover_stupid(char *word, int *i, int check, t_data *data);
+char				*dollar_manager_stupid(char *word, t_data *data);
+
 //char_manager.c
 
 int					quote_checker(char *line, int i);
@@ -124,12 +131,26 @@ char				*remove_char(char *word, int i, t_data *data);
 
 //inout.c
 
+char				*ft_strstr(char *big, char *little);
+t_words				*remove_node_words(t_words *words, t_words *first);
+char				*remove_finded(char *word, char *finded, t_data *data);
+char				*clear_2_node(t_words **tmp, t_words **first, t_data *data);
+char				*clear_next_node(t_words **tmp, char *finded,
+									t_words **first,	t_data *data);
+char				*clear_this_node(t_words **tmp, char *finded,
+									t_words **first, t_data *data);
+char				*remove_last_part(t_words **tmp, char *finded,
+									char *find, t_data *data);
+int					check_sintax_error(t_words *tmp, char *finded,
+									char *find, t_data *data);
+char				*find_after_word(char *find, t_words **tmp, t_data *data);
 t_words				*inout_manager(t_words *words, t_data *data, t_cmd *cmds);
 
 //print.c
 
 void				print_word(t_words *words);
 void				print_cmd(t_cmd *cmds);
+void				print_data(t_data *data);
 
 //exit.c
 

@@ -13,6 +13,7 @@ execve.c \
 parsing/parsing.c \
 parsing/char_manager.c \
 parsing/dollar.c \
+parsing/dollar_stupid.c \
 parsing/print.c \
 parsing/word.c \
 parsing/exit.c \
@@ -48,6 +49,10 @@ run: all
 val: all
 	clear
 	valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp --track-fds=yes --quiet ./$(NAME)
+
+vall: all
+	clear
+	valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp --quiet ./$(NAME)
 
 TEST = \
 init.c \

@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dollar.c                                           :+:      :+:    :+:   */
+/*   dollar_stupid.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/03 16:57:06 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/03 17:58:20 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 //sostituisce la variabile indicata con il valore dell'env corrispondente
-char	*copy_in_str(char *word, int *i, int j, t_data *data)
+char	*copy_in_str_stupid(char *word, int *i, int j, t_data *data)
 {
 	char	*new_word;
 	char	*env;
@@ -40,7 +40,7 @@ char	*copy_in_str(char *word, int *i, int j, t_data *data)
 }
 
 //sostituisce la variabile che gli viene indicata tramite l'indice
-char	*dollar_converter(char *word, int *i, t_data *data)
+char	*dollar_converter_stupid(char *word, int *i, t_data *data)
 {
 	int	j;
 
@@ -60,7 +60,7 @@ char	*dollar_converter(char *word, int *i, t_data *data)
 }
 
 //rimuove i $ prima dei ' e "
-char	*dollar_remover(char *word, int *i, int check, t_data *data)
+char	*dollar_remover_stupid(char *word, int *i, int check, t_data *data)
 {
 	if (word[*i] == '$' && (word[*i + 1] == '\'' || word[*i + 1] == '\"')
 		&& (*i == 0 || word[*i - 1] != '\\') && check == 0)
@@ -69,7 +69,7 @@ char	*dollar_remover(char *word, int *i, int check, t_data *data)
 }
 
 //gestione il simbolo $ e le quote
-char	*dollar_manager(char *word, t_data *data)
+char	*dollar_manager_stupid(char *word, t_data *data)
 {
 	int	i;
 	int	check;
@@ -82,10 +82,7 @@ char	*dollar_manager(char *word, t_data *data)
 		word = dollar_remover(word, &i, check, data);
 		pre = check;
 		check = quote_checker(word, i);
-		//printf("::%d    %d\n", check, pre);
-		if (check != pre)
-			word = remove_char(word, i, data);
-		else if (check != 1 && word[i] == '$' && (i == 0 || word[i - 1] != '\\'))
+		if (word[i] == '$' && (i == 0 || word[i - 1] != '\\'))
 			word = dollar_converter(word, &i, data);
 		else if (((check != 1 && word[i] == '$') || word[i] == '\''
 				|| word[i] == '\"') && i != 0 && word[i - 1] == '\\')

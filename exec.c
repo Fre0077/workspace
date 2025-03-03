@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/28 18:27:44 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/03 17:57:59 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,28 +46,114 @@ int	dup_file(char *file, int std, int mode)
 	return (0);
 }
 
-int	handle_files(t_cmd *cmd)
+int	open_last(char **file, int doi)
 {
+	int fd;
+	int i;
+
+	if (!file || !file[0])
+		return (-1);
+	i = 0;
+	while (file[i + 1])
+	{
+		fd = open(file[i], O_RDONLY);
+		if (fd == -1)
+			return (-1);
+		close(fd);
+		i++;
+	}
+	fd = open(file[i], O_RDONLY);
+	if (fd == -1)
+		return (-1);
+	if (doi != 1)
+		return (close(fd), 0);
+	if (dup_file(ft_strdup(file[i]), 0, O_RDONLY) == -1)
+		return (-1);
+	close(fd);
+	return (0);
+}
+
+void	handle_delimiter(char **delimiter, int doi, t_data *data)
+{
+	char	*line;
+	int		fd[2];
+	int		i;
+	int		j;
+
+	if (!delimiter || !delimiter[0])
+		return ;
+	i = 0;
+	j = 0;
+	while (delimiter[i + 1])
+	{
+		line = readline("> ");
+		if (!line || !line[0])
+		{
+			printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", j, delimiter[i]);
+			j = 1;
+			i++;
+			continue ;
+		}
+		if (ft_strncmp(line, delimiter[i], ft_strlen(delimiter[i])) == 0)
+		{
+			i++;
+			j = 1;
+		}
+		free(line);
+		j++;
+	}
+	pipe(fd);
+	j = 1;
+	while (1)
+	{
+		line = readline("> ");
+		if (!line || !line[0])
+		{
+			printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", j, delimiter[i]);
+			break ;
+		}
+		if (ft_strncmp(line, delimiter[i], ft_strlen(delimiter[i]) + 1) == 0)
+		{
+			free(line);
+			break ;
+		}
+		//TODO: add dollar managment
+		line = dollar_manager_stupid(line, data);
+		write(fd[1], line, ft_strlen(line));
+		write(fd[1], "\n", 1);
+		free(line);
+		j++;
+	}
+	close(fd[1]);
+	if (doi == 2 && dup2(fd[0], 0) == -1)
+	{
+		close(fd[0]);
+		return ;
+	}
+	close(fd[0]);
+}
+
+int	handle_files(t_cmd *cmd, t_data *data)
+{
+	handle_delimiter(cmd->delimiter, cmd->doi, data);
 	if (cmd->file_i)
 	{
-		if (dup_file(cmd->file_i, 0, O_RDONLY) == -1)
-			return (-1);
+		if (open_last(cmd->file_i, cmd->doi) == -1)
+			return (ft_printf("minishell: No such file or directory"), -1);
 	}
 	if (cmd->file_o)
 	{
-		if (dup_file(cmd->file_o, 1, O_WRONLY | O_CREAT | O_TRUNC) == -1)
+		if (dup_file(cmd->file_o, 1, O_CREAT | O_WRONLY | O_TRUNC) == -1)
 			return (-1);
 	}
-	if (cmd->file_a)
+	else if (cmd->file_a)
 	{
-		if (dup_file(cmd->file_a, 1, O_WRONLY | O_CREAT | O_APPEND) == -1)
+		if (dup_file(cmd->file_a, 1, O_CREAT | O_WRONLY | O_APPEND) == -1)
 			return (-1);
 	}
-	if (cmd->delimiter)
-	{
-		//heredoc
-		free(cmd->delimiter);
-	}
+	if (cmd->file_i)
+		ft_free_mat_char(cmd->file_i);
+	ft_free_mat_char(cmd->delimiter);
 	return (0);
 }
 
@@ -85,7 +171,8 @@ int	reset_std(t_data *data)
 //										   << is the same as here_doc in pipex
 int	call_function(t_data *data)
 {
-	handle_files(data->cmds);
+	if (handle_files(data->cmds, data) == -1)
+		return (-1);
 	if (ft_strncmp(data->cmds->cmd, "echo", 5) == 0)
 		exec_echo(data->cmds->args);
 	else if (ft_strncmp(data->cmds->cmd, "cd", 3) == 0)
@@ -106,49 +193,6 @@ int	call_function(t_data *data)
 	// reset_std(data);
 	return (0);
 }
-
-//TODO: check if there is a way to remove the fork here
-// void	exec_cmd(t_data *data)
-// {
-// 	int fd[2];
-// 	int pid;
-
-// 	if (check_pipe(data->cmds))
-// 	{
-// 		pipe(fd);
-// 		pid = fork();
-// 		if (pid == -1)
-// 			return ;
-// 		if (pid == 0)
-// 		{
-// 			close(fd[0]);
-// 			if (dup2(fd[1], 1) == -1)
-// 				ft_exit(data);
-// 			call_function(data);
-// 			close(fd[1]);
-// 			// if (dup2(data->stdo, 1) == -1)
-// 			// 	ft_exit(data);
-// 			ft_exit(data);
-// 		}
-// 		else
-// 		{
-// 			close(fd[1]);
-// 			if (dup2(fd[0], 0) == -1)
-// 				exit(1);
-// 			data->cmds = data->cmds->next;
-// 			exec_cmd(data);
-// 			waitpid(pid, NULL, 0);
-// 			close(fd[0]);
-// 			// if (dup2(data->stdi, 0) == -1)
-// 			// 	exit(1);
-// 		}
-// 	}
-// 	else
-// 	{
-// 		call_function(data);
-// 	}
-// 	reset_std(data);
-// }
 
 int is_builtin(char *cmd)
 {
@@ -242,53 +286,3 @@ void	exec_cmd(t_data *data)
 		reset_std(data);
 	}
 }
-
-// void	exec_cmd(t_data *data)
-// {
-// 	int fd[2];
-
-// 	if (check_pipe(data->cmds))
-// 	{
-// 		pipe(fd);
-// 		if (dup2(fd[1], 1) == -1)
-// 			exit(1);
-// 		call_function(data);
-// 		if (dup2(data->stdo, 1) == -1)
-// 			exit(1);
-// 		close(fd[1]);
-// 		data->cmds = data->cmds->next;
-// 		if (dup2(fd[0], 0) == -1)
-// 			exit(1);
-// 		close(fd[0]);
-// 		exec_cmd(data);
-// 		if (dup2(data->stdi, 0) == -1)
-// 			exit(1);
-// 	}
-// 	else
-// 		call_function(data);
-// }
-
-// void	exec_cmd(t_data *data)
-// {
-// 	int fd[2];
-
-// 	if (check_pipe(data->cmds))
-// 	{
-// 		pipe(fd);
-// 		if (dup2(fd[1], 1) == -1)
-// 			exit(1);
-// 		call_function(data);
-// 		if (dup2(data->stdo, 1) == -1)
-// 			exit(1);
-// 		close(fd[1]);
-// 		data->cmds = data->cmds->next;
-// 		if (dup2(fd[0], 0) == -1)
-// 			exit(1);
-// 		close(fd[0]);
-// 		exec_cmd(data);
-// 		if (dup2(data->stdi, 0) == -1)
-// 			exit(1);
-// 	}
-// 	else
-// 		call_function(data);
-// }

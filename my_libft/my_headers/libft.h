@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 11:36:46 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/21 09:01:39 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/03 10:12:10 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ int				ft_putstr(char *s);
 int				ft_putstr_fd(char *s, int fd);
 
 // my_str
+char			**ft_append_line(char **map, char *line);
 int				ft_char_count(char *str, char c);
 int				ft_matchr_count(char **mat, char c);
 int				ft_isalnum(int c);
