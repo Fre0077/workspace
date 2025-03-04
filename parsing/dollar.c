@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/03 16:57:06 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/04 12:08:31 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ char	*dollar_converter(char *word, int *i, t_data *data)
 	j = *i;
 	if (*i > 0 && word[*i - 1] == '\\')
 		return (remove_char(word, *i - 1, data));
-	if (ft_isalpha(word[*i + 1]))
+	if (ft_isalpha(word[*i + 1]) || word[*i + 1] == '_')
 	{
 		*i += 1;
-		while (ft_isalpha(word[*i]))
+		while (ft_isalpha(word[*i]) || word[*i] == '_')
 			*i += 1;
 		word = copy_in_str(word, i, j, data);
 	}
