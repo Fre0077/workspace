@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:23:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/24 18:25:17 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:09:15 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ int	execute_command(char *path, char **argv, char **env)
 	else
 	{
 		waitpid(pid, &status, 0);
+		free_execve(path, argv, env);
 		if (WIFEXITED(status))
 			return (WEXITSTATUS(status));
 		else if (WIFSIGNALED(status))
@@ -144,8 +145,9 @@ int	exec_execve(t_data *data)
 		return (printf("command not found: %s\n", data->cmds->cmd), 1);
 	path = get_env(data->env, "PATH");
 	if (!path)
-		return (1);
-	path += 1;
+		return (printf("command not found: %s\n", data->cmds->cmd), 1);
+	if (path[0] == '=') 
+		path++;
 	exec = find_path(data->cmds->cmd, path);
 	if (!exec)
 		return (printf("command not found: %s\n", data->cmds->cmd), 1);
@@ -153,6 +155,6 @@ int	exec_execve(t_data *data)
 	env = env_to_mat(data->env);
 	if (execute_command(exec, argv, env) == -1)
 		return (printf("exec error!\n"), free_execve(exec, argv, env), 1);
-	free_execve(exec, argv, env);
+	/* free_execve(exec, argv, env); */
 	return (0);
 }

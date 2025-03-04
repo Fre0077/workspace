@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/27 17:15:57 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/03 16:17:27 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	go_end(t_words **words)
+{
+	t_words	*tmp;
+
+	if ((*words)->next == NULL)
+		return ;
+	while ((*words)->next != NULL)
+	{
+		tmp = (*words)->next;
+		free ((*words)->word);
+		free ((*words));
+		(*words) = tmp;
+	}
+}
 
 //scrive il comando all'interno di un nodo della lista cmds
 void	command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h)
@@ -20,17 +35,16 @@ void	command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h)
 	int		j;
 
 	(*words) = inout_manager(*words, data, cmds);
+	if (data->status)
+		go_end(words);
 	if (h != NULL)
 		(*h) = (*words);
 	cmds->cmd = (*words)->word;
 	arg = (*words)->next;
 	(*words) = (*words)->next;
-	i = 0;
-	while ((*words) != NULL && (*words)->word[0] != '|')
-	{
+	i = -1;
+	while ( ++i + 1 && (*words) != NULL && (*words)->word[0] != '|')
 		(*words) = (*words)->next;
-		i++;
-	}
 	cmds->args = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!(cmds->args))
 		ft_exit(data);

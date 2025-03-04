@@ -19,3 +19,6 @@
 1}	se il > "outfile" ha altri argomenti dopo li include comunque.
 
 leggere le priorita' di bash
+
+
+le pipe runnano tutte assieme dio merda

@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   inout.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/03/03 10:17:30 by fre007           ###   ########.fr       */
+=======
+/*   Updated: 2025/03/03 16:34:50 by alborghi         ###   ########.fr       */
+>>>>>>> 4aa2e3ae0c36affacd18eeb45a7093ff2ed899d9
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +49,6 @@ t_words	*remove_node_words(t_words *words, t_words *first)
 
 	if (first == words)
 	{
-		ft_printf("patate\n");
 		tmp = words->next;
 		free (words->word);
 		free (words);
@@ -141,6 +144,17 @@ char	*remove_last_part(t_words **tmp, char *finded, char *find, t_data *data)
 	return (dollar_manager(ret, data));
 }
 
+//controlla che non ci sia un errore di sintassi. < seguito da un altro <
+int	check_sintax_error(t_words *tmp, char *finded, char *find, t_data *data)
+{
+	if (finded[ft_strlen(find)] == '<' || finded[ft_strlen(find)] == '>')
+		data->status = 1;
+	if (!finded[ft_strlen(find)] &&
+		(tmp->next->word[0] == '<' || tmp->next->word[0] == '>'))
+		data->status = 1;
+	return (data->status);
+}
+
 //prende quello subito dopo alla stringa find
 char	*find_after_word(char *find, t_words **tmp, t_data *data)
 {
@@ -149,7 +163,6 @@ char	*find_after_word(char *find, t_words **tmp, t_data *data)
 	char	*ret;
 
 	first = (*tmp);
-	ret = NULL;
 	while ((*tmp) != NULL && ft_strncmp((*tmp)->word, "|", 2))
 	{
 		finded = ft_strstr((*tmp)->word, find);
@@ -159,6 +172,9 @@ char	*find_after_word(char *find, t_words **tmp, t_data *data)
 	}
 	if (finded == NULL || (!finded[ft_strlen(find)] && (*tmp)->next == NULL))
 		return ((*tmp) = first, NULL);
+	if (check_sintax_error(*tmp, finded, find, data))
+		return (NULL);
+	ret = NULL;
 	if (ft_strlen(find) == ft_strlen((*tmp)->word))
 		ret = clear_2_node(tmp, &first, data);
 	else if (ft_strlen(find) == ft_strlen(finded))
@@ -170,19 +186,29 @@ char	*find_after_word(char *find, t_words **tmp, t_data *data)
 	return ((*tmp) = first, ret);
 }
 
-int	findable_file(t_words *words)
+char	*findable_file(t_words *words)
 {
 	t_words	*tmp;
+	int		i;
 
 	tmp = words;
 	while (tmp != NULL && ft_strncmp(tmp->word, "|", 2))
 	{
-		if (ft_strstr(tmp->word, "<") != NULL
-			|| ft_strstr(tmp->word, ">") != NULL)
-			return (1);
+		i = 0;
+		while (tmp->word[i] && tmp->word[i] != '<' && tmp->word[i] != '>')
+			i++;
+		if (!tmp->word[i])
+		{
+			tmp = tmp->next;
+			continue ;
+		}
+		if (tmp->word[i] != tmp->word[i + 1])
+			return (ft_strndup(&(tmp->word[i]), 1));
+		else
+			return (ft_strndup(&(tmp->word[i]), 2));
 		tmp = tmp->next;
 	}
-	return (0);
+	return (NULL);
 }
 
 void	dollar_cicle(t_words *words, t_data	*data)
@@ -208,15 +234,21 @@ void	open_useless_file(t_cmd *cmds, int witch)
 		cmds->file_i = NULL;
 	if (cmds->file_o != NULL)
 	{
-		fd = open(cmds->file_o, O_CREAT);
+		fd = open(cmds->file_o, O_CREAT, 0644);
+		if (fd == -1)
+			return ;
 		free (cmds->file_o);
-		clode(fd);
+		cmds->file_o = NULL;
+		close(fd);
 	}
 	else if (cmds->file_a != NULL)
 	{
-		fd = open(cmds->file_a, O_CREAT);
+		fd = open(cmds->file_a, O_CREAT, 0644);
+		if (fd == -1)
+			return ;
 		free (cmds->file_a);
-		clode(fd);
+		cmds->file_a = NULL;
+		close(fd);
 	}
 }
 
@@ -228,42 +260,56 @@ void	check_file(char *find, t_words **words, t_cmd *cmds, t_data *data)
 	finded = find_after_word(find, words, data);
 	if (finded == NULL)
 		return ;
+<<<<<<< HEAD
 	if (ft_strncmp(find, ">", 2))
 	{
 		open_useless_file(cmds, 1);
 		cmds->file_o = finded;
 	}
 	else if (ft_strncmp(find, ">>", 3))
+=======
+	if (ft_strncmp(find, ">>", 3) == 0)
+>>>>>>> 4aa2e3ae0c36affacd18eeb45a7093ff2ed899d9
 	{
 		open_useless_file(cmds, 2);
 		cmds->file_a = finded;
 	}
-	else if (ft_strncmp(find, "<", 2))
+	else if (ft_strncmp(find, ">", 2) == 0)
 	{
-		cmds->doi = 1;
-		cmds->file_i = append_line(cmds->file_i, finded);
+		open_useless_file(cmds);
+		cmds->file_o = finded;
 	}
-	else if (ft_strncmp(find, "<<", 3))
+	if (ft_strncmp(find, "<<", 3) == 0)
 	{
 		cmds->doi = 2;
-		cmds->delimiter = append_line(cmds->delimiter, finded);
+		cmds->delimiter = ft_append_line(cmds->delimiter, finded);
+	}
+	else if (ft_strncmp(find, "<", 2) == 0)
+	{
+		cmds->doi = 1;
+		cmds->file_i = ft_append_line(cmds->file_i, finded);
 	}
 }
 
 //verifica tutte le informazioni per i simboli: <, <<, >>, >
 t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds)
 {
+	char	*find;
+
 	cmds->file_i = NULL;
 	cmds->file_o = NULL;
 	cmds->file_a = NULL;
 	cmds->delimiter = NULL;
 	cmds->doi = 0;
-	while (findable_file(words))
+	find = findable_file(words);
+	while (find != NULL)
 	{
-		cmds->delimiter = find_after_word("<<", &words, data);
-		cmds->file_i = find_after_word("<", &words, data);
-		cmds->file_a = find_after_word(">>", &words, data);
-		cmds->file_o = find_after_word(">", &words, data);
+		check_file(find, &words, cmds, data);
+		free (find);
+		if (data->status)
+			break ;
+		find = findable_file(words);
 	}
+	dollar_cicle(words, data);
 	return (words);
 }

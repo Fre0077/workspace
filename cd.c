@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 10:52:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/21 14:31:44 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/02/28 18:33:46 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,18 @@ int	exec_cd(t_data *data)
 		|| data->cmds->args[0][0] == '\0')
 	{
 		if (chdir(getenv("HOME")) == -1)
+		{
 			printf("cd: HOME not set\n");
+			free(oldpwd);
+			return (1);
+		}
 	}
 	else if (ft_strncmp(data->cmds->args[0], "~", 2) == 0)
 	{
 		if (chdir(data->home) == -1)
 		{
 			printf("cd: %s: No such file or directory\n", data->home);
+			free(oldpwd);
 			return (1);
 		}
 	}
@@ -103,18 +108,21 @@ int	exec_cd(t_data *data)
 			if (chdir(get_env(data->env, "OLDPWD")) == -1)
 			{
 				printf("cd: %s No such file or directory\n", get_env(data->env, "OLDPWD"));
+				free(oldpwd);
 				return (1);
 			}
 		}
 		else if (!data->oldpwd || chdir(data->oldpwd) == -1)
 		{
 			printf("cd: %s No such file or directory\n", data->oldpwd);
+			free(oldpwd);
 			return (1);
 		}
 	}
 	else if (chdir(data->cmds->args[0]) == -1)
 	{
-		printf("cd: |%s| No such file or directory\n", data->cmds->args[0]);
+		printf("cd: %s No such file or directory\n", data->cmds->args[0]);
+		free(oldpwd);
 		return (1);
 	}
 	if (get_env(data->env, "OLDPWD"))

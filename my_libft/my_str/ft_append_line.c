@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_append_line.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 10:53:10 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/27 18:18:34 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/03 10:11:16 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	**append_line(char **map, char *line)
+char	**ft_append_line(char **map, char *line)
 {
 	char	**new_map;
 	int		i;
