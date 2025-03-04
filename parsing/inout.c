@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inout.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/03 16:34:50 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/04 11:01:41 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,10 +220,14 @@ void	dollar_cicle(t_words *words, t_data	*data)
 }
 
 // apre e chiude un file che non viene utilizzato
-void	open_useless_file(t_cmd *cmds)
+void	open_useless_file(t_cmd *cmds, int witch)
 {
 	int	fd;
 
+	if (witch == 1)
+		cmds->file_a = NULL;
+	else if (witch == 2)
+		cmds->file_i = NULL;
 	if (cmds->file_o != NULL)
 	{
 		fd = open(cmds->file_o, O_CREAT, 0644);
@@ -254,12 +258,12 @@ void	check_file(char *find, t_words **words, t_cmd *cmds, t_data *data)
 		return ;
 	if (ft_strncmp(find, ">>", 3) == 0)
 	{
-		open_useless_file(cmds);
+		open_useless_file(cmds, 2);
 		cmds->file_a = finded;
 	}
 	else if (ft_strncmp(find, ">", 2) == 0)
 	{
-		open_useless_file(cmds);
+		open_useless_file(cmds, 1);
 		cmds->file_o = finded;
 	}
 	if (ft_strncmp(find, "<<", 3) == 0)

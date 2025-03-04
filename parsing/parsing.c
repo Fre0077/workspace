@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/04 10:56:46 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/04 11:25:10 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ void	go_end(t_words **words)
 	}
 }
 
+void	empty_cmd(t_cmd *cmds)
+{
+	cmds->cmd = NULL;
+	cmds->args = NULL;
+}
+
 //scrive il comando all'interno di un nodo della lista cmds
 void	command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h)
 {
@@ -35,10 +41,10 @@ void	command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h)
 	int		j;
 
 	(*words) = inout_manager(*words, data, cmds);
-	if (data->status)
-		go_end(words);
 	if (h != NULL)
 		(*h) = (*words);
+	if (data->status || (*words) == NULL)
+		return (empty_cmd(cmds));
 	cmds->cmd = (*words)->word;
 	arg = (*words)->next;
 	(*words) = (*words)->next;
