@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/03 17:58:37 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/04 11:23:42 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,8 @@ int	call_function(t_data *data)
 {
 	if (handle_files(data->cmds, data) == -1)
 		return (-1);
+	if (data->cmds == NULL)
+		return (data->status = 1, 0);
 	if (ft_strncmp(data->cmds->cmd, "echo", 5) == 0)
 		exec_echo(data->cmds->args);
 	else if (ft_strncmp(data->cmds->cmd, "cd", 3) == 0)

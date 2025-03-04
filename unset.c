@@ -6,29 +6,11 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:22:52 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/28 15:49:56 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/04 10:46:58 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	unset_cycle(t_data *data, char *key, t_env **tmp, t_env **last)
-{
-	if (strncmp(key, (*tmp)->var, strlen(key)) == 0
-		&& (*tmp)->var[ft_strlen(key)] == '=')
-	{
-		if ((*last) == NULL)
-			data->env = (*tmp)->next;
-		else
-			(*last)->next = (*tmp)->next;
-		free((*tmp)->var);
-		free((*tmp));
-		return (1);
-	}
-	(*last) = (*tmp);
-	(*tmp) = (*tmp)->next;
-	return (0);
-}
 
 int	exec_unset(t_data *data)
 {
@@ -50,13 +32,11 @@ int	exec_unset(t_data *data)
 		}
 		tmp = data->env;
 		last = NULL;
-		// while (tmp)
-		// 	if (unset_cycle(data, key, &tmp, &last) == 1)
-		// 		break ;
 		while (tmp)
 		{
 			if (strncmp(key, tmp->var, strlen(key)) == 0
-				&& tmp->var[ft_strlen(key)] == '=')
+				&& (tmp->var[ft_strlen(key)] == '='
+				|| tmp->var[ft_strlen(key)] == '\0'))
 			{
 				if (last == NULL)
 					data->env = tmp->next;
