@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar_stupid.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/03 17:58:40 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/04 11:04:27 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,12 @@ char	*dollar_manager_stupid(char *word, t_data *data)
 {
 	int	i;
 	int	check;
-	int	pre;
 
 	i = 0;
 	check = 0;
 	while (word[i])
 	{
 		word = dollar_remover(word, &i, check, data);
-		pre = check;
 		check = quote_checker(word, i);
 		if (word[i] == '$' && (i == 0 || word[i - 1] != '\\'))
 			word = dollar_converter(word, &i, data);

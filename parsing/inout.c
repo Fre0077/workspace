@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/04 11:01:01 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/04 11:01:41 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,7 +263,7 @@ void	check_file(char *find, t_words **words, t_cmd *cmds, t_data *data)
 	}
 	else if (ft_strncmp(find, ">", 2) == 0)
 	{
-		open_useless_file(cmds);
+		open_useless_file(cmds, 1);
 		cmds->file_o = finded;
 	}
 	if (ft_strncmp(find, "<<", 3) == 0)
