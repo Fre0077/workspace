@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inout.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/03/03 10:17:30 by fre007           ###   ########.fr       */
-=======
-/*   Updated: 2025/03/03 16:34:50 by alborghi         ###   ########.fr       */
->>>>>>> 4aa2e3ae0c36affacd18eeb45a7093ff2ed899d9
+/*   Updated: 2025/03/04 11:01:01 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,16 +256,7 @@ void	check_file(char *find, t_words **words, t_cmd *cmds, t_data *data)
 	finded = find_after_word(find, words, data);
 	if (finded == NULL)
 		return ;
-<<<<<<< HEAD
-	if (ft_strncmp(find, ">", 2))
-	{
-		open_useless_file(cmds, 1);
-		cmds->file_o = finded;
-	}
-	else if (ft_strncmp(find, ">>", 3))
-=======
 	if (ft_strncmp(find, ">>", 3) == 0)
->>>>>>> 4aa2e3ae0c36affacd18eeb45a7093ff2ed899d9
 	{
 		open_useless_file(cmds, 2);
 		cmds->file_a = finded;
