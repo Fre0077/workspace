@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/04 11:01:41 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/05 13:11:31 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ char	*find_after_word(char *find, t_words **tmp, t_data *data)
 	char	*ret;
 
 	first = (*tmp);
-	while ((*tmp) != NULL && ft_strncmp((*tmp)->word, "|", 2))
+	while ((*tmp) != NULL && (*tmp)->pipe == 0)
 	{
 		finded = ft_strstr((*tmp)->word, find);
 		if (finded != NULL)
@@ -188,7 +188,7 @@ char	*findable_file(t_words *words)
 	int		i;
 
 	tmp = words;
-	while (tmp != NULL && ft_strncmp(tmp->word, "|", 2))
+	while (tmp != NULL && tmp->pipe == 0)
 	{
 		i = 0;
 		while (tmp->word[i] && tmp->word[i] != '<' && tmp->word[i] != '>')

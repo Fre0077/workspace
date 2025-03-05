@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/04 11:36:17 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/05 15:12:11 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,20 @@ extern int			g_signal;
 typedef struct s_words
 {
 	char			*word;
+	int				pipe;
 	struct s_words	*next;
 }					t_words;
 
 typedef struct s_cmd
 {
+	char			*divider;//prossimo elemnt di divisione tra comandi
 	char			*cmd;
 	char			**args;
+	char			**file_i; // input
+	char			**delimiter; // read till delimiter (here_doc)
 	char			*file_o; // trunck (out)
 	char			*file_a; // append (out)
 	int				doi; //controll last readed input file (0 1 2)
-	char			**file_i; // input
-	char			**delimiter; // read till delimiter (here_doc)
 	struct s_cmd	*next;
 }					t_cmd;
 
@@ -68,12 +70,12 @@ typedef struct s_data
 	t_env			*env;
 	t_cmd			*cmds;
 	t_cmd			*head;
-	int				status;
-	int				stdo;
-	int				stdi;
 	char			*home;
 	char			*pwd;
 	char			*oldpwd;
+	int				status;
+	int				stdo;
+	int				stdi;
 }					t_data;
 
 // main.c
@@ -104,7 +106,6 @@ t_cmd				*parsing(char *line, t_data *data);
 
 //word.c
 
-char				*pipe_manager(int *i, t_data *data);
 char				*next_word(char *line, int *i, t_data *data);
 t_words				*new_word(t_words *words, char *str, t_data *data);
 t_words				*word_slicer(char *line, t_data *data);
