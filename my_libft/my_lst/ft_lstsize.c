@@ -6,11 +6,11 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 15:47:17 by alborghi          #+#    #+#             */
-/*   Updated: 2024/11/19 15:49:34 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/05 17:29:10 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../my_headers/libft.h"
 
 int	ft_lstsize(t_list *lst)
 {
