@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:12:42 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/05 17:31:24 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/05 17:32:01 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_words	*pipe_manager(int *i, t_data *data, t_words *words)
 	ft_printf("-----bruh\n");
 	words->next = malloc(sizeof(t_words));
 	if (!words->next)
-		ft_exit(data);
+		ft_exit(data, 1);
 	str = (char *)ft_calloc(1, 2);
 	if (!str)
 		ft_exit(data, 1);
