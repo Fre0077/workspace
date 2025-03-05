@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/05 17:40:40 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/05 17:49:22 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*remove_finded(char *word, char *finded, t_data *data)
 	i = -1;
 	new_word = ft_calloc(1, ft_strlen(word) - ft_strlen(finded) + 1);
 	if (!new_word)
-		ft_exit(data);
+		ft_exit(data, 1);
 	while (word[++i])
 	{
 		if (ft_strlen(&word[i]) == ft_strlen(finded))
@@ -92,7 +92,7 @@ char	*clear_2_node(t_words **tmp, t_words **first, t_data *data)
 	(*tmp) = remove_node_words(*tmp, tmp_first);
 	ret = ft_strdup((*tmp)->word);
 	if (ret == NULL)
-		ft_exit(data);
+		ft_exit(data, 1);
 	tmp_first = *first;
 	if ((*tmp) == (*first))
 		(*first) = (*first)->next;
@@ -108,7 +108,7 @@ char	*clear_next_node(t_words **tmp, char *finded, t_words **first, t_data *data
 	tmp_first = *first;
 	ret = ft_strdup((*tmp)->next->word);
 	if (ret == NULL)
-		ft_exit(data);
+		ft_exit(data, 1);
 	remove_node_words((*tmp)->next, tmp_first);
 	(*tmp)->word = remove_finded((*tmp)->word, finded, data);
 	return (dollar_manager_stupid(ret, data));
@@ -122,7 +122,7 @@ char	*clear_this_node(t_words **tmp, char *finded, t_words **first, t_data *data
 	tmp_first = *first;
 	ret = ft_strdup(finded);
 	if (ret == NULL)
-		ft_exit(data);
+		ft_exit(data, 1);
 	if ((*tmp) == (*first))
 		(*first) = (*tmp)->next;
 	(*tmp) = remove_node_words(*tmp, tmp_first);
@@ -135,7 +135,7 @@ char	*remove_last_part(t_words **tmp, char *finded, char *find, t_data *data)
 
 	ret = ft_strdup(&finded[ft_strlen(find)]);
 	if (ret == NULL)
-		ft_exit(data);
+		ft_exit(data, 1);
 	(*tmp)->word = remove_finded((*tmp)->word, finded, data);
 	return (dollar_manager_stupid(ret, data));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/05 15:14:29 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/05 17:31:20 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h)
 	i = count_args(words);
 	cmds->args = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!(cmds->args))
-		ft_exit(data);
+		ft_exit(data, 1);
 	cmds->args[i] = NULL;
 	j = -1;
 	while (--i >= 0)
@@ -68,7 +68,7 @@ t_cmd	*new_command(t_cmd *cmds, t_words **words, t_data *data)
 
 	new_cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!new_cmd)
-		ft_exit(data);
+		ft_exit(data, 1);
 	cmds->next = new_cmd;
 	command_slicer(new_cmd, words, data, NULL);
 	return (new_cmd);
@@ -100,7 +100,7 @@ t_cmd	*parsing(char *line, t_data *data)
 	head = words;
 	cmds = malloc(sizeof(t_cmd));
 	if (!cmds)
-		ft_exit(data);
+		ft_exit(data, 1);
 	command_slicer(cmds, &words, data, &head);
 	first = cmds;
 	while (words != NULL)

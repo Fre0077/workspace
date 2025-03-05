@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/05 17:46:26 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/05 17:48:50 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void				print_data(t_data *data);
 
 void				free_cmds(t_cmd *cmds);
 void				free_words(t_words *words);
-void				ft_exit(t_data *data);
+void				ft_exit(t_data *data, int sig);
 
 //------------------------------------------------------------
 
@@ -184,5 +184,8 @@ int					exec_unset(t_data *data);
 // execve.c
 char				*find_path(char *cmd, char *path);
 int					exec_execve(t_data *data);
+
+// ft_exit.c
+void				ft_exit_builtin(t_data *data);
 
 #endif

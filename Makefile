@@ -10,6 +10,7 @@ cd.c \
 echo.c \
 unset.c \
 execve.c \
+ft_exit.c \
 parsing/parsing.c \
 parsing/char_manager.c \
 parsing/dollar.c \
@@ -48,11 +49,11 @@ run: all
 
 val: all
 	clear
-	valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp --track-fds=yes --quiet ./$(NAME)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp --track-fds=yes --quiet ./$(NAME)
 
 vall: all
 	clear
-	valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp --quiet ./$(NAME)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp --quiet ./$(NAME)
 
 TEST = \
 init.c \
