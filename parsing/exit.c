@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:04:44 by fre007            #+#    #+#             */
-/*   Updated: 2025/02/28 17:50:44 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/05 10:50:05 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	free_env(t_env *env)
 }
 
 //funzione per interrompere tutto il programma freeando tutto
-void	ft_exit(t_data *data)
+void	ft_exit(t_data *data, int sig)
 {
 	free_cmds(data->head);
 	free_env(data->env);
@@ -64,5 +64,5 @@ void	ft_exit(t_data *data)
 	close(data->stdo);
 	close(0);
 	close(1);
-	exit(0);
+	exit(sig);
 }

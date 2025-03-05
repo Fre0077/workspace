@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/04 11:52:02 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/05 11:27:38 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,8 @@ int	call_function(t_data *data)
 	else if (ft_strncmp(data->cmds->cmd, "env", 4) == 0)
 		ft_put_env(data->env, TRUE);
 	else if (ft_strncmp(data->cmds->cmd, "exit", 5) == 0)
-		return (printf("exit\n"), data->status = 1, -1);
+		ft_exit_builtin(data);
+	// return (printf("exit\n"), data->status = 1, ft_exit(data, 100), -1);
 	else
 		exec_execve(data);
 	return (0);
@@ -257,12 +258,12 @@ void	exec_cmd(t_data *data)
 			if (dup2(fd[1], STDOUT_FILENO) == -1)
 			{
 				close(fd[1]);
-				ft_exit(data);
+				ft_exit(data, 1);
 			}
 			close(fd[1]);
 			call_function(data);
 			close(STDOUT_FILENO);
-			ft_exit(data);
+			ft_exit(data, 1);
 		}
 		else
 		{
@@ -270,12 +271,12 @@ void	exec_cmd(t_data *data)
 			if (dup2(fd[0], STDIN_FILENO) == -1)
 			{
 				close(fd[0]);
-				ft_exit(data);
+				ft_exit(data, 1);
 			}
 			close(fd[0]);
 			data->cmds = data->cmds->next;
 			exec_cmd(data);
-			waitpid(pid, NULL, 0);
+			// waitpid(pid, NULL, 0);
 		}
 	}
 	else

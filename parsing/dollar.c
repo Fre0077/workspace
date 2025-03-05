@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/04 12:08:31 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/05 10:51:19 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*copy_in_str(char *word, int *i, int j, t_data *data)
 	env = get_env(data->env, str);
 	new_word = ft_calloc(1, ft_strlen(env) + ft_strlen(&word[*i]) + j + 1);
 	if (!new_word)
-		ft_exit(data);
+		ft_exit(data, 1);
 	l = -1;
 	while (++l != j)
 		new_word[l] = word[l];
