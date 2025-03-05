@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/04 12:07:34 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/05 17:35:57 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,35 +59,18 @@ char	*dollar_converter_stupid(char *word, int *i, t_data *data)
 	return (word);
 }
 
-//rimuove i $ prima dei ' e "
-char	*dollar_remover_stupid(char *word, int *i, int check, t_data *data)
-{
-	if (word[*i] == '$' && (word[*i + 1] == '\'' || word[*i + 1] == '\"')
-		&& (*i == 0 || word[*i - 1] != '\\') && check == 0)
-		word = remove_char(word, *i, data);
-	return (word);
-}
-
 //gestione il simbolo $ e le quote
 char	*dollar_manager_stupid(char *word, t_data *data)
 {
 	int	i;
-	int	check;
 
 	i = 0;
-	check = 0;
 	while (word[i])
 	{
-		word = dollar_remover(word, &i, check, data);
-		check = quote_checker(word, i);
 		if (word[i] == '$' && (i == 0 || word[i - 1] != '\\'))
-			word = dollar_converter(word, &i, data);
-		else if (((check != 1 && word[i] == '$') || word[i] == '\''
-				|| word[i] == '\"') && i != 0 && word[i - 1] == '\\')
-			word = remove_char(word, i - 1, data);
+			word = dollar_converter_stupid(word, &i, data);
 		else
 			i++;
-	}	
-	quote_checker("1", 1);
+	}
 	return (word);
 }

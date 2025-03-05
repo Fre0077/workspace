@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/05 15:12:11 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/05 17:46:26 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,13 +115,12 @@ t_words				*word_slicer(char *line, t_data *data);
 char				*copy_in_str(char *word, int *i, int j, t_data *data);
 char				*dollar_converter(char *word, int *i, t_data *data);
 char				*dollar_remover(char *word, int *i, int check, t_data *data);
-char				*dollar_manager(char *word, t_data *data);
+char				*dollar_manager(char *words, t_data *data);
 
-//dollar.c
+//dollar_stupid.c
 
 char				*copy_in_str_stupid(char *word, int *i, int j, t_data *data);
 char				*dollar_converter_stupid(char *word, int *i, t_data *data);
-char				*dollar_remover_stupid(char *word, int *i, int check, t_data *data);
 char				*dollar_manager_stupid(char *word, t_data *data);
 
 //char_manager.c

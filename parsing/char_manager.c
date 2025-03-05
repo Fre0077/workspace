@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   char_manager.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:11:55 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/03 16:59:00 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/05 16:09:02 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	quote_checker(char *line, int i)
 {
 	static int	mark;
 
+	if (line == NULL)
+		return (mark);
 	if (!line[i])
 		return (mark = 0, 0);
 	if (line[i] == '\'')

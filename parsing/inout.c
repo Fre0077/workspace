@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/05 13:11:31 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/05 17:40:40 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char	*clear_2_node(t_words **tmp, t_words **first, t_data *data)
 	if ((*tmp) == (*first))
 		(*first) = (*first)->next;
 	(*tmp) = remove_node_words(*tmp, tmp_first);
-	return (dollar_manager(ret, data));
+	return (dollar_manager_stupid(ret, data));
 }
 
 char	*clear_next_node(t_words **tmp, char *finded, t_words **first, t_data *data)
@@ -111,7 +111,7 @@ char	*clear_next_node(t_words **tmp, char *finded, t_words **first, t_data *data
 		ft_exit(data);
 	remove_node_words((*tmp)->next, tmp_first);
 	(*tmp)->word = remove_finded((*tmp)->word, finded, data);
-	return (dollar_manager(ret, data));
+	return (dollar_manager_stupid(ret, data));
 }
 
 char	*clear_this_node(t_words **tmp, char *finded, t_words **first, t_data *data)
@@ -126,7 +126,7 @@ char	*clear_this_node(t_words **tmp, char *finded, t_words **first, t_data *data
 	if ((*tmp) == (*first))
 		(*first) = (*tmp)->next;
 	(*tmp) = remove_node_words(*tmp, tmp_first);
-	return (dollar_manager(ret, data));
+	return (dollar_manager_stupid(ret, data));
 }
 
 char	*remove_last_part(t_words **tmp, char *finded, char *find, t_data *data)
@@ -137,7 +137,7 @@ char	*remove_last_part(t_words **tmp, char *finded, char *find, t_data *data)
 	if (ret == NULL)
 		ft_exit(data);
 	(*tmp)->word = remove_finded((*tmp)->word, finded, data);
-	return (dollar_manager(ret, data));
+	return (dollar_manager_stupid(ret, data));
 }
 
 //controlla che non ci sia un errore di sintassi. < seguito da un altro <
