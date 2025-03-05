@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:13 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/03 14:53:46 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/05 15:13:43 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,14 @@
 //printa tutta al  lista delle parole
 void	print_word(t_words *words)
 {
+	ft_printf("words:-----\n");
 	while (words != NULL)
 	{
 		ft_printf("%s\n", words->word);
 		words = words->next;
 	}
+	ft_printf("%p\n", words);
+	ft_printf("-----------\n");
 }
 
 //printa tutta la lista dei comandi
@@ -27,6 +30,7 @@ void	print_cmd(t_cmd *cmds)
 {
 	int	i;
 
+	ft_printf("cmds:-----\n");
 	while (cmds != NULL)
 	{
 		ft_printf("cmd: %s\n", cmds->cmd);
@@ -35,8 +39,10 @@ void	print_cmd(t_cmd *cmds)
 		while (cmds->args[++i] != NULL)
 			ft_printf("%s, ", cmds->args[i]);
 		ft_printf("%s\n", cmds->args[i]);
+		ft_printf("divider: %s\n", cmds->divider);
 		cmds = cmds->next;
 	}
+	ft_printf("----------\n");
 }
 
 //printa tutta la struct data

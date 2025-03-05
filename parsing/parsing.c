@@ -6,26 +6,11 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/05 10:51:56 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/05 17:31:20 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	go_end(t_words **words)
-{
-	t_words	*tmp;
-
-	if ((*words)->next == NULL)
-		return ;
-	while ((*words)->next != NULL)
-	{
-		tmp = (*words)->next;
-		free ((*words)->word);
-		free ((*words));
-		(*words) = tmp;
-	}
-}
 
 void	empty_cmd(t_cmd *cmds)
 {
@@ -33,24 +18,34 @@ void	empty_cmd(t_cmd *cmds)
 	cmds->args = NULL;
 }
 
+//se stai veramente leggendo questa descrizione ho paura il il tuo QI
+int	count_args(t_words **words)
+{
+	t_words	*tmp;
+	int		i;
+
+	(*words) = (*words)->next;
+	tmp = *words;
+	i = -1;
+	while ( ++i + 1 && tmp != NULL && tmp->pipe == 0)
+		tmp = tmp->next;
+	return (i);
+}
+
 //scrive il comando all'interno di un nodo della lista cmds
 void	command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h)
 {
-	t_words	*arg;
 	int		i;
 	int		j;
 
 	(*words) = inout_manager(*words, data, cmds);
+	print_word(*words);
 	if (h != NULL)
 		(*h) = (*words);
 	if (data->status || (*words) == NULL)
 		return (empty_cmd(cmds));
 	cmds->cmd = (*words)->word;
-	arg = (*words)->next;
-	(*words) = (*words)->next;
-	i = -1;
-	while ( ++i + 1 && (*words) != NULL && (*words)->word[0] != '|')
-		(*words) = (*words)->next;
+	i = count_args(words);
 	cmds->args = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!(cmds->args))
 		ft_exit(data, 1);
@@ -58,9 +53,12 @@ void	command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h)
 	j = -1;
 	while (--i >= 0)
 	{
-		cmds->args[++j] = arg->word;
-		arg = arg->next;
+		cmds->args[++j] = (*words)->word;
+		(*words) = (*words)->next;
 	}
+	cmds->divider = NULL;
+	if ((*words) != NULL)
+		cmds->divider = (*words)->word;
 }
 
 //crea un nuovo nodo per la lista cmds
@@ -84,8 +82,6 @@ void	free_words_only_pointers(t_words *words)
 	{
 		tmp = words;
 		words = words->next;
-		if (ft_strncmp(tmp->word, "|", 2) == 0)
-			free(tmp->word);
 		free(tmp);
 	}
 }
@@ -109,11 +105,12 @@ t_cmd	*parsing(char *line, t_data *data)
 	first = cmds;
 	while (words != NULL)
 	{
-		if (words->word[0] == '|')
+		if (words->pipe == 1)
 			words = words->next;
 		else
 			cmds = new_command(cmds, &words, data);
 	}
 	cmds->next = NULL;
+	print_cmd(first);
 	return (free_words_only_pointers(head), first);
 }
