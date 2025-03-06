@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/05 17:49:22 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/06 11:15:38 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,18 +207,6 @@ char	*findable_file(t_words *words)
 	return (NULL);
 }
 
-void	dollar_cicle(t_words *words, t_data	*data)
-{
-	t_words	*tmp;
-
-	tmp = words;
-	while (tmp != NULL)
-	{
-		tmp->word = dollar_manager(tmp->word, data);
-		tmp = tmp->next;
-	}
-}
-
 // apre e chiude un file che non viene utilizzato
 void	open_useless_file(t_cmd *cmds, int witch)
 {
@@ -282,6 +270,7 @@ void	check_file(char *find, t_words **words, t_cmd *cmds, t_data *data)
 t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds)
 {
 	char	*find;
+	t_words	*tmp;
 
 	cmds->file_i = NULL;
 	cmds->file_o = NULL;
@@ -297,6 +286,9 @@ t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds)
 			break ;
 		find = findable_file(words);
 	}
-	dollar_cicle(words, data);
+	tmp = words;
+	while (tmp != NULL)
+		tmp = dollar_manager(data, tmp);
+	//print_word(words);
 	return (words);
 }

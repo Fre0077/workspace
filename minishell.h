@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 15:13:23 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 15:33:44 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,9 +113,9 @@ t_words				*word_slicer(char *line, t_data *data);
 //dollar.c
 
 char				*copy_in_str(char *word, int *i, int j, t_data *data);
-char				*dollar_converter(char *word, int *i, t_data *data);
+t_words				*dollar_converter(char *word, int *i, t_data *data, t_words *words);
 char				*dollar_remover(char *word, int *i, int check, t_data *data);
-char				*dollar_manager(char *words, t_data *data);
+t_words				*dollar_manager(t_data *data, t_words *words);
 
 //dollar_stupid.c
 
