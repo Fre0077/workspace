@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:57:54 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 15:59:15 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 16:08:08 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,13 @@ char	*remove_quote(char *line)
 	while (*line)
 	{
 		if (*line == '\'')
-			while (*++line && *line != '\'')
+			while (*++line && *line != '\'' && *line != '\0')
 				*new++ = *line;
 		else if (*line == '\"')
-			while (*++line && *line != '\"')
+			while (*++line && *line != '\"' && *line != '\0')
 				*new++ = *line;
 		else
-			*new++ = *line;
-		line++;
+			*new++ = *line++;
 	}
 	*new = '\0';
 	ret = ft_strdup(tmp);
@@ -118,7 +117,7 @@ void	handle_delimiter(char **delimiter, int doi, t_data *data)
 	pipe(fd);
 	read_last(delimiter[i], fd[1], data, q);
 	close(fd[1]);
-	if (doi == 2 && dup2(fd[0], 0) == -1)
+	if (doi == 2 && data->cmds && data->cmds->cmd && dup2(fd[0], 0) == -1)
 	{
 		close(fd[0]);
 		return ;

@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/06 15:33:28 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 16:15:39 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ t_cmd	*parsing(char *line, t_data *data)
 	head = words;
 	cmds = malloc(sizeof(t_cmd));
 	if (!cmds)
-		ft_exit(data, 1);
+	ft_exit(data, 1);
 	command_slicer(cmds, &words, data, &head);
 	first = cmds;
 	while (words != NULL)

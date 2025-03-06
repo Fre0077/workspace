@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 15:52:29 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 16:52:02 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ void				ft_exit(t_data *data, int sig);
 
 // exec.c
 int					handle_files(t_cmd *cmd, t_data *data);
+int					reset_std(t_data *data);
 void				ft_put_env(t_env *env, int is_env);
 void				ft_put_char_mat(char **mat);
 void				exec_cmd(t_data *data);

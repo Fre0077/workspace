@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 10:00:06 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:00:30 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,14 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		if (data.cmds->cmd == NULL)
 		{
-			printf("cmds: %s\n", data.cmds->cmd);
+			// printf("cmds: %s\n", data.cmds->cmd);
 			handle_files(data.cmds, &data);
 			free_cmds(data.cmds);
 			continue ;
 		}
 		data.head = data.cmds;
 		exec_cmd(&data);
+		reset_std(&data);
 		// if (check_status(&data) == 1)
 		// 	ft_exit(&data, 1);
 		free_cmds(data.head);

@@ -19,7 +19,7 @@ parsing/dollar_stupid.c \
 parsing/print.c \
 parsing/word.c \
 parsing/exit.c \
-parsing/inout.c \
+parsing/inout.c
 
 CFLAGS = -Wall -Wextra -Werror -g
 
@@ -55,10 +55,6 @@ val: all
 vall: all
 	clear
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp --quiet ./$(NAME)
-
-run: all
-	clear
-	./$(NAME)
 
 TEST = \
 init.c \
