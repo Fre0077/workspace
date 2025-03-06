@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 16:52:02 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:37:49 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,8 @@ char				*remove_last_part(t_words **tmp, char *finded,
 int					check_sintax_error(t_words *tmp, char *finded,
 									char *find, t_data *data);
 char				*find_after_word(char *find, t_words **tmp, t_data *data);
-t_words				*inout_manager(t_words *words, t_data *data, t_cmd *cmds);
+t_words				*inout_manager(t_words *words, t_data *data, t_cmd *cmds,
+									int end);
 
 //print.c
 

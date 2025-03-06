@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/06 16:20:44 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:37:47 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,9 @@ char	*findable_file(t_words *words)
 	while (tmp != NULL && tmp->pipe == 0)
 	{
 		i = 0;
-		while (tmp->word[i] && tmp->word[i] != '<' && tmp->word[i] != '>')
+		while (tmp->word[i] && ((quote_checker(tmp->word, i)
+				&& ft_strchr("<>", tmp->word[i]))
+				|| !ft_strchr("<>", tmp->word[i])))
 			i++;
 		if (!tmp->word[i])
 		{
@@ -204,6 +206,7 @@ char	*findable_file(t_words *words)
 			return (ft_strndup(&(tmp->word[i]), 2));
 		tmp = tmp->next;
 	}
+	quote_checker("1", 1);
 	return (NULL);
 }
 
@@ -266,8 +269,33 @@ void	check_file(char *find, t_words **words, t_cmd *cmds, t_data *data)
 	}
 }
 
+int	escape_dollar_check(t_words *words)
+{
+	t_words		*tmp;
+	static int	ret;
+	int			i;
+
+	if (ret == 1)
+		return (1);
+	tmp = words;
+	while (tmp != NULL)
+	{
+		i = 0;
+		while (tmp->word[i] && !(quote_checker(tmp->word, i) != 1
+				&& tmp->word[i] == '$' && (i == 0 || tmp->word[i - 1] != '\\')))
+			i++;
+		if (tmp->word[i])
+		{
+			ret = 1;
+			break ;
+		}
+		tmp = tmp->next;
+	}
+	return (quote_checker("1", 1), 0);
+}
+
 //verifica tutte le informazioni per i simboli: <, <<, >>, >
-t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds)
+t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds, int end)
 {
 	char	*find;
 	t_words	*tmp;
@@ -277,7 +305,9 @@ t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds)
 	cmds->file_a = NULL;
 	cmds->delimiter = NULL;
 	cmds->doi = 0;
+	//print_word(words);
 	find = findable_file(words);
+	//ft_printf("find: %s\n", find);
 	while (find != NULL)
 	{
 		check_file(find, &words, cmds, data);
@@ -287,8 +317,10 @@ t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds)
 		find = findable_file(words);
 	}
 	tmp = words;
-	while (tmp != NULL)
+	ft_printf("controll:%d\n",escape_dollar_check(words));
+	while (end && tmp != NULL)
 		tmp = dollar_manager(data, tmp);
-	//print_word(words);
+	if (end && findable_file(words) && escape_dollar_check(words))
+		words = inout_manager(words, data, cmds, 0);
 	return (words);
 }

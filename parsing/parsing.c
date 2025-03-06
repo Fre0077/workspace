@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/06 16:15:39 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:37:38 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h)
 	int		i;
 	int		j;
 
-	(*words) = inout_manager(*words, data, cmds);
+	(*words) = inout_manager(*words, data, cmds, 1);
 	// print_word(*words);
 	if (h != NULL)
 		(*h) = (*words);
