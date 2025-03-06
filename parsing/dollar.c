@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/06 18:45:08 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/06 18:49:01 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_words	*multi_args_case(t_data *data, t_words *words, int *j)
 	words->next = NULL;
 	if (i > 0)
 		*j = ft_strlen_int(arr[i - 1]) - pos;
-	return (words);
+	return (free (arr), words);
 }
 
 //sostituisce la variabile che gli viene indicata tramite l'indice

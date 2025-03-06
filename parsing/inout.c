@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/06 18:45:40 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/06 19:02:19 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ char	*clear_2_node(t_words **tmp, t_words **first, t_data *data)
 	if ((*tmp) == (*first))
 		(*first) = (*first)->next;
 	(*tmp) = remove_node_words(*tmp, tmp_first);
+	if (!ft_strncmp("<<", data->find, 3))
+		return (ret);
 	return (dollar_manager_stupid(ret, data));
 }
 
@@ -112,6 +114,8 @@ char	*clear_next_node(t_words **tmp, char *finded, t_words **first, t_data *data
 		ft_exit(data, 1);
 	remove_node_words((*tmp)->next, tmp_first);
 	(*tmp)->word = remove_finded((*tmp)->word, finded, data);
+	if (!ft_strncmp("<<", data->find, 3))
+		return (ret);
 	return (dollar_manager_stupid(ret, data));
 }
 
@@ -127,6 +131,8 @@ char	*clear_this_node(t_words **tmp, char *finded, t_words **first, t_data *data
 	if ((*tmp) == (*first))
 		(*first) = (*tmp)->next;
 	(*tmp) = remove_node_words(*tmp, tmp_first);
+	if (!ft_strncmp("<<", data->find, 3))
+		return (ret);
 	return (dollar_manager_stupid(ret, data));
 }
 
@@ -138,6 +144,8 @@ char	*remove_last_part(t_words **tmp, char *finded, char *find, t_data *data)
 	if (ret == NULL)
 		ft_exit(data, 1);
 	(*tmp)->word = remove_finded((*tmp)->word, finded, data);
+	if (!ft_strncmp("<<", data->find, 3))
+		return (ret);
 	return (dollar_manager_stupid(ret, data));
 }
 
@@ -246,6 +254,7 @@ void	check_file(char *find, t_words **words, t_cmd *cmds, t_data *data)
 {
 	char	*finded;
 
+	data->find = find;
 	finded = find_after_word(find, words, data);
 	if (finded == NULL)
 		return ;
