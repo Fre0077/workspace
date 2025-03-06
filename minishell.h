@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 17:37:49 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 19:01:49 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int					init_data(t_data *data, char **env);
 // signal.c
 void				init_signals(void);
 void				new_prompt_sigact(int signum, siginfo_t *info,
-		void *context);
+						void *context);
 void				new_prompt(int signum);
 void				get_history(int signum);
 
@@ -101,7 +101,8 @@ char				*ft_readline(char *prompt);
 
 //parsing.c
 
-void				command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h);
+void				command_slicer(t_cmd *cmds, t_words **words,
+						t_data *data, t_words **h);
 t_cmd				*new_command(t_cmd *cmds, t_words **words, t_data *data);
 t_cmd				*parsing(char *line, t_data *data);
 
@@ -114,13 +115,16 @@ t_words				*word_slicer(char *line, t_data *data);
 //dollar.c
 
 char				*copy_in_str(char *word, int *i, int j, t_data *data);
-t_words				*dollar_converter(char *word, int *i, t_data *data, t_words *words);
-char				*dollar_remover(char *word, int *i, int check, t_data *data);
+t_words				*dollar_converter(char *word, int *i, t_data *data,
+						t_words *words);
+char				*dollar_remover(char *word, int *i, int check,
+						t_data *data);
 t_words				*dollar_manager(t_data *data, t_words *words);
 
 //dollar_stupid.c
 
-char				*copy_in_str_stupid(char *word, int *i, int j, t_data *data);
+char				*copy_in_str_stupid(char *word, int *i, int j,
+						t_data *data);
 char				*dollar_converter_stupid(char *word, int *i, t_data *data);
 char				*dollar_manager_stupid(char *word, t_data *data);
 
@@ -137,16 +141,16 @@ t_words				*remove_node_words(t_words *words, t_words *first);
 char				*remove_finded(char *word, char *finded, t_data *data);
 char				*clear_2_node(t_words **tmp, t_words **first, t_data *data);
 char				*clear_next_node(t_words **tmp, char *finded,
-									t_words **first,	t_data *data);
+						t_words **first,	t_data *data);
 char				*clear_this_node(t_words **tmp, char *finded,
-									t_words **first, t_data *data);
+						t_words **first, t_data *data);
 char				*remove_last_part(t_words **tmp, char *finded,
-									char *find, t_data *data);
+						char *find, t_data *data);
 int					check_sintax_error(t_words *tmp, char *finded,
-									char *find, t_data *data);
+						char *find, t_data *data);
 char				*find_after_word(char *find, t_words **tmp, t_data *data);
 t_words				*inout_manager(t_words *words, t_data *data, t_cmd *cmds,
-									int end);
+						int end);
 
 //print.c
 

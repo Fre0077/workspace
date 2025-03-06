@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:22:52 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 10:30:32 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:50:16 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	exec_unset(t_data *data)
 		{
 			if (strncmp(key, tmp->var, strlen(key)) == 0
 				&& (tmp->var[ft_strlen(key)] == '='
-				|| tmp->var[ft_strlen(key)] == '\0'))
+					|| tmp->var[ft_strlen(key)] == '\0'))
 			{
 				if (last == NULL)
 					data->env = tmp->next;

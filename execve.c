@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:23:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 15:29:28 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:58:33 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,19 +154,17 @@ int	exec_execve(t_data *data)
 			return (ft_free_mat_char(argv), ft_free_mat_char(env), 1);
 		if (execute_command(exec, argv, env) == -1)
 			return (printf("exec error!\n"), free_execve(exec, argv, env), 1);
-		/* free_execve(exec, argv, env); */
 		return (0);
 	}
 	path = get_env(data->env, "PATH");
 	if (!path)
 		return (printf("command not found: %s\n", data->cmds->cmd), 1);
-	if (path[0] == '=') 
+	if (path[0] == '=')
 		path++;
 	exec = find_path(data->cmds->cmd, path);
 	if (!exec)
 		return (printf("command not found: %s\n", data->cmds->cmd), 1);
 	if (execute_command(exec, argv, env) == -1)
 		return (printf("exec error!\n"), free_execve(exec, argv, env), 1);
-	/* free_execve(exec, argv, env); */
 	return (0);
 }

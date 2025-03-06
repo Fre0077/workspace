@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 10:52:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 18:39:45 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:57:15 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	check_key(char *var, char *key)
 	if (!var || !key)
 		return (FALSE);
 	i = 0;
-	printf("var: %s\n", var);
 	while (var[i] && key[i] && var[i] == key[i] && var[i] != '=')
 		i++;
 	if ((var[i] == '=' || var[i] == '\0') && (key[i] == '\0' || key[i] == '='))
@@ -63,17 +62,6 @@ int	set_env(t_env *env, char *key, char *value)
 	return (1);
 }
 
-/**
- * caso gestito
- * alborghi@c1r6p7:~$ cd
- * alborghi@c1r6p7:~$ unset HOME
- * alborghi@c1r6p7:/nfs/homes/alborghi$ cd ..
- * alborghi@c1r6p7:/nfs/homes$ cd
- * bash: cd: HOME not set
- * alborghi@c1r6p7:/nfs/homes$ cd ~
- * alborghi@c1r6p7:/nfs/homes/alborghi$ 
- */
-//TODO: check if everything is freed correctly (spoiler: it's not)
 int	exec_cd(t_data *data)
 {
 	char	*oldpwd;
@@ -108,7 +96,8 @@ int	exec_cd(t_data *data)
 		{
 			if (chdir(get_env(data->env, "OLDPWD")) == -1)
 			{
-				printf("cd: %s No such file or directory\n", get_env(data->env, "OLDPWD"));
+				printf("cd: %s No such file or directory\n",
+					get_env(data->env, "OLDPWD"));
 				free(oldpwd);
 				return (1);
 			}

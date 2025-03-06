@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 14:58:09 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 19:02:52 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	check_pipe(t_cmd *cmds)
 // 0644 = rw-r--r-- (user: read, write; group: read; others: read)
 int	dup_file(char *file, int std, int mode)
 {
-	int fd;
+	int	fd;
 
 	fd = open(file, mode, 0644);
 	if (fd == -1)
@@ -48,8 +48,8 @@ int	dup_file(char *file, int std, int mode)
 
 int	open_last(char **file, int doi)
 {
-	int fd;
-	int i;
+	int	fd;
+	int	i;
 
 	if (!file || !file[0])
 		return (-1);
@@ -133,7 +133,7 @@ int	call_function(t_data *data)
 	return (0);
 }
 
-int is_builtin(char *cmd)
+int	is_builtin(char *cmd)
 {
 	if (ft_strncmp(cmd, "echo", 5) == 0)
 		return (1);
@@ -186,8 +186,8 @@ int	check_cmds(t_cmd *cmds, t_env *env)
 
 void	exec_cmd(t_data *data)
 {
-	int fd[2];
-	int pid;
+	int	fd[2];
+	int	pid;
 
 	if (check_cmds(data->cmds, data->env) == 1)
 		return ;

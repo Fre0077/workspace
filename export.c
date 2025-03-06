@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:01:27 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 16:13:00 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:48:23 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	check_arg(char *arg, char *cmd)
 		if (ft_isalnum(arg[i]) == 0 && arg[i] != '_')
 		{
 			ft_printf("minishell: %s: `%s': not a valid identifier\n", cmd,
-						arg);
+				arg);
 			return (1);
 		}
 		i++;

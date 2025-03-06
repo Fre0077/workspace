@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/06 18:01:28 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:54:20 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	count_args(t_words **words)
 	(*words) = (*words)->next;
 	tmp = *words;
 	i = -1;
-	while ( ++i + 1 && tmp != NULL && tmp->pipe == 0)
+	while (++i + 1 && tmp != NULL && tmp->pipe == 0)
 		tmp = tmp->next;
 	return (i);
 }
@@ -100,7 +100,7 @@ t_cmd	*parsing(char *line, t_data *data)
 	head = words;
 	cmds = malloc(sizeof(t_cmd));
 	if (!cmds)
-	ft_exit(data, 1);
+		ft_exit(data, 1);
 	command_slicer(cmds, &words, data, &head);
 	first = cmds;
 	while (words != NULL)

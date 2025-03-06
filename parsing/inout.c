@@ -6,11 +6,9 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/06 18:20:45 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:52:40 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "../minishell.h"
 
@@ -42,7 +40,7 @@ char	*ft_strstr(char *big, char *little)
 //rimuove un nodo della lista ricollegandola
 t_words	*remove_node_words(t_words *words, t_words *first)
 {
-	t_words *tmp;
+	t_words	*tmp;
 
 	if (first == words)
 	{
@@ -101,7 +99,8 @@ char	*clear_2_node(t_words **tmp, t_words **first, t_data *data)
 	return (dollar_manager_stupid(ret, data));
 }
 
-char	*clear_next_node(t_words **tmp, char *finded, t_words **first, t_data *data)
+char	*clear_next_node(t_words **tmp, char *finded, t_words **first,
+							t_data *data)
 {
 	char	*ret;
 	t_words	*tmp_first;
@@ -115,7 +114,8 @@ char	*clear_next_node(t_words **tmp, char *finded, t_words **first, t_data *data
 	return (dollar_manager_stupid(ret, data));
 }
 
-char	*clear_this_node(t_words **tmp, char *finded, t_words **first, t_data *data)
+char	*clear_this_node(t_words **tmp, char *finded, t_words **first,
+							t_data *data)
 {
 	char	*ret;
 	t_words	*tmp_first;
@@ -146,8 +146,8 @@ int	check_sintax_error(t_words *tmp, char *finded, char *find, t_data *data)
 {
 	if (finded[ft_strlen(find)] == '<' || finded[ft_strlen(find)] == '>')
 		data->status = 1;
-	if (!finded[ft_strlen(find)] &&
-		(tmp->next->word[0] == '<' || tmp->next->word[0] == '>'))
+	if (!finded[ft_strlen(find)]
+		&& (tmp->next->word[0] == '<' || tmp->next->word[0] == '>'))
 		data->status = 1;
 	return (data->status);
 }
@@ -193,8 +193,8 @@ char	*findable_file(t_words *words)
 	{
 		i = 0;
 		while (tmp->word != NULL && tmp->word[i]
-				&& ((quote_checker(tmp->word, i)
-				&& ft_strchr("<>", tmp->word[i]))
+			&& ((quote_checker(tmp->word, i)
+					&& ft_strchr("<>", tmp->word[i]))
 				|| !ft_strchr("<>", tmp->word[i])))
 			i++;
 		if (tmp->word == NULL || !tmp->word[i])
@@ -270,31 +270,6 @@ void	check_file(char *find, t_words **words, t_cmd *cmds, t_data *data)
 		cmds->file_i = ft_append_line(cmds->file_i, finded);
 	}
 }
-
-//int	escape_dollar_check(t_words *words)
-//{
-//	t_words		*tmp;
-//	static int	ret;
-//	int			i;
-
-//	if (ret == 1)
-//		return (1);
-//	tmp = words;
-//	while (tmp != NULL)
-//	{
-//		i = 0;
-//		while (tmp->word[i] && !(quote_checker(tmp->word, i) != 1
-//				&& tmp->word[i] == '$' && (i == 0 || tmp->word[i - 1] != '\\')))
-//			i++;
-//		if (tmp->word[i])
-//		{
-//			ret = 1;
-//			break ;
-//		}
-//		tmp = tmp->next;
-//	}
-//	return (quote_checker("1", 1), 0);
-//}
 
 //verifica tutte le informazioni per i simboli: <, <<, >>, >
 t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds, int end)

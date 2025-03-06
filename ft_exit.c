@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 10:36:02 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 15:33:50 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:58:10 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,6 @@ int	get_signal(int *sig, char **args, t_data *data)
 	return (0);
 }
 
-//-9223372036854775808
-// 9223372036854775807
 void	ft_exit_builtin(t_data *data)
 {
 	int	sig;
