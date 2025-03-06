@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:57:54 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 15:25:22 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 15:59:15 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	read_last(char *delimiter, int fd, t_data *data, int q)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || !line[0])
+		if (!line)
 		{
 			printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", j, delimiter);
 			break ;

@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:29:44 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/21 14:41:37 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 15:52:54 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,6 @@ int	init_data(t_data *data, char **env)
 		return (1);
 	data->stdi = dup(0);
 	data->stdo = dup(1);
+	data->prompt = dup(1);
 	return (0);
 }
