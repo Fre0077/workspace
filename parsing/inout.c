@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/06 17:58:51 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:00:40 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,11 +191,12 @@ char	*findable_file(t_words *words)
 	while (tmp != NULL && tmp->pipe == 0)
 	{
 		i = 0;
-		while (tmp->word[i] && ((quote_checker(tmp->word, i)
+		while (tmp->word != NULL && tmp->word[i]
+				&& ((quote_checker(tmp->word, i)
 				&& ft_strchr("<>", tmp->word[i]))
 				|| !ft_strchr("<>", tmp->word[i])))
 			i++;
-		if (!tmp->word[i])
+		if (tmp->word == NULL || !tmp->word[i])
 		{
 			tmp = tmp->next;
 			continue ;
