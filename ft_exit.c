@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 10:36:02 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/05 11:43:14 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/05 18:04:14 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ int	is_numeric(char *str)
 			return (0);
 		i++;
 	}
-	if (ft_strlen(str) > 19 + (str[0] == '-' || str[0] == '+'))
+	if (ft_strlen_int(str) > 19 + (str[0] == '-' || str[0] == '+'))
 		return (0);
-	if (ft_strlen(str) < 19 + (str[0] == '-' || str[0] == '+'))
+	if (ft_strlen_int(str) < 19 + (str[0] == '-' || str[0] == '+'))
 		return (1);
 	if (str[0] == '-')
 		return (ft_strncmp(str, "-9223372036854775808", 20) <= 0);

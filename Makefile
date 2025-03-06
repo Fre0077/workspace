@@ -55,6 +55,10 @@ vall: all
 	clear
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp --quiet ./$(NAME)
 
+run: all
+	clear
+	./$(NAME)
+
 TEST = \
 init.c \
 signal.c \

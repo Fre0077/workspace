@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:12:42 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/05 17:32:01 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 11:21:38 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ char	*next_word(char *line, int *i, t_data *data)
 	int		start;
 	char	*word;
 
-	ft_printf("next_word: %s\n", &line[*i]);
 	if (line == NULL)
 		return (NULL);
 	start = *i;
@@ -46,7 +45,6 @@ char	*next_word(char *line, int *i, t_data *data)
 			&& line[*i])
 		*i += 1;
 	word = dup_till_n(&line[start], *i - start, data);
-	ft_printf("next_word ret: %s\n", word);
 	return (word);
 }
 
