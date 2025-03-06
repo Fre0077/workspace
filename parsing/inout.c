@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/06 18:52:40 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 19:04:12 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ char	*clear_2_node(t_words **tmp, t_words **first, t_data *data)
 	if ((*tmp) == (*first))
 		(*first) = (*first)->next;
 	(*tmp) = remove_node_words(*tmp, tmp_first);
+	if (!ft_strncmp("<<", data->find, 3))
+		return (ret);
 	return (dollar_manager_stupid(ret, data));
 }
 
@@ -111,6 +113,8 @@ char	*clear_next_node(t_words **tmp, char *finded, t_words **first,
 		ft_exit(data, 1);
 	remove_node_words((*tmp)->next, tmp_first);
 	(*tmp)->word = remove_finded((*tmp)->word, finded, data);
+	if (!ft_strncmp("<<", data->find, 3))
+		return (ret);
 	return (dollar_manager_stupid(ret, data));
 }
 
@@ -127,6 +131,8 @@ char	*clear_this_node(t_words **tmp, char *finded, t_words **first,
 	if ((*tmp) == (*first))
 		(*first) = (*tmp)->next;
 	(*tmp) = remove_node_words(*tmp, tmp_first);
+	if (!ft_strncmp("<<", data->find, 3))
+		return (ret);
 	return (dollar_manager_stupid(ret, data));
 }
 
@@ -138,6 +144,8 @@ char	*remove_last_part(t_words **tmp, char *finded, char *find, t_data *data)
 	if (ret == NULL)
 		ft_exit(data, 1);
 	(*tmp)->word = remove_finded((*tmp)->word, finded, data);
+	if (!ft_strncmp("<<", data->find, 3))
+		return (ret);
 	return (dollar_manager_stupid(ret, data));
 }
 
@@ -246,6 +254,7 @@ void	check_file(char *find, t_words **words, t_cmd *cmds, t_data *data)
 {
 	char	*finded;
 
+	data->find = find;
 	finded = find_after_word(find, words, data);
 	if (finded == NULL)
 		return ;
@@ -282,9 +291,7 @@ t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds, int end)
 	cmds->file_a = NULL;
 	cmds->delimiter = NULL;
 	cmds->doi = 0;
-	// print_word(words);
 	find = findable_file(words);
-	// ft_printf("find: %s\n", find);
 	while (find != NULL)
 	{
 		check_file(find, &words, cmds, data);
@@ -294,11 +301,7 @@ t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds, int end)
 		find = findable_file(words);
 	}
 	tmp = words;
-	//ft_printf("controll:%d\n",escape_dollar_check(words));
 	while (end && tmp != NULL)
 		tmp = dollar_manager(data, tmp);
-	//print_word(words);
-	//if (end && findable_file(words) && escape_dollar_check(words))
-	//	words = inout_manager(words, data, cmds, 0);
 	return (words);
 }

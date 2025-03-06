@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 19:01:49 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 19:04:52 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_data
 	t_env			*env;
 	t_cmd			*cmds;
 	t_cmd			*head;
+	char			*find;
 	char			*home;
 	char			*pwd;
 	char			*oldpwd;
