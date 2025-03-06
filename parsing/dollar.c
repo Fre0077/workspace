@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/06 18:16:25 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/06 18:45:08 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ char	*copy_in_str(char *word, int *i, int j, t_data *data)
 
 	str = dup_till_n(&word[j + 1], *i - j - 1, data);
 	env = get_env(data->env, str);
-	ft_printf("###########ààà%s\n", env);
 	new_word = ft_calloc(1, ft_strlen(env) + ft_strlen(&word[*i]) + j + 1);
 	if (!new_word)
 		ft_exit(data, 1);

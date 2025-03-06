@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/06 18:01:28 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:45:02 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h)
 	int		j;
 
 	(*words) = inout_manager(*words, data, cmds, 1);
-	print_word(*words);
 	if (h != NULL)
 		(*h) = (*words);
 	if (data->status || (*words) == NULL)
@@ -111,6 +110,5 @@ t_cmd	*parsing(char *line, t_data *data)
 			cmds = new_command(cmds, &words, data);
 	}
 	cmds->next = NULL;
-	// print_cmd(first);
 	return (free_words_only_pointers(head), first);
 }

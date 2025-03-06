@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 10:52:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 18:39:45 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:43:35 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	check_key(char *var, char *key)
 	if (!var || !key)
 		return (FALSE);
 	i = 0;
-	printf("var: %s\n", var);
 	while (var[i] && key[i] && var[i] == key[i] && var[i] != '=')
 		i++;
 	if ((var[i] == '=' || var[i] == '\0') && (key[i] == '\0' || key[i] == '='))
