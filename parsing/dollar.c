@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/06 11:20:12 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/06 12:21:42 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,11 @@ t_words	*multi_args_case(t_data *data, t_words *words, int *j)
 	words->word = arr[0];
 	words->pipe = 0;
 	i = 0;
-	while (arr[++i] != NULL && arr[0] != NULL)
+	while (arr[0] != NULL && arr[++i] != NULL)
 		words = new_word(words, arr[i], data);
 	words->next = NULL;
-	*j = ft_strlen_int(arr[i - 1]) - pos;
-	ft_printf("cosacosacosacosa:%d \n", *j);
-	//print_word(words);
+	if (i > 0)
+		*j = ft_strlen_int(arr[i - 1]) - pos;
 	return (words);
 }
 
