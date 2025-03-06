@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/05 11:27:38 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 14:58:09 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,66 +71,6 @@ int	open_last(char **file, int doi)
 		return (-1);
 	close(fd);
 	return (0);
-}
-
-void	handle_delimiter(char **delimiter, int doi, t_data *data)
-{
-	char	*line;
-	int		fd[2];
-	int		i;
-	int		j;
-
-	if (!delimiter || !delimiter[0])
-		return ;
-	i = 0;
-	j = 0;
-	while (delimiter[i + 1])
-	{
-		line = readline("> ");
-		if (!line || !line[0])
-		{
-			printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", j, delimiter[i]);
-			j = 1;
-			i++;
-			continue ;
-		}
-		if (ft_strncmp(line, delimiter[i], ft_strlen(delimiter[i])) == 0)
-		{
-			i++;
-			j = 1;
-		}
-		free(line);
-		j++;
-	}
-	pipe(fd);
-	j = 1;
-	while (1)
-	{
-		line = readline("> ");
-		if (!line || !line[0])
-		{
-			printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", j, delimiter[i]);
-			break ;
-		}
-		if (ft_strncmp(line, delimiter[i], ft_strlen(delimiter[i]) + 1) == 0)
-		{
-			free(line);
-			break ;
-		}
-		//TODO: add dollar managment
-		line = dollar_manager_stupid(line, data);
-		write(fd[1], line, ft_strlen(line));
-		write(fd[1], "\n", 1);
-		free(line);
-		j++;
-	}
-	close(fd[1]);
-	if (doi == 2 && dup2(fd[0], 0) == -1)
-	{
-		close(fd[0]);
-		return ;
-	}
-	close(fd[0]);
 }
 
 int	handle_files(t_cmd *cmd, t_data *data)
@@ -212,6 +152,7 @@ int is_builtin(char *cmd)
 	return (0);
 }
 
+// TODO: add check for commands with relative and absolute path
 int	check_cmds(t_cmd *cmds, t_env *env)
 {
 	char	*path;
@@ -229,7 +170,12 @@ int	check_cmds(t_cmd *cmds, t_env *env)
 			tmp = tmp->next;
 			continue ;
 		}
-		exec = find_path(tmp->cmd, path);
+		//TODO: redo this part of the check
+		if ((!ft_strncmp(tmp->cmd, "./", 2) || !ft_strncmp(tmp->cmd, "/", 1))
+			&& access(tmp->cmd, F_OK) == 0)
+			exec = ft_strdup(tmp->cmd);
+		else
+			exec = find_path(tmp->cmd, path);
 		if (!exec)
 			return (printf("command not found: %s\n", tmp->cmd), 1);
 		tmp = tmp->next;

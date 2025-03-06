@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/05 17:48:50 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/06 15:13:23 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define FALSE 0
 # define CUSTOM 2
 
-# define MINI "\001"CYAN BOLD"\002minishell\001"RED BOLD"\002 > \001"END"\002"
+# define MINI "\033[1;36mminishell\033[1;31m > \033[0m"
 
 extern int			g_signal;
 
@@ -166,6 +166,9 @@ void				ft_put_env(t_env *env, int is_env);
 void				ft_put_char_mat(char **mat);
 void				exec_cmd(t_data *data);
 
+// heredoc.c
+void				handle_delimiter(char **delimiter, int doi, t_data *data);
+
 // echo.c
 void				exec_echo(char **args);
 
@@ -176,6 +179,7 @@ int					set_env(t_env *env, char *key, char *value);
 int					exec_cd(t_data *data);
 
 // export.c
+int					check_arg(char *arg, char *cmd);
 int					exec_export(t_cmd *cmds, t_env *env);
 
 // unset.c

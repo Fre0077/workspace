@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:23:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/28 16:09:15 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 15:29:28 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,8 @@ int	execute_command(char *path, char **argv, char **env)
 	if (pid == 0)
 	{
 		execve(path, argv, env);
-		free_execve(path, argv, env);
 		perror("execve");
-		exit(EXIT_FAILURE);
+		ft_exit(NULL, 1);
 	}
 	else
 	{
@@ -134,6 +133,7 @@ int	execute_command(char *path, char **argv, char **env)
 	return (0);
 }
 
+// TODO: add check to argv and env 
 int	exec_execve(t_data *data)
 {
 	char	*path;
@@ -142,7 +142,21 @@ int	exec_execve(t_data *data)
 	char	**env;
 
 	if (!data->cmds->cmd || strncmp(data->cmds->cmd, "", 1) == 0)
-		return (printf("command not found: %s\n", data->cmds->cmd), 1);
+		return (printf("execve: command not found: %s\n", data->cmds->cmd), 1);
+	argv = get_args(data->cmds);
+	env = env_to_mat(data->env);
+	if (strncmp(data->cmds->cmd, "./", 2) == 0
+		|| strncmp(data->cmds->cmd, "/", 1) == 0)
+	{
+		printf("execve: %s\n", data->cmds->cmd);
+		exec = ft_strdup(data->cmds->cmd);
+		if (!exec)
+			return (ft_free_mat_char(argv), ft_free_mat_char(env), 1);
+		if (execute_command(exec, argv, env) == -1)
+			return (printf("exec error!\n"), free_execve(exec, argv, env), 1);
+		/* free_execve(exec, argv, env); */
+		return (0);
+	}
 	path = get_env(data->env, "PATH");
 	if (!path)
 		return (printf("command not found: %s\n", data->cmds->cmd), 1);
@@ -151,8 +165,6 @@ int	exec_execve(t_data *data)
 	exec = find_path(data->cmds->cmd, path);
 	if (!exec)
 		return (printf("command not found: %s\n", data->cmds->cmd), 1);
-	argv = get_args(data->cmds);
-	env = env_to_mat(data->env);
 	if (execute_command(exec, argv, env) == -1)
 		return (printf("exec error!\n"), free_execve(exec, argv, env), 1);
 	/* free_execve(exec, argv, env); */

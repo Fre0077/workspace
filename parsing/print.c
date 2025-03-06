@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:13 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/05 15:13:43 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/06 15:30:02 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	print_cmd(t_cmd *cmds)
 			ft_printf("%s, ", cmds->args[i]);
 		ft_printf("%s\n", cmds->args[i]);
 		ft_printf("divider: %s\n", cmds->divider);
+		ft_printf("next: %p\n", cmds->next);
 		cmds = cmds->next;
 	}
 	ft_printf("----------\n");

@@ -11,6 +11,7 @@ echo.c \
 unset.c \
 execve.c \
 ft_exit.c \
+heredoc.c \
 parsing/parsing.c \
 parsing/char_manager.c \
 parsing/dollar.c \

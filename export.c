@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:01:27 by alborghi          #+#    #+#             */
-/*   Updated: 2025/02/20 15:50:53 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 10:30:58 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,29 @@ int	export_cmd(char *arg, t_env *env)
 	return (0);
 }
 
+int	check_arg(char *arg, char *cmd)
+{
+	int	i;
+
+	i = 0;
+	if (ft_isdigit(arg[0]) == 1)
+	{
+		ft_printf("minishell: %s: `%s': not a valid identifier\n", cmd, arg);
+		return (1);
+	}
+	while (arg[i] && arg[i] != '=')
+	{
+		if (ft_isalnum(arg[i]) == 0 && arg[i] != '_')
+		{
+			ft_printf("minishell: %s: `%s': not a valid identifier\n", cmd,
+						arg);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	exec_export(t_cmd *cmds, t_env *env)
 {
 	int		i;
@@ -102,6 +125,8 @@ int	exec_export(t_cmd *cmds, t_env *env)
 	i = 0;
 	while (cmds->args[i])
 	{
+		if (check_arg(cmds->args[i], "export") == 1)
+			return (1);
 		if (export_cmd(cmds->args[i], env) == 1)
 			return (1);
 		i++;

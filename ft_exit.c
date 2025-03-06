@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 10:36:02 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/05 11:43:14 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 10:09:50 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,14 @@ int	convert_signal(char *str)
 	return (sig * sign % 256);
 }
 
-int	get_signal(int *sig, char **args)
+int	get_signal(int *sig, char **args, t_data *data)
 {
 	if (args[0] == NULL)
-		return (*sig = 0, 0);
+		return (*sig = 0, printf("exit\n"), 0);
 	if (!is_numeric(args[0]))
 	{
 		printf("exit\n");
+		data->status = 2;
 		printf("minishell: exit: %s: numeric argument required\n", args[0]);
 		return (0);
 	}
@@ -71,21 +72,23 @@ int	get_signal(int *sig, char **args)
 	if (args[1] != NULL)
 	{
 		printf("exit\n");
+		data->status = 1;
 		printf("minishell: exit: too many arguments\n");
 		return (1);
 	}
+	data->status = *sig;
 	printf("exit\n");
 	return (0);
 }
 
 //-9223372036854775808
-//9223372036854775807
+// 9223372036854775807
 void	ft_exit_builtin(t_data *data)
 {
 	int	sig;
 
 	sig = 0;
-	if (get_signal(&sig, data->cmds->args) == 1)
+	if (get_signal(&sig, data->cmds->args, data) == 1)
 		return ;
 	ft_exit(data, sig);
 }
