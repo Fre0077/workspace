@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inout.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/06 18:00:40 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:13:24 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,30 +270,30 @@ void	check_file(char *find, t_words **words, t_cmd *cmds, t_data *data)
 	}
 }
 
-int	escape_dollar_check(t_words *words)
-{
-	t_words		*tmp;
-	static int	ret;
-	int			i;
+//int	escape_dollar_check(t_words *words)
+//{
+//	t_words		*tmp;
+//	static int	ret;
+//	int			i;
 
-	if (ret == 1)
-		return (1);
-	tmp = words;
-	while (tmp != NULL)
-	{
-		i = 0;
-		while (tmp->word[i] && !(quote_checker(tmp->word, i) != 1
-				&& tmp->word[i] == '$' && (i == 0 || tmp->word[i - 1] != '\\')))
-			i++;
-		if (tmp->word[i])
-		{
-			ret = 1;
-			break ;
-		}
-		tmp = tmp->next;
-	}
-	return (quote_checker("1", 1), 0);
-}
+//	if (ret == 1)
+//		return (1);
+//	tmp = words;
+//	while (tmp != NULL)
+//	{
+//		i = 0;
+//		while (tmp->word[i] && !(quote_checker(tmp->word, i) != 1
+//				&& tmp->word[i] == '$' && (i == 0 || tmp->word[i - 1] != '\\')))
+//			i++;
+//		if (tmp->word[i])
+//		{
+//			ret = 1;
+//			break ;
+//		}
+//		tmp = tmp->next;
+//	}
+//	return (quote_checker("1", 1), 0);
+//}
 
 //verifica tutte le informazioni per i simboli: <, <<, >>, >
 t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds, int end)
@@ -318,11 +318,11 @@ t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds, int end)
 		find = findable_file(words);
 	}
 	tmp = words;
-	ft_printf("controll:%d\n",escape_dollar_check(words));
+	//ft_printf("controll:%d\n",escape_dollar_check(words));
 	while (end && tmp != NULL)
 		tmp = dollar_manager(data, tmp);
-	print_word(words);
-	if (end && findable_file(words) && escape_dollar_check(words))
-		words = inout_manager(words, data, cmds, 0);
+	//print_word(words);
+	//if (end && findable_file(words) && escape_dollar_check(words))
+	//	words = inout_manager(words, data, cmds, 0);
 	return (words);
 }
