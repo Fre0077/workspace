@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 09:44:41 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 09:53:30 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,11 +229,8 @@ void				free_words(t_words *words);
 void				free_env(t_env *env);
 void				ft_exit(t_data *data, int sig);
 //------------------------------------------------------------
-//inout.c 13
+//inout_remover.c 4
 
-char				*ft_strstr(char *big, char *little);
-t_words				*remove_node_words(t_words *words, t_words *first);
-char				*remove_finded(char *word, char *finded, t_data *data);
 char				*clear_2_node(t_words **tmp, t_words **first, t_data *data);
 char				*clear_next_node(t_words **tmp, char *finded,
 						t_words **first,	t_data *data);
@@ -241,8 +238,17 @@ char				*clear_this_node(t_words **tmp, char *finded,
 						t_words **first, t_data *data);
 char				*remove_last_part(t_words **tmp, char *finded,
 						char *find, t_data *data);
+//------------------------------------------------------------
+//inout_support.c 4
+
+char				*ft_strstr(char *big, char *little);
+t_words				*remove_node_words(t_words *words, t_words *first);
+char				*remove_finded(char *word, char *finded, t_data *data);
 int					check_sintax_error(t_words *tmp, char *finded,
 						char *find, t_data *data);
+//------------------------------------------------------------
+//inout.c 5
+
 char				*find_after_word(char *find, t_words **tmp, t_data *data);
 char				*findable_file(t_words *words);
 void				open_useless_file(t_cmd *cmds, int witch);
