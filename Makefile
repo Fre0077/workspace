@@ -12,14 +12,17 @@ unset.c \
 execve.c \
 ft_exit.c \
 heredoc.c \
-parsing/parsing.c \
 parsing/char_manager.c \
-parsing/dollar.c \
 parsing/dollar_stupid.c \
-parsing/print.c \
-parsing/word.c \
+parsing/dollar.c \
 parsing/exit.c \
-parsing/inout.c
+parsing/inout_remover.c \
+parsing/inout_support.c \
+parsing/inout.c \
+parsing/parsing_support.c \
+parsing/parsing.c \
+parsing/print.c \
+parsing/word.c
 
 CFLAGS = -Wall -Wextra -Werror -g
 

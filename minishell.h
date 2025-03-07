@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 09:44:41 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 10:56:28 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,75 +97,6 @@ void				get_history(int signum);
 char				*ft_strjoin_readline(char *s1, char *s2);
 char				*ft_readline(char *prompt);
 
-//--------------------------------------------------------
-
-//parsing.c
-
-void				command_slicer(t_cmd *cmds, t_words **words,
-						t_data *data, t_words **h);
-t_cmd				*new_command(t_cmd *cmds, t_words **words, t_data *data);
-t_cmd				*parsing(char *line, t_data *data);
-
-//word.c
-
-char				*next_word(char *line, int *i, t_data *data);
-t_words				*new_word(t_words *words, char *str, t_data *data);
-t_words				*word_slicer(char *line, t_data *data);
-
-//dollar.c
-
-char				*copy_in_str(char *word, int *i, int j, t_data *data);
-t_words				*dollar_converter(char *word, int *i, t_data *data,
-						t_words *words);
-char				*dollar_remover(char *word, int *i, int check,
-						t_data *data);
-t_words				*dollar_manager(t_data *data, t_words *words);
-
-//dollar_stupid.c
-
-char				*copy_in_str_stupid(char *word, int *i, int j,
-						t_data *data);
-char				*dollar_converter_stupid(char *word, int *i, t_data *data);
-char				*dollar_manager_stupid(char *word, t_data *data);
-
-//char_manager.c
-
-int					quote_checker(char *line, int i);
-char				*dup_till_n(char *start, int n, t_data *data);
-char				*remove_char(char *word, int i, t_data *data);
-
-//inout.c
-
-char				*ft_strstr(char *big, char *little);
-t_words				*remove_node_words(t_words *words, t_words *first);
-char				*remove_finded(char *word, char *finded, t_data *data);
-char				*clear_2_node(t_words **tmp, t_words **first, t_data *data);
-char				*clear_next_node(t_words **tmp, char *finded,
-						t_words **first,	t_data *data);
-char				*clear_this_node(t_words **tmp, char *finded,
-						t_words **first, t_data *data);
-char				*remove_last_part(t_words **tmp, char *finded,
-						char *find, t_data *data);
-int					check_sintax_error(t_words *tmp, char *finded,
-						char *find, t_data *data);
-char				*find_after_word(char *find, t_words **tmp, t_data *data);
-t_words				*inout_manager(t_words *words, t_data *data, t_cmd *cmds,
-						int end);
-
-//print.c
-
-void				print_word(t_words *words);
-void				print_cmd(t_cmd *cmds);
-void				print_data(t_data *data);
-
-//exit.c
-
-void				free_cmds(t_cmd *cmds);
-void				free_words(t_words *words);
-void				ft_exit(t_data *data, int sig);
-
-//------------------------------------------------------------
-
 // exec.c
 int					handle_files(t_cmd *cmd, t_data *data);
 int					reset_std(t_data *data);
@@ -223,17 +154,13 @@ t_words				*dollar_manager(t_data *data, t_words *words);
 //------------------------------------------------------------
 //exit.c 5
 
-void				free_input_data_file(t_cmd *cmds);
 void				free_cmds(t_cmd *cmds);
 void				free_words(t_words *words);
 void				free_env(t_env *env);
 void				ft_exit(t_data *data, int sig);
 //------------------------------------------------------------
-//inout.c 13
+//inout_remover.c 4
 
-char				*ft_strstr(char *big, char *little);
-t_words				*remove_node_words(t_words *words, t_words *first);
-char				*remove_finded(char *word, char *finded, t_data *data);
 char				*clear_2_node(t_words **tmp, t_words **first, t_data *data);
 char				*clear_next_node(t_words **tmp, char *finded,
 						t_words **first,	t_data *data);
@@ -241,24 +168,35 @@ char				*clear_this_node(t_words **tmp, char *finded,
 						t_words **first, t_data *data);
 char				*remove_last_part(t_words **tmp, char *finded,
 						char *find, t_data *data);
+//------------------------------------------------------------
+//inout_support.c 4
+
+char				*ft_strstr(char *big, char *little);
+t_words				*remove_node_words(t_words *words, t_words *first);
+char				*remove_finded(char *word, char *finded, t_data *data);
 int					check_sintax_error(t_words *tmp, char *finded,
 						char *find, t_data *data);
+//------------------------------------------------------------
+//inout.c 5
+
 char				*find_after_word(char *find, t_words **tmp, t_data *data);
 char				*findable_file(t_words *words);
 void				open_useless_file(t_cmd *cmds, int witch);
 void				check_file(char *find, t_words **words, t_cmd *cmds,
 						t_data *data);
-t_words				*inout_manager(t_words *words, t_data *data, t_cmd *cmds,
-						int end);
+t_words				*inout_manager(t_words *words, t_data *data, t_cmd *cmds);
 //------------------------------------------------------------
-//parsing.c 6
+//parsing_support.c 6
 
 void				empty_cmd(t_cmd *cmds);
 int					count_args(t_words **words);
+void				free_words_only_pointers(t_words *words);
+//------------------------------------------------------------
+//parsing.c 6
+
 void				command_slicer(t_cmd *cmds, t_words **words,
 						t_data *data, t_words **h);
 t_cmd				*new_command(t_cmd *cmds, t_words **words, t_data *data);
-void				free_words_only_pointers(t_words *words);
 t_cmd				*parsing(char *line, t_data *data);
 //------------------------------------------------------------
 //print.c 3
