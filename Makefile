@@ -19,7 +19,6 @@ parsing/exit.c \
 parsing/inout_remover.c \
 parsing/inout_support.c \
 parsing/inout.c \
-parsing/parsing_support.c \
 parsing/parsing.c \
 parsing/print.c \
 parsing/word.c
