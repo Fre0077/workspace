@@ -6,12 +6,27 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 12:07:57 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 12:17:35 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+//se stai veramente leggendo questa descrizione ho paura il il tuo QI
+int	count_args(t_words **words)
+{
+	t_words	*tmp;
+	int		i;
+
+	(*words) = (*words)->next;
+	tmp = *words;
+	i = -1;
+	while (++i + 1 && tmp != NULL && tmp->pipe == 0)
+		tmp = tmp->next;
+	return (i);
+}
+
+//alloca un nodo di cmds tutto inpostato a NULL
 t_cmd	*calloc_cmds(t_data *data)
 {
 	t_cmd	*cmds;
@@ -83,7 +98,6 @@ t_cmd	*parsing(char *line, t_data *data)
 	head = words;
 	cmds = calloc_cmds(data);
 	command_slicer(cmds, &words, data, &head);
-	print_word(head);
 	first = cmds;
 	while (!data->status && words != NULL)
 	{
@@ -92,6 +106,5 @@ t_cmd	*parsing(char *line, t_data *data)
 		else
 			cmds = new_command(cmds, &words, data);
 	}
-	//cmds->next = NULL;
 	return (free_words_only_pointers(head), first);
 }

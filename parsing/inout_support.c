@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inout_support.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 09:52:47 by fre007            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/03/07 12:01:50 by fre007           ###   ########.fr       */
-=======
-/*   Updated: 2025/03/07 11:55:44 by alborghi         ###   ########.fr       */
->>>>>>> a9d9dff523d001db3417c8e6aa5e96ab1f41d705
+/*   Updated: 2025/03/07 12:14:18 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,41 +80,14 @@ char	*remove_finded(char *word, char *finded, t_data *data)
 	return (free (word), new_word);
 }
 
-//freea la lista words
-void	free_words_word(t_words *words)
-{
-	t_words	*tmp;
-
-	while (words != NULL)
-	{
-		tmp = words;
-		words = words->next;
-		if (tmp->word != NULL)
-			free(tmp->word);
-		tmp->word = NULL;
-	}
-}
-
 //controlla che non ci sia un errore di sintassi. < seguito da un altro <
 int	check_sintax_error(t_words *tmp, char *finded, t_data *data)
 {
 	if (finded[0] == '<' || finded[0] == '>')
 		data->status = 1;
-<<<<<<< HEAD
 	else if (tmp->next != NULL
 		&& tmp->next->word != NULL && !finded[0]
-=======
-		return (data->status);
-	}
-	else if (finded != NULL && tmp->next != NULL
-		&& tmp->next->word != NULL && !finded[ft_strlen_int(find)]
->>>>>>> a9d9dff523d001db3417c8e6aa5e96ab1f41d705
 		&& (tmp->next->word[0] == '<' || tmp->next->word[0] == '>'))
 		data->status = 1;
-<<<<<<< HEAD
-=======
-		return (data->status);
-	}
->>>>>>> a9d9dff523d001db3417c8e6aa5e96ab1f41d705
 	return (data->status);
 }

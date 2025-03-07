@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inout.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/03/07 12:07:01 by fre007           ###   ########.fr       */
-=======
-/*   Updated: 2025/03/07 11:56:07 by alborghi         ###   ########.fr       */
->>>>>>> a9d9dff523d001db3417c8e6aa5e96ab1f41d705
+/*   Updated: 2025/03/07 12:18:48 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +26,6 @@ char	*find_after_word(char *find, t_words **tmp, t_data *data)
 			break ;
 		(*tmp) = (*tmp)->next;
 	}
-	
 	if (arr[1] == NULL || (!arr[1][ft_strlen(find)] && (*tmp)->next == NULL))
 		return ((*tmp) = first, NULL);
 	if (check_sintax_error(*tmp, &arr[1][ft_strlen(find)], data))
