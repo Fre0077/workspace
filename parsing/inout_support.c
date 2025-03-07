@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inout_support.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 09:52:47 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 10:52:40 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 11:31:09 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,17 @@ int	check_sintax_error(t_words *tmp, char *finded, char *find, t_data *data)
 		&& (finded[ft_strlen(find)] == '<' || finded[ft_strlen(find)] == '>'))
 	{
 		free(finded);
+		free_words(tmp);
 		data->status = 1;
+		return (data->status);
 	}
 	if (finded != NULL && !finded[ft_strlen(find)]
 		&& (tmp->next->word[0] == '<' || tmp->next->word[0] == '>'))
 	{
 		free(finded);
+		free_words(tmp);
 		data->status = 1;
+		return (data->status);
 	}
 	return (data->status);
 }

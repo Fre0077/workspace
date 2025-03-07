@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inout.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 10:55:25 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 11:09:57 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,16 @@ char	*find_after_word(char *find, t_words **tmp, t_data *data)
 		return ((*tmp) = first, NULL);
 	if (check_sintax_error(*tmp, arr[1], find, data))
 		return (NULL);
-	arr[2] = NULL;
+	arr[0] = NULL;
 	if (ft_strlen(find) == ft_strlen((*tmp)->word))
-		arr[2] = clear_2_node(tmp, &first, data);
+		arr[0] = clear_2_node(tmp, &first, data);
 	else if (ft_strlen(find) == ft_strlen(arr[1]))
-		arr[2] = clear_next_node(tmp, arr[1], &first, data);
+		arr[0] = clear_next_node(tmp, arr[1], &first, data);
 	else if (ft_strlen((*tmp)->word) == ft_strlen(arr[1]))
-		arr[2] = clear_this_node(tmp, &arr[1][ft_strlen(find)], &first, data);
+		arr[0] = clear_this_node(tmp, &arr[1][ft_strlen(find)], &first, data);
 	else if (arr[1][ft_strlen(find)])
-		arr[2] = remove_last_part(tmp, arr[1], find, data);
-	return ((*tmp) = first, arr[2]);
+		arr[0] = remove_last_part(tmp, arr[1], find, data);
+	return ((*tmp) = first, arr[0]);
 }
 
 char	*findable_file(t_words *words)

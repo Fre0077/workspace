@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:04:44 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 11:08:26 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 11:31:54 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,19 @@ void	free_words(t_words *words)
 		words = words->next;
 		free(tmp->word);
 		free(tmp);
+	}
+}
+
+void	free_words_words(t_words *words)
+{
+	t_words	*tmp;
+
+	while (words != NULL)
+	{
+		tmp = words;
+		words = words->next;
+		free(tmp->word);
+		// free(tmp);
 	}
 }
 
