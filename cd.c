@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 10:52:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 10:33:18 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 15:39:00 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	set_env(t_env *env, char *key, char *value)
 int	exec_cd(t_data *data)
 {
 	char	*oldpwd;
+	char	*path;
 
 	if (!data->cmds)
 		return (1);
@@ -76,21 +77,29 @@ int	exec_cd(t_data *data)
 	if (!data->cmds->args || data->cmds->args[0] == NULL
 		|| data->cmds->args[0][0] == '\0')
 	{
-		if (chdir(getenv("HOME")) == -1)
+		if (chdir(get_env(data->env, "HOME")) == -1)
 		{
 			printf("cd: HOME not set\n");
 			free(oldpwd);
 			return (1);
 		}
 	}
-	else if (ft_strncmp(data->cmds->args[0], "~", 2) == 0)
+	else if (ft_strncmp(data->cmds->args[0], "~/", 2) == 0
+			|| ft_strncmp(data->cmds->args[0], "~", 2) == 0)
 	{
-		if (chdir(data->home) == -1)
+		if (get_env(data->env, "HOME") != NULL)
+			path = ft_strjoin(get_env(data->env, "HOME"),
+						data->cmds->args[0] + 1);
+		else
+			path = ft_strjoin(data->home, data->cmds->args[0] + 1);
+		if (chdir(path) == -1)
 		{
 			printf("cd: %s: No such file or directory\n", data->home);
+			free(path);
 			free(oldpwd);
 			return (1);
 		}
+		free(path);
 	}
 	else if (ft_strncmp(data->cmds->args[0], "-", 2) == 0)
 	{

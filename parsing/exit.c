@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:04:44 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 12:15:30 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 14:51:37 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,10 @@ void	free_cmds(t_cmd *cmds)
 		free(tmp->cmd);
 		ft_free_mat_char(tmp->args);
 		free(tmp->divider);
+		free(tmp->file_o);
+		free(tmp->file_a);
+		ft_free_mat_char(tmp->file_i);
+		ft_free_mat_char(tmp->delimiter);
 		free(tmp);
 	}
 }

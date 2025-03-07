@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 14:25:46 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 15:26:43 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	dup_file(char *file, int std, int mode)
 		return (free(file), -1);
 	// printf("file: %s\n", file);
 	close(fd);
-	free(file);
 	return (0);
 }
 
@@ -52,6 +51,7 @@ int	open_last(char **file, int doi)
 {
 	int	fd;
 	int	i;
+	char	*tmp;
 
 	if (!file || !file[0])
 		return (-1);
@@ -69,14 +69,16 @@ int	open_last(char **file, int doi)
 		return (-1);
 	if (doi != 1)
 		return (close(fd), 0);
-	if (dup_file(ft_strdup(file[i]), 0, O_RDONLY) == -1)
-		return (-1);
-	close(fd);
-	return (0);
+	tmp = ft_strdup(file[i]);
+	if (!tmp || dup_file(tmp, 0, O_RDONLY) == -1)
+		return (free(tmp), -1);
+	return (free(tmp), close(fd), 0);
 }
 
 void	free_files(t_cmd *cmd)
 {
+	if (cmd->delimiter)
+		ft_free_mat_char(cmd->delimiter);
 	if (cmd->file_i)
 		ft_free_mat_char(cmd->file_i);
 	if (cmd->file_o)
@@ -88,14 +90,12 @@ void	free_files(t_cmd *cmd)
 int	handle_files(t_cmd *cmd, t_data *data)
 {
 	handle_delimiter(cmd->delimiter, cmd->doi, data);
-	ft_free_mat_char(cmd->delimiter);
+	// ft_free_mat_char(cmd->delimiter);
 	if (cmd->file_i)
 	{
 		// printf("file_i: %s\n", cmd->file_i[0]);
 		if (open_last(cmd->file_i, cmd->doi) == -1)
-			return (free_files(cmd),
-				ft_printf("minishell: No such file or directory\n"), -1);
-		ft_free_mat_char(cmd->file_i);
+			return (ft_printf("minishell: No such file or directory\n"), -1);
 		// printf("file_i freed\n");
 	}
 	if (cmd->file_o)
@@ -103,6 +103,7 @@ int	handle_files(t_cmd *cmd, t_data *data)
 		// printf("file_o: %s\n", cmd->file_o);
 		if (dup_file(cmd->file_o, 1, O_CREAT | O_WRONLY | O_TRUNC) == -1)
 			return (-1);
+		// free(cmd->file_o);
 		// printf("file_o freed\n");
 	}
 	else if (cmd->file_a)
@@ -110,8 +111,10 @@ int	handle_files(t_cmd *cmd, t_data *data)
 		// printf("file_a: %s\n", cmd->file_a);
 		if (dup_file(cmd->file_a, 1, O_CREAT | O_WRONLY | O_APPEND) == -1)
 			return (-1);
+		// free(cmd->file_a);
 		// printf("file_a freed\n");
 	}
+	// free_files(cmd);
 	return (0);
 }
 
