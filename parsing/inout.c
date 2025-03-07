@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 10:23:39 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 10:55:25 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void	check_file(char *find, t_words **words, t_cmd *cmds, t_data *data)
 }
 
 //verifica tutte le informazioni per i simboli: <, <<, >>, >
-t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds, int end)
+t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds)
 {
 	char	*find;
 	t_words	*tmp;
@@ -142,7 +142,7 @@ t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds, int end)
 	cmds->delimiter = NULL;
 	cmds->doi = 0;
 	find = findable_file(words);
-	while (find != NULL)
+	while (!data->status && find != NULL)
 	{
 		data->find = find;
 		check_file(find, &words, cmds, data);
@@ -152,7 +152,7 @@ t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds, int end)
 		find = findable_file(words);
 	}
 	tmp = words;
-	while (end && tmp != NULL)
+	while (tmp != NULL)
 		tmp = dollar_manager(data, tmp);
 	return (words);
 }

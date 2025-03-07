@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 10:19:08 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 10:57:20 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h)
 	int		i;
 	int		j;
 
-	(*words) = inout_manager(*words, data, cmds, 1);
+	(*words) = inout_manager(*words, data, cmds);
 	if (h != NULL)
 		(*h) = (*words);
 	if (data->status || (*words) == NULL)
@@ -70,7 +70,7 @@ t_cmd	*parsing(char *line, t_data *data)
 		ft_exit(data, 1);
 	command_slicer(cmds, &words, data, &head);
 	first = cmds;
-	while (words != NULL)
+	while (!data->status && words != NULL)
 	{
 		if (words->pipe == 1)
 			words = words->next;

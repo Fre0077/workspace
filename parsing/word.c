@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:12:42 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 10:21:26 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 10:30:02 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ t_words	*pipe_manager(int *i, t_data *data, t_words *words)
 {
 	char	*str;
 
-	ft_printf("-----bruh\n");
 	words->next = malloc(sizeof(t_words));
 	if (!words->next)
 		ft_exit(data, 1);

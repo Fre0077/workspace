@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 09:52:47 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 09:55:45 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 10:52:40 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,17 @@ char	*remove_finded(char *word, char *finded, t_data *data)
 //controlla che non ci sia un errore di sintassi. < seguito da un altro <
 int	check_sintax_error(t_words *tmp, char *finded, char *find, t_data *data)
 {
-	if (finded[ft_strlen(find)] == '<' || finded[ft_strlen(find)] == '>')
+	if (finded != NULL
+		&& (finded[ft_strlen(find)] == '<' || finded[ft_strlen(find)] == '>'))
+	{
+		free(finded);
 		data->status = 1;
-	if (!finded[ft_strlen(find)]
+	}
+	if (finded != NULL && !finded[ft_strlen(find)]
 		&& (tmp->next->word[0] == '<' || tmp->next->word[0] == '>'))
+	{
+		free(finded);
 		data->status = 1;
+	}
 	return (data->status);
 }
