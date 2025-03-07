@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 09:34:56 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 09:41:32 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,13 @@ int	open_last(char **file, int doi)
 int	handle_files(t_cmd *cmd, t_data *data)
 {
 	handle_delimiter(cmd->delimiter, cmd->doi, data);
+	ft_free_mat_char(cmd->delimiter);
 	if (cmd->file_i)
 	{
 		if (open_last(cmd->file_i, cmd->doi) == -1)
-			return (ft_printf("minishell: No such file or directory\n"), -1);
+			return (ft_free_mat_char(cmd->file_i),
+				ft_printf("minishell: No such file or directory\n"), -1);
+		ft_free_mat_char(cmd->file_i);
 	}
 	if (cmd->file_o)
 	{
@@ -91,9 +94,6 @@ int	handle_files(t_cmd *cmd, t_data *data)
 		if (dup_file(cmd->file_a, 1, O_CREAT | O_WRONLY | O_APPEND) == -1)
 			return (-1);
 	}
-	if (cmd->file_i)
-		ft_free_mat_char(cmd->file_i);
-	ft_free_mat_char(cmd->delimiter);
 	return (0);
 }
 

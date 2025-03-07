@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inout.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 09:09:48 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 09:42:49 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,34 +279,12 @@ void	check_file(char *find, t_words **words, t_cmd *cmds, t_data *data)
 	}
 }
 
-//se i file di input in data non sono vuoti li freea
-void	free_input_data_file(t_cmd *cmds)
-{
-	int	i;
-
-	i = 0;
-	if (cmds->file_i[i] != NULL)
-	{
-		while (cmds->file_i[i] != NULL)
-			free (cmds->file_i[i++]);
-		free (cmds->file_i);
-	}
-	i = 0;
-	if (cmds->delimiter != NULL)
-	{
-		while (cmds->delimiter[i] != NULL)
-			free (cmds->delimiter[i++]);
-		free (cmds->delimiter);
-	}
-}
-
 //verifica tutte le informazioni per i simboli: <, <<, >>, >
 t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds, int end)
 {
 	char	*find;
 	t_words	*tmp;
 
-	free_input_cmd_file(data);
 	cmds->file_o = NULL;
 	cmds->file_a = NULL;
 	cmds->file_i = NULL;
