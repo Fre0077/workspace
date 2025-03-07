@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 12:17:45 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 14:14:11 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ int	main(int ac, char **av, char **env)
 			ft_exit(&data, 0);
 		}
 		data.cmds = parsing(line, &data);
-		//ft_printf("-------------------------------------------\n");
-		//print_cmd(data.cmds);
-		//print_data(&data);
-		//ft_printf("-------------------------------------------\n");
-		// printf("status: %d\n", data.status);
+		ft_printf("-------------------------------------------\n");
+		print_cmd(data.cmds);
+		print_data(&data);
+		ft_printf("-------------------------------------------\n");
+		printf("status: %d\n", data.status);
 		if (data.status == 1)
 		{
 			free_cmds(data.cmds);
