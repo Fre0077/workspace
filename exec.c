@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 19:02:52 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 09:34:56 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	handle_files(t_cmd *cmd, t_data *data)
 	if (cmd->file_i)
 	{
 		if (open_last(cmd->file_i, cmd->doi) == -1)
-			return (ft_printf("minishell: No such file or directory"), -1);
+			return (ft_printf("minishell: No such file or directory\n"), -1);
 	}
 	if (cmd->file_o)
 	{
