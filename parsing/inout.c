@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 11:09:57 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 11:56:07 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,12 @@ char	*find_after_word(char *find, t_words **tmp, t_data *data)
 			break ;
 		(*tmp) = (*tmp)->next;
 	}
+	
 	if (arr[1] == NULL || (!arr[1][ft_strlen(find)] && (*tmp)->next == NULL))
 		return ((*tmp) = first, NULL);
+	print_word(first);
 	if (check_sintax_error(*tmp, arr[1], find, data))
-		return (NULL);
+		return (ft_printf("synthax error: too many '<>'\n"), print_word(first), NULL);
 	arr[0] = NULL;
 	if (ft_strlen(find) == ft_strlen((*tmp)->word))
 		arr[0] = clear_2_node(tmp, &first, data);
@@ -136,10 +138,6 @@ t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds)
 	char	*find;
 	t_words	*tmp;
 
-	cmds->file_o = NULL;
-	cmds->file_a = NULL;
-	cmds->file_i = NULL;
-	cmds->delimiter = NULL;
 	cmds->doi = 0;
 	find = findable_file(words);
 	while (!data->status && find != NULL)
