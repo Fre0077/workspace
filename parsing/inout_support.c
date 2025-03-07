@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 09:52:47 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 10:52:40 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 11:52:01 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,19 +80,39 @@ char	*remove_finded(char *word, char *finded, t_data *data)
 	return (free (word), new_word);
 }
 
+//freea la lista words
+void	free_words_word(t_words *words)
+{
+	t_words	*tmp;
+
+	while (words != NULL)
+	{
+		tmp = words;
+		words = words->next;
+		if (tmp->word != NULL)
+			free(tmp->word);
+		tmp->word = NULL;
+	}
+}
+
 //controlla che non ci sia un errore di sintassi. < seguito da un altro <
 int	check_sintax_error(t_words *tmp, char *finded, char *find, t_data *data)
 {
-	if (finded != NULL
-		&& (finded[ft_strlen(find)] == '<' || finded[ft_strlen(find)] == '>'))
+	if (finded != NULL && (finded[ft_strlen_int(find)] == '<'
+		|| finded[ft_strlen_int(find)] == '>'))
 	{
+		//ft_printf("cosa cosa cosa cosa cosa cosa \n");
 		free(finded);
+		//free_words_word(tmp);
 		data->status = 1;
 	}
-	if (finded != NULL && !finded[ft_strlen(find)]
+	else if (finded != NULL && tmp->next != NULL
+		&& tmp->next->word != NULL && !finded[ft_strlen_int(find)]
 		&& (tmp->next->word[0] == '<' || tmp->next->word[0] == '>'))
 	{
+		//ft_printf("cosa cosa cosa cosa cosa cosa \n");
 		free(finded);
+		//free_words_word(tmp);
 		data->status = 1;
 	}
 	return (data->status);

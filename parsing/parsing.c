@@ -6,11 +6,29 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 10:57:20 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 11:42:15 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+t_cmd	*calloc_cmds(t_data *data)
+{
+	t_cmd	*cmds;
+
+	cmds = (t_cmd *)malloc(sizeof(t_cmd));
+	if (!cmds)
+		ft_exit(data, 1);
+	cmds->file_o = NULL;
+	cmds->file_a = NULL;
+	cmds->file_i = NULL;
+	cmds->delimiter = NULL;
+	cmds->divider = NULL;
+	cmds->args = NULL;
+	cmds->cmd = NULL;
+	cmds->next = NULL;
+	return (cmds);
+}
 
 //scrive il comando all'interno di un nodo della lista cmds
 void	command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h)
@@ -45,9 +63,7 @@ t_cmd	*new_command(t_cmd *cmds, t_words **words, t_data *data)
 {
 	t_cmd	*new_cmd;
 
-	new_cmd = (t_cmd *)malloc(sizeof(t_cmd));
-	if (!new_cmd)
-		ft_exit(data, 1);
+	new_cmd = calloc_cmds(data);
 	cmds->next = new_cmd;
 	command_slicer(new_cmd, words, data, NULL);
 	return (new_cmd);
@@ -65,9 +81,7 @@ t_cmd	*parsing(char *line, t_data *data)
 		return (NULL);
 	words = word_slicer(line, data);
 	head = words;
-	cmds = malloc(sizeof(t_cmd));
-	if (!cmds)
-		ft_exit(data, 1);
+	cmds = calloc_cmds(data);
 	command_slicer(cmds, &words, data, &head);
 	first = cmds;
 	while (!data->status && words != NULL)
