@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 09:33:54 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 09:42:49 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,6 @@ char				*findable_file(t_words *words);
 void				open_useless_file(t_cmd *cmds, int witch);
 void				check_file(char *find, t_words **words, t_cmd *cmds,
 						t_data *data);
-void				free_input_data_file(t_cmd *cmds);
 t_words				*inout_manager(t_words *words, t_data *data, t_cmd *cmds,
 						int end);
 //------------------------------------------------------------
