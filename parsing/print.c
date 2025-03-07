@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:13 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 11:39:34 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 14:17:19 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	print_cmd(t_cmd *cmds)
 		else
 			ft_printf("(nil)\n");
 		ft_printf("divider: %s\n", cmds->divider);
+		ft_printf("file_o: %s\n", cmds->file_o);
+		ft_printf("file_a: %s\n", cmds->file_a);
 		ft_printf("next: %p\n", cmds->next);
 		cmds = cmds->next;
 	}
