@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 11:59:42 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 12:15:52 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,10 +154,15 @@ t_words				*dollar_manager(t_data *data, t_words *words);
 //------------------------------------------------------------
 //exit.c 5
 
-void				free_cmds(t_cmd *cmds);
+void				free_words_word(t_words *words);
 void				free_words(t_words *words);
+void				free_cmds(t_cmd *cmds);
 void				free_env(t_env *env);
 void				ft_exit(t_data *data, int sig);
+//------------------------------------------------------------
+//extra_free.c 1
+
+void				free_words_only_pointers(t_words *words);
 //------------------------------------------------------------
 //inout_remover.c 4
 
@@ -174,7 +179,6 @@ char				*remove_last_part(t_words **tmp, char *finded,
 char				*ft_strstr(char *big, char *little);
 t_words				*remove_node_words(t_words *words, t_words *first);
 char				*remove_finded(char *word, char *finded, t_data *data);
-void				free_words_word(t_words *words);
 int					check_sintax_error(t_words *tmp, char *finded,
 						t_data *data);
 //------------------------------------------------------------
@@ -187,14 +191,10 @@ void				check_file(char *find, t_words **words, t_cmd *cmds,
 						t_data *data);
 t_words				*inout_manager(t_words *words, t_data *data, t_cmd *cmds);
 //------------------------------------------------------------
-//parsing_support.c 6
+//parsing.c 5
 
-void				empty_cmd(t_cmd *cmds);
 int					count_args(t_words **words);
-void				free_words_only_pointers(t_words *words);
-//------------------------------------------------------------
-//parsing.c 6
-
+t_cmd				*calloc_cmds(t_data *data);
 void				command_slicer(t_cmd *cmds, t_words **words,
 						t_data *data, t_words **h);
 t_cmd				*new_command(t_cmd *cmds, t_words **words, t_data *data);

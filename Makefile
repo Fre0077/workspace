@@ -16,10 +16,10 @@ parsing/char_manager.c \
 parsing/dollar_stupid.c \
 parsing/dollar.c \
 parsing/exit.c \
+parsing/extra_free.c \
 parsing/inout_remover.c \
 parsing/inout_support.c \
 parsing/inout.c \
-parsing/parsing_support.c \
 parsing/parsing.c \
 parsing/print.c \
 parsing/word.c
