@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 09:43:05 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 09:44:41 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +229,7 @@ void				free_words(t_words *words);
 void				free_env(t_env *env);
 void				ft_exit(t_data *data, int sig);
 //------------------------------------------------------------
-//inout.c 14
+//inout.c 13
 
 char				*ft_strstr(char *big, char *little);
 t_words				*remove_node_words(t_words *words, t_words *first);
