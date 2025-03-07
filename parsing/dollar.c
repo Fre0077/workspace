@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 11:56:10 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 15:22:33 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,12 @@ char	*copy_in_str(char *word, int *i, int j, t_data *data)
 //gestisce il caso in cui l'espanzione della variabile deve creare più argomenti
 t_words	*multi_args_case(t_data *data, t_words *words, int *j)
 {
+	t_words	*next;
 	char	**arr;
 	int		pos;
 	int		i;
 
+	next = words->next;
 	pos = ft_strlen_int(words->word) - *j + 1;
 	arr = ft_split(words->word, ' ');
 	free (words->word);
@@ -54,7 +56,7 @@ t_words	*multi_args_case(t_data *data, t_words *words, int *j)
 	i = 0;
 	while (arr[0] != NULL && arr[++i] != NULL)
 		words = new_word(words, arr[i], data);
-	words->next = NULL;
+	words->next = next;
 	if (i > 0)
 		*j = ft_strlen_int(arr[i - 1]) - pos;
 	return (free (arr), words);
@@ -100,6 +102,7 @@ t_words	*dollar_manager(t_data *data, t_words *words)
 
 	i = 0;
 	check = 0;
+	print_word(words);
 	while (!data->status && words->word != NULL && words->word[i])
 	{
 		words->word = dollar_remover(words->word, &i, check, data);
@@ -108,7 +111,7 @@ t_words	*dollar_manager(t_data *data, t_words *words)
 		if (check != pre)
 			words->word = remove_char(words->word, i, data);
 		else if (check != 1 && words->word[i] == '$'
-			&& (i == 0 || words->word[i - 1] != '\\'))
+				&& (i == 0 || words->word[i - 1] != '\\'))
 			words = dollar_converter(words->word, &i, data, words);
 		else if (((check != 1 && words->word[i] == '$')
 				|| words->word[i] == '\'' || words->word[i] == '\"')

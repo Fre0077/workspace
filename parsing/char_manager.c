@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:11:55 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/05 17:48:54 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 15:07:04 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ int	quote_checker(char *line, int i)
 	{
 		if ((i == 0 && mark == 0) || (mark == 0 && line[i - 1] != '\\'))
 			mark = 1;
-		else if (i > 0 && line[i - 1] != '\\' && mark == 1)
+		else if (((i > 0 && line[i - 1] != '\\') || i == 0) && mark == 1)
 			mark = 0;
 	}
 	if (line[i] == '\"')
 	{
 		if ((i == 0 && mark == 0) || (mark == 0 && line[i - 1] != '\\'))
 			mark = 2;
-		else if (i > 0 && line[i - 1] != '\\' && mark == 2)
+		else if (((i > 0 && line[i - 1] != '\\') || i == 0) && mark == 2)
 			mark = 0;
 	}
 	if (mark == 2)

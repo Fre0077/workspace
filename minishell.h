@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 12:15:52 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 14:29:37 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,7 @@ t_cmd				*parsing(char *line, t_data *data);
 //print.c 3
 
 void				print_word(t_words *words);
+void				print_i_delimiter(t_cmd *cmds);
 void				print_cmd(t_cmd *cmds);
 void				print_data(t_data *data);
 //------------------------------------------------------------
