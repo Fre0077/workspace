@@ -6,32 +6,11 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:04:44 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 09:10:55 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 10:19:32 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-//se i file di input in data non sono vuoti li freea
-void	free_input_data_file(t_cmd *cmds)
-{
-	int	i;
-
-	i = 0;
-	if (cmds->file_i[i] != NULL)
-	{
-		while (cmds->file_i[i] != NULL)
-			free (cmds->file_i[i++]);
-		free (cmds->file_i);
-	}
-	i = 0;
-	if (cmds->delimiter != NULL)
-	{
-		while (cmds->delimiter[i] != NULL)
-			free (cmds->delimiter[i++]);
-		free (cmds->delimiter);
-	}
-}
 
 //freea la lista words
 void	free_words(t_words *words)

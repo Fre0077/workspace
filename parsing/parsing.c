@@ -3,34 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/06 19:03:53 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 10:19:08 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	empty_cmd(t_cmd *cmds)
-{
-	cmds->cmd = NULL;
-	cmds->args = NULL;
-}
-
-//se stai veramente leggendo questa descrizione ho paura il il tuo QI
-int	count_args(t_words **words)
-{
-	t_words	*tmp;
-	int		i;
-
-	(*words) = (*words)->next;
-	tmp = *words;
-	i = -1;
-	while (++i + 1 && tmp != NULL && tmp->pipe == 0)
-		tmp = tmp->next;
-	return (i);
-}
 
 //scrive il comando all'interno di un nodo della lista cmds
 void	command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h)
@@ -71,18 +51,6 @@ t_cmd	*new_command(t_cmd *cmds, t_words **words, t_data *data)
 	cmds->next = new_cmd;
 	command_slicer(new_cmd, words, data, NULL);
 	return (new_cmd);
-}
-
-void	free_words_only_pointers(t_words *words)
-{
-	t_words	*tmp;
-
-	while (words != NULL)
-	{
-		tmp = words;
-		words = words->next;
-		free(tmp);
-	}
 }
 
 //crea la lista contenente la lista cmds facendo il parsing necessario
