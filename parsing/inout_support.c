@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 09:52:47 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 11:55:44 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 11:59:14 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ int	check_sintax_error(t_words *tmp, char *finded, char *find, t_data *data)
 		|| finded[ft_strlen_int(find)] == '>'))
 	{
 		//ft_printf("cosa cosa cosa cosa cosa cosa \n");
-		free(finded);
-		//free_words_word(tmp);
+		// free(finded);
+		free_words_word(tmp);
 		data->status = 1;
 		return (data->status);
 	}
@@ -112,8 +112,8 @@ int	check_sintax_error(t_words *tmp, char *finded, char *find, t_data *data)
 		&& (tmp->next->word[0] == '<' || tmp->next->word[0] == '>'))
 	{
 		//ft_printf("cosa cosa cosa cosa cosa cosa \n");
-		free(finded);
-		//free_words_word(tmp);
+		// free(finded);
+		free_words_word(tmp);
 		data->status = 1;
 		return (data->status);
 	}
