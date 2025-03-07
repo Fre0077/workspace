@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 14:14:11 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 14:28:10 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int	main(int ac, char **av, char **env)
 		ft_printf("-------------------------------------------\n");
 		print_cmd(data.cmds);
 		print_data(&data);
-		ft_printf("-------------------------------------------\n");
 		printf("status: %d\n", data.status);
+		ft_printf("-------------------------------------------\n");
 		if (data.status == 1)
 		{
 			free_cmds(data.cmds);

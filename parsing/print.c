@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:13 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 11:39:34 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 14:24:48 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,33 @@ void	print_word(t_words *words)
 	}
 	ft_printf("%p\n", words);
 	ft_printf("-----------\n");
+}
+
+//printa il file_i e il delimiter del cmds
+void	print_i_delimiter(t_cmd *cmds)
+{
+	int	i;
+
+	i = -1;
+	ft_printf("file_i: ");
+	if (cmds->file_i != NULL)
+	{
+		while (cmds->file_i[++i] != NULL)
+			ft_printf("%s, ", cmds->file_i[i]);
+		ft_printf("%s\n", cmds->file_i[i]);
+	}
+	else
+		ft_printf("(nil)\n");
+	i = -1;
+	ft_printf("delimiter: ");
+	if (cmds->delimiter != NULL)
+	{
+		while (cmds->delimiter[++i] != NULL)
+			ft_printf("%s, ", cmds->delimiter[i]);
+		ft_printf("%s\n", cmds->delimiter[i]);
+	}
+	else
+		ft_printf("(nil)\n");
 }
 
 //printa tutta la lista dei comandi
@@ -45,6 +72,9 @@ void	print_cmd(t_cmd *cmds)
 		else
 			ft_printf("(nil)\n");
 		ft_printf("divider: %s\n", cmds->divider);
+		ft_printf("file_o: %s\n", cmds->file_o);
+		ft_printf("file_a: %s\n", cmds->file_a);
+		print_i_delimiter(cmds);
 		ft_printf("next: %p\n", cmds->next);
 		cmds = cmds->next;
 	}
