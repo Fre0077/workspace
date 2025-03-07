@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 11:36:46 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 09:56:04 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 15:57:59 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,7 @@ char			*ft_strjoin_free_1(char *s1, char *s2);
 char			*ft_strjoin_mat(char **mat, char *sep);
 char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_strjoin_free_1_2(char const *s1, char const *s2);
+char			*ft_strjoin_free_2(char const *s1, char const *s2);
 size_t			ft_strlcat(char *dest, char *src, size_t size);
 size_t			ft_strlcpy(char *dest, const char *src, size_t size);
 size_t			ft_strlen(const char *str);

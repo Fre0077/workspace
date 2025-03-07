@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 10:52:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 15:39:00 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 16:04:41 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	set_env(t_env *env, char *key, char *value)
 int	exec_cd(t_data *data)
 {
 	char	*oldpwd;
-	char	*path;
+	char	*tmp;
 
 	if (!data->cmds)
 		return (1);
@@ -79,7 +79,9 @@ int	exec_cd(t_data *data)
 	{
 		if (chdir(get_env(data->env, "HOME")) == -1)
 		{
-			printf("cd: HOME not set\n");
+			tmp = ft_strjoin("minishell: cd: ", get_env(data->env, "HOME"));
+			perror(tmp);
+			free(tmp);
 			free(oldpwd);
 			return (1);
 		}
@@ -88,18 +90,19 @@ int	exec_cd(t_data *data)
 			|| ft_strncmp(data->cmds->args[0], "~", 2) == 0)
 	{
 		if (get_env(data->env, "HOME") != NULL)
-			path = ft_strjoin(get_env(data->env, "HOME"),
+			tmp = ft_strjoin(get_env(data->env, "HOME"),
 						data->cmds->args[0] + 1);
 		else
-			path = ft_strjoin(data->home, data->cmds->args[0] + 1);
-		if (chdir(path) == -1)
+			tmp = ft_strjoin(data->home, data->cmds->args[0] + 1);
+		if (chdir(tmp) == -1)
 		{
-			printf("cd: %s: No such file or directory\n", data->home);
-			free(path);
+			tmp = ft_strjoin_free_2("minishell: cd: ", tmp);
+			perror(tmp);
+			free(tmp);
 			free(oldpwd);
 			return (1);
 		}
-		free(path);
+		free(tmp);
 	}
 	else if (ft_strncmp(data->cmds->args[0], "-", 2) == 0)
 	{
@@ -107,22 +110,28 @@ int	exec_cd(t_data *data)
 		{
 			if (chdir(get_env(data->env, "OLDPWD")) == -1)
 			{
-				printf("cd: %s No such file or directory\n",
-					get_env(data->env, "OLDPWD"));
+				tmp = ft_strjoin("minishell: cd: ",
+							get_env(data->env, "OLDPWD"));
+				perror(tmp);
+				free(tmp);
 				free(oldpwd);
 				return (1);
 			}
 		}
 		else if (!data->oldpwd || chdir(data->oldpwd) == -1)
 		{
-			printf("cd: %s No such file or directory\n", data->oldpwd);
+			tmp = ft_strjoin("minishell: cd: ", data->oldpwd);
+			perror(tmp);
+			free(tmp);
 			free(oldpwd);
 			return (1);
 		}
 	}
 	else if (chdir(data->cmds->args[0]) == -1)
 	{
-		printf("cd: %s No such file or directory\n", data->cmds->args[0]);
+		tmp = ft_strjoin("minishell: cd: ", data->cmds->args[0]);
+		perror(tmp);
+		free(tmp);
 		free(oldpwd);
 		return (1);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 15:22:33 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 15:41:21 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ t_words	*dollar_manager(t_data *data, t_words *words)
 
 	i = 0;
 	check = 0;
-	print_word(words);
+	// print_word(words);
 	while (!data->status && words->word != NULL && words->word[i])
 	{
 		words->word = dollar_remover(words->word, &i, check, data);
