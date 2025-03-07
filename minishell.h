@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 10:56:28 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 11:59:42 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,8 +174,9 @@ char				*remove_last_part(t_words **tmp, char *finded,
 char				*ft_strstr(char *big, char *little);
 t_words				*remove_node_words(t_words *words, t_words *first);
 char				*remove_finded(char *word, char *finded, t_data *data);
+void				free_words_word(t_words *words);
 int					check_sintax_error(t_words *tmp, char *finded,
-						char *find, t_data *data);
+						t_data *data);
 //------------------------------------------------------------
 //inout.c 5
 

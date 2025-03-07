@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:04:44 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 11:31:54 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 12:15:30 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+//freea le word della lista words
+void	free_words_word(t_words *words)
+{
+	t_words	*tmp;
+
+	while (words != NULL)
+	{
+		tmp = words;
+		words = words->next;
+		if (tmp->word != NULL)
+			free(tmp->word);
+		tmp->word = NULL;
+	}
+}
 
 //freea la lista words
 void	free_words(t_words *words)
@@ -23,19 +38,6 @@ void	free_words(t_words *words)
 		words = words->next;
 		free(tmp->word);
 		free(tmp);
-	}
-}
-
-void	free_words_words(t_words *words)
-{
-	t_words	*tmp;
-
-	while (words != NULL)
-	{
-		tmp = words;
-		words = words->next;
-		free(tmp->word);
-		// free(tmp);
 	}
 }
 
