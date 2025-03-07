@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:01:27 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 18:48:23 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 10:52:08 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,20 @@ void	ft_put_export(t_env *env)
 	}
 }
 
-int	substitute_env_var(char *var, char *arg)
+int	substitute_env_var(char **var, char *arg)
 {
 	if (ft_strchr(arg, '=') == NULL)
 		return (0);
-	free(var);
-	var = ft_strdup(arg);
-	if (!var)
+	if (ft_strchr(arg, '+') != NULL)
+	{
+		*var = ft_strjoin_free_1(*var, ft_strchr(arg, '=') + 1);
+		if (!*var)
+			return (1);
+		return (0);
+	}
+	free(*var);
+	*var = ft_strdup(arg);
+	if (!*var)
 		return (1);
 	return (0);
 }
@@ -57,7 +64,18 @@ int	append_env_var(t_env *last, char *arg, int is_env)
 	last->next = (t_env *)malloc(sizeof(t_env));
 	if (!last->next)
 		return (1);
-	last->next->var = ft_strdup(arg);
+	if (ft_strchr(arg, '+') != NULL)
+	{
+		last->next->var = ft_strndup(arg, ft_strchr(arg, '+') - arg);
+		if (!last->next->var)
+			return (1);
+		last->next->var = ft_strjoin_free_1(last->next->var,
+				ft_strchr(arg, '='));
+		if (!last->next->var)
+			return (1);
+	}
+	else
+		last->next->var = ft_strdup(arg);
 	if (!last->next->var)
 		return (1);
 	last->next->is_env = is_env;
@@ -81,7 +99,7 @@ int	export_cmd(char *arg, t_env *env)
 	{
 		if (check_key(tmp->var, arg) == TRUE)
 		{
-			if (substitute_env_var(tmp->var, arg) == 1)
+			if (substitute_env_var(&(tmp->var), arg) == 1)
 				return (1);
 			tmp->is_env = is_env;
 			return (0);
@@ -103,7 +121,7 @@ int	check_arg(char *arg, char *cmd)
 		ft_printf("minishell: %s: `%s': not a valid identifier\n", cmd, arg);
 		return (1);
 	}
-	while (arg[i] && arg[i] != '=')
+	while (arg[i] && arg[i] != '=' && arg[i] != '+')
 	{
 		if (ft_isalnum(arg[i]) == 0 && arg[i] != '_')
 		{
@@ -112,6 +130,16 @@ int	check_arg(char *arg, char *cmd)
 			return (1);
 		}
 		i++;
+	}
+	if (i == 0)
+	{
+		ft_printf("minishell: %s: `%s': not a valid identifier\n", cmd, arg);
+		return (1);
+	}
+	if (arg[i] == '+' && arg[i + 1] != '=')
+	{
+		ft_printf("minishell: %s: `%s': not a valid identifier\n", cmd, arg);
+		return (1);
 	}
 	return (0);
 }
