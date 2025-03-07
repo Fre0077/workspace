@@ -1,0 +1,3 @@
+I limiti per i tipi integer in C e C++ sono elencati nella tabella seguente. Questi limiti sono definiti nel file <limits.h>di intestazione standard C . L'intestazione <limits> della libreria standard C++ include <climits>, che include <limits.h>.
+
+Microsoft C consente anche la dichiarazione di variabili integer ridimensionate, che sono tipi integrali di dimensioni pari a 8, 16, 32 o 64 bit. Per altre informazioni sui numeri interi ridimensionati in C, vedere Tipi integer ridimensionati.
