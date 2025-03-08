@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 15:41:21 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/08 15:50:14 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,13 @@ t_words	*multi_args_case(t_data *data, t_words *words, int *j)
 	int		i;
 
 	next = words->next;
-	pos = ft_strlen_int(words->word) - *j + 1;
+	pos = ft_strlen_int(words->word) - *j;
 	arr = ft_split(words->word, ' ');
-	free (words->word);
-	words->word = arr[0];
+	if (arr[0] != NULL)
+	{
+		free (words->word);
+		words->word = arr[0];
+	}
 	words->pipe = 0;
 	i = 0;
 	while (arr[0] != NULL && arr[++i] != NULL)
@@ -102,7 +105,6 @@ t_words	*dollar_manager(t_data *data, t_words *words)
 
 	i = 0;
 	check = 0;
-	// print_word(words);
 	while (!data->status && words->word != NULL && words->word[i])
 	{
 		words->word = dollar_remover(words->word, &i, check, data);

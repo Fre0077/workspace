@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 16:57:28 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/08 11:14:51 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/08 15:22:18 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	check_syntax_error(char *line, t_data *data)
 	pos3 = search_for_minmag(line, '>');
 	if ((pos3 != -1 && pos2 > pos3) || pos2 == -1)
 		pos2 = pos3;
-	//ft_printf("#########: %s    %d    %d\n", line, pos, pos2);
 	if (pos != -1 || pos2 != -1)
 		print_syntax_error(line, pos, pos2, data);
 	return (data->status);
