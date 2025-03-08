@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/08 11:12:59 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/08 14:45:02 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ typedef struct s_data
 	char			*find;
 	char			*home;
 	char			*pwd;
-	char			*oldpwd;
 	int				status;
 	int				stdo;
 	int				stdi;
@@ -117,6 +116,8 @@ int					set_env(t_env *env, char *key, char *value);
 int					exec_cd(t_data *data);
 
 // export.c
+int					substitute_env_var(char **var, char *arg);
+int					append_env_var(t_env *last, char *arg, int is_env);
 int					check_arg(char *arg, char *cmd);
 int					exec_export(t_cmd *cmds, t_env *env);
 

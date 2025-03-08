@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 10:52:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 16:04:41 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/08 14:35:55 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,12 @@ char	*get_env(t_env *env, char *key)
 int	set_env(t_env *env, char *key, char *value)
 {
 	t_env	*tmp;
+	t_env	*last;
 
 	if (!env || !key || !value)
 		return (1);
 	tmp = env;
+	last = env;
 	while (tmp)
 	{
 		if (check_key(tmp->var, key) == TRUE)
@@ -59,8 +61,11 @@ int	set_env(t_env *env, char *key, char *value)
 			tmp->var = ft_strjoin_free_1_2(ft_strjoin(key, "="), value);
 			return (0);
 		}
+		last = tmp;
 		tmp = tmp->next;
 	}
+	append_env_var(last, ft_strjoin_free_1_2(ft_strjoin(key, "="),
+				value), TRUE);
 	return (1);
 }
 
@@ -77,11 +82,17 @@ int	exec_cd(t_data *data)
 	if (!data->cmds->args || data->cmds->args[0] == NULL
 		|| data->cmds->args[0][0] == '\0')
 	{
-		if (chdir(get_env(data->env, "HOME")) == -1)
+		if (get_env(data->env, "HOME") == NULL
+			|| chdir(get_env(data->env, "HOME")) == -1)
 		{
-			tmp = ft_strjoin("minishell: cd: ", get_env(data->env, "HOME"));
-			perror(tmp);
-			free(tmp);
+			if (get_env(data->env, "HOME") == NULL)
+				write(2, "minishell: cd: HOME not set\n", 28);
+			else
+			{
+				tmp = ft_strjoin("minishell: cd: ", get_env(data->env, "HOME"));
+				perror(tmp);
+				free(tmp);
+			}
 			free(oldpwd);
 			return (1);
 		}
@@ -118,11 +129,9 @@ int	exec_cd(t_data *data)
 				return (1);
 			}
 		}
-		else if (!data->oldpwd || chdir(data->oldpwd) == -1)
+		else
 		{
-			tmp = ft_strjoin("minishell: cd: ", data->oldpwd);
-			perror(tmp);
-			free(tmp);
+			write(2, "minishell: cd: OLDPWD not set\n", 30);
 			free(oldpwd);
 			return (1);
 		}
@@ -135,28 +144,9 @@ int	exec_cd(t_data *data)
 		free(oldpwd);
 		return (1);
 	}
-	if (get_env(data->env, "OLDPWD"))
-	{
-		free(data->oldpwd);
-		data->oldpwd = ft_strdup(oldpwd);
-		set_env(data->env, "OLDPWD", oldpwd);
-	}
-	else
-	{
-		free(data->oldpwd);
-		data->oldpwd = ft_strdup(oldpwd);
-		free(oldpwd);
-	}
-	if (get_env(data->env, "PWD"))
-	{
-		free(data->pwd);
-		data->pwd = getcwd(NULL, 0);
-		set_env(data->env, "PWD", getcwd(NULL, 0));
-	}
-	else
-	{
-		free(data->pwd);
-		data->pwd = getcwd(NULL, 0);
-	}
+	set_env(data->env, "OLDPWD", oldpwd);
+	free(data->pwd);
+	data->pwd = getcwd(NULL, 0);
+	set_env(data->env, "PWD", getcwd(NULL, 0));
 	return (0);
 }

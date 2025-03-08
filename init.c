@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:29:44 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 15:37:07 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/08 14:27:39 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,6 @@ int	init_data(t_data *data, char **env)
 		return (1);
 	data->pwd = ft_strdup(get_env(data->env, "PWD"));
 	if (!data->pwd)
-		return (1);
-	data->oldpwd = ft_strdup(get_env(data->env, "OLDPWD"));
-	if (!data->oldpwd)
 		return (1);
 	data->stdi = dup(0);
 	data->stdo = dup(1);
