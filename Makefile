@@ -15,6 +15,7 @@ heredoc.c \
 parsing/char_manager.c \
 parsing/dollar_stupid.c \
 parsing/dollar.c \
+parsing/error.c \
 parsing/exit.c \
 parsing/extra_free.c \
 parsing/inout_remover.c \
@@ -57,7 +58,7 @@ val: all
 
 vall: all
 	clear
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp ./$(NAME)
+	valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp ./$(NAME)
 
 TEST = \
 init.c \

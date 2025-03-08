@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inout_support.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 09:52:47 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 12:20:53 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 16:51:00 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,3 @@ char	*remove_finded(char *word, char *finded, t_data *data)
 	return (free (word), new_word);
 }
 
-//controlla che non ci sia un errore di sintassi. < seguito da un altro <
-int	check_sintax_error(t_words *tmp, char *finded, t_data *data)
-{
-	if (finded[0] == '<' || finded[0] == '>')
-		data->status = 1;
-	else if (tmp->next != NULL
-		&& tmp->next->word != NULL && !finded[0]
-		&& (tmp->next->word[0] == '<' || tmp->next->word[0] == '>'))
-		data->status = 1;
-	return (data->status);
-}

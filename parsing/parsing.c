@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 12:17:35 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/07 18:46:01 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,11 @@ t_cmd	*parsing(char *line, t_data *data)
 
 	if (line[0] == '\0' || line == NULL || line[0] == '\n')
 		return (NULL);
+	cmds = calloc_cmds(data);
+	if (check_syntax_error(line, data))
+		return (cmds);
 	words = word_slicer(line, data);
 	head = words;
-	cmds = calloc_cmds(data);
 	command_slicer(cmds, &words, data, &head);
 	first = cmds;
 	while (!data->status && words != NULL)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 15:50:08 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/08 11:12:59 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,15 @@ t_words				*dollar_converter(char *word, int *i, t_data *data,
 char				*dollar_remover(char *word, int *i, int check, t_data *data);
 t_words				*dollar_manager(t_data *data, t_words *words);
 //------------------------------------------------------------
+//error.c 4
+
+int					check_syntax_error(char *line, t_data *data);
+void				print_syntax_error(char *line, int pos, int pos2
+						, t_data *data);
+int					support_print(char *line, int pos, int pos2, char c);
+int					search_for_minmag(char *line, char c);
+int					search_for_pip(char *line);
+//------------------------------------------------------------
 //exit.c 5
 
 void				free_words_word(t_words *words);
@@ -174,13 +183,11 @@ char				*clear_this_node(t_words **tmp, char *finded,
 char				*remove_last_part(t_words **tmp, char *finded,
 						char *find, t_data *data);
 //------------------------------------------------------------
-//inout_support.c 4
+//inout_support.c 3
 
 char				*ft_strstr(char *big, char *little);
 t_words				*remove_node_words(t_words *words, t_words *first);
 char				*remove_finded(char *word, char *finded, t_data *data);
-int					check_sintax_error(t_words *tmp, char *finded,
-						t_data *data);
 //------------------------------------------------------------
 //inout.c 5
 
