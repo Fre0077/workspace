@@ -58,7 +58,7 @@ val: all
 
 vall: all
 	clear
-	valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp ./$(NAME)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp ./$(NAME)
 
 TEST = \
 init.c \

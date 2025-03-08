@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 10:52:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/08 14:35:55 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/08 15:26:32 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	set_env(t_env *env, char *key, char *value)
 {
 	t_env	*tmp;
 	t_env	*last;
+	char	*tmp_var;
 
 	if (!env || !key || !value)
 		return (1);
@@ -64,9 +65,12 @@ int	set_env(t_env *env, char *key, char *value)
 		last = tmp;
 		tmp = tmp->next;
 	}
-	append_env_var(last, ft_strjoin_free_1_2(ft_strjoin(key, "="),
-				value), TRUE);
-	return (1);
+	tmp_var = ft_strjoin_free_1_2(ft_strjoin(key, "="),
+							value);
+	if (!tmp_var)
+		return (1);
+	append_env_var(last, tmp_var, TRUE);
+	return (free(tmp_var), 1);
 }
 
 int	exec_cd(t_data *data)
@@ -128,6 +132,7 @@ int	exec_cd(t_data *data)
 				free(oldpwd);
 				return (1);
 			}
+			printf("%s\n", get_env(data->env, "OLDPWD"));
 		}
 		else
 		{
