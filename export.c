@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:01:27 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 10:52:08 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 19:23:54 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int	substitute_env_var(char **var, char *arg)
 		return (0);
 	if (ft_strchr(arg, '+') != NULL)
 	{
+		if (ft_strchr(*var, '=') == NULL)
+			*var = ft_strjoin_free_1(*var, "=");
 		*var = ft_strjoin_free_1(*var, ft_strchr(arg, '=') + 1);
 		if (!*var)
 			return (1);

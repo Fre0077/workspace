@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:13 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 14:24:48 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/08 14:34:00 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void	print_data(t_data *data)
 	ft_printf("data->status: %d\n", data->status);
 	ft_printf("data->home: %p\n", data->home);
 	ft_printf("data->pwd: %p\n", data->pwd);
-	ft_printf("data->oldpwd: %p\n", data->oldpwd);
 	ft_printf("data->stdin: %d\n", data->stdi);
 	ft_printf("data->stdout: %d\n", data->stdo);
 }

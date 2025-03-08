@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:57:54 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 16:08:08 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/07 19:01:55 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	skip_useless(char **delimiter)
 			i++;
 			continue ;
 		}
-		if (ft_strncmp(line, delimiter[i], ft_strlen(delimiter[i])) == 0)
+		if (ft_strncmp(line, delimiter[i], ft_strlen(delimiter[i]) + 1) == 0)
 		{
 			i++;
 			j = 1;
