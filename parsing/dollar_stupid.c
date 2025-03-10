@@ -6,11 +6,36 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/05 17:49:02 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/10 08:26:45 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+//sostituisce il $? con il valore di status attuale
+char	*status_report(char *word, int *i, t_data *data)
+{
+	char	*new_word;
+	char	*str;
+	int		l;
+	int		y;
+
+	str = ft_itoa(data->status);
+	new_word = ft_calloc(1, ft_strlen(str) + ft_strlen(word) - 1);
+	if (!new_word)
+		ft_exit(data, 1);
+	l = -1;
+	while (++l != *i)
+		new_word[l] = word[l];
+	y = -1;
+	while (str[++y])
+		new_word[l++] = str[y];
+	y = *i + 2;
+	*i = l;
+	while (word[y])
+		new_word[l++] = word[y++];
+	return (free (word), free (str), new_word);
+}
 
 //sostituisce la variabile indicata con il valore dell'env corrispondente
 char	*copy_in_str_stupid(char *word, int *i, int j, t_data *data)
