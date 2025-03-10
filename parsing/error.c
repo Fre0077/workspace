@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 16:57:28 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/10 17:16:12 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/10 18:44:04 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	check_syntax_error(char *line, t_data *data)
 		pos2 = pos3;
 	if (pos != -1 || pos2 != -1)
 	{
-		if ((pos != -1 && !line[pos]) || (pos2 != -1 && !line[pos2]))
+		if ((pos != -1 && !line[pos]) && (pos2 != -1 && !line[pos2]))
 		{
 			ft_printf("minishell: syntax error near"
 						" unexpected token `newline'\n");

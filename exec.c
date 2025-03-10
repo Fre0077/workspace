@@ -6,22 +6,23 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/10 17:03:51 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/10 18:32:16 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_put_env(t_env *env, int is_env)
+int	ft_put_env(t_env *env, int is_env)
 {
 	if (!env)
-		return ;
+		return (0);
 	while (env)
 	{
 		if (!(is_env == TRUE && env->is_env == FALSE))
 			ft_printf("%s\n", env->var);
 		env = env->next;
 	}
+	return (0);
 }
 
 int	check_pipe(t_cmd *cmds)
@@ -90,31 +91,21 @@ void	free_files(t_cmd *cmd)
 int	handle_files(t_cmd *cmd, t_data *data)
 {
 	handle_delimiter(cmd->delimiter, cmd->doi, data);
-	// ft_free_mat_char(cmd->delimiter);
 	if (cmd->file_i)
 	{
-		// printf("file_i: %s\n", cmd->file_i[0]);
 		if (open_last(cmd->file_i, cmd->doi) == -1)
 			return (ft_printf("minishell: No such file or directory\n"), -1);
-		// printf("file_i freed\n");
 	}
 	if (cmd->file_o)
 	{
-		// printf("file_o: %s\n", cmd->file_o);
 		if (dup_file(cmd->file_o, 1, O_CREAT | O_WRONLY | O_TRUNC) == -1)
 			return (-1);
-		// free(cmd->file_o);
-		// printf("file_o freed\n");
 	}
 	else if (cmd->file_a)
 	{
-		// printf("file_a: %s\n", cmd->file_a);
 		if (dup_file(cmd->file_a, 1, O_CREAT | O_WRONLY | O_APPEND) == -1)
 			return (-1);
-		// free(cmd->file_a);
-		// printf("file_a freed\n");
 	}
-	// free_files(cmd);
 	return (0);
 }
 
@@ -138,25 +129,22 @@ int	call_function(t_data *data)
 {
 	if (handle_files(data->cmds, data) == -1)
 		return (-1);
-	/* if (data->cmds == NULL)
-		return (data->status = 1, 0); */
 	if (ft_strncmp(data->cmds->cmd, "echo", 5) == 0)
-		data->status = exec_echo(data->cmds->args);
+		data->out = exec_echo(data->cmds->args);
 	else if (ft_strncmp(data->cmds->cmd, "cd", 3) == 0)
-		data->status = exec_cd(data);
+		data->out = exec_cd(data);
 	else if (ft_strncmp(data->cmds->cmd, "pwd", 4) == 0)
-		data->status = print_PWD(data->pwd);
+		data->out = print_PWD(data->pwd);
 	else if (ft_strncmp(data->cmds->cmd, "export", 7) == 0)
-		data->status = exec_export(data->cmds, data->env);
+		data->out = exec_export(data->cmds, data->env);
 	else if (ft_strncmp(data->cmds->cmd, "unset", 6) == 0)
-		data->status = exec_unset(data);
+		data->out = exec_unset(data);
 	else if (ft_strncmp(data->cmds->cmd, "env", 4) == 0)
-		ft_put_env(data->env, TRUE);
+		data->out = ft_put_env(data->env, TRUE);
 	else if (ft_strncmp(data->cmds->cmd, "exit", 5) == 0)
 		ft_exit_builtin(data);
-	// return (printf("exit\n"), data->status = 1, ft_exit(data, 100), -1);
 	else
-		exec_execve(data);
+		data->out = exec_execve(data);
 	return (0);
 }
 
@@ -216,7 +204,6 @@ void	exec_cmd(t_data *data)
 	int	fd[2];
 	int	pid;
 
-	printf("exec_cmd\n");
 	if (check_cmds(data->cmds, data->env) == 1)
 		return ;
 	if (check_pipe(data->cmds))

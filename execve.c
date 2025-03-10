@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:23:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/06 18:58:33 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/10 18:41:30 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ char	*find_path(char *cmd, char *path)
 	int		i;
 	char	*tmp;
 
+	if (!path)
+		return (NULL);
 	paths = ft_split(path, ':');
 	if (!paths)
 		return (NULL);
@@ -110,12 +112,13 @@ int	execute_command(char *path, char **argv, char **env)
 {
 	pid_t	pid;
 	int		status;
-
+	
 	pid = fork();
 	if (pid == -1)
-		return (perror("fork"), -1);
+	return (perror("fork"), -1);
 	if (pid == 0)
 	{
+		// signal(SIGQUIT, sig_quit);
 		execve(path, argv, env);
 		perror("execve");
 		ft_exit(NULL, 1);
@@ -124,10 +127,12 @@ int	execute_command(char *path, char **argv, char **env)
 	{
 		waitpid(pid, &status, 0);
 		free_execve(path, argv, env);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+		if (WIFSIGNALED(status))
+			return (WTERMSIG(status) + 128);
 		if (WIFEXITED(status))
 			return (WEXITSTATUS(status));
-		else if (WIFSIGNALED(status))
-			return (WTERMSIG(status) + 128);
 		return (1);
 	}
 	return (0);
@@ -150,21 +155,17 @@ int	exec_execve(t_data *data)
 	{
 		printf("execve: %s\n", data->cmds->cmd);
 		exec = ft_strdup(data->cmds->cmd);
-		if (!exec)
-			return (ft_free_mat_char(argv), ft_free_mat_char(env), 1);
-		if (execute_command(exec, argv, env) == -1)
+		if (!exec || execute_command(exec, argv, env) == -1)
 			return (printf("exec error!\n"), free_execve(exec, argv, env), 1);
 		return (0);
 	}
 	path = get_env(data->env, "PATH");
-	if (!path)
-		return (printf("command not found: %s\n", data->cmds->cmd), 1);
-	if (path[0] == '=')
-		path++;
 	exec = find_path(data->cmds->cmd, path);
 	if (!exec)
-		return (printf("command not found: %s\n", data->cmds->cmd), 1);
-	if (execute_command(exec, argv, env) == -1)
-		return (printf("exec error!\n"), free_execve(exec, argv, env), 1);
-	return (0);
+		return (ft_printf("minishell: %s: No such file or directory\n",
+				data->cmds->cmd), 127);
+	// if (execute_command(exec, argv, env) != 0)
+	// 	return (printf("exec error!\n"), free_execve(exec, argv, env), 1);
+	// return (0);
+	return (execute_command(exec, argv, env));
 }

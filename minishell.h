@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/10 17:03:12 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/10 18:53:13 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define FALSE 0
 # define CUSTOM 2
 
-# define MINI "\033[1;36mminishell\033[1;31m > \033[0m"
+# define MINI "\001\033[1;36m\002minishell\001\033[1;31m\002 > \001\033[0m\002"
 
 extern int			g_signal;
 
@@ -89,10 +89,9 @@ int					init_data(t_data *data, char **env);
 
 // signal.c
 void				init_signals(void);
-void				new_prompt_sigact(int signum, siginfo_t *info,
-						void *context);
 void				new_prompt(int signum);
-void				get_history(int signum);
+void				sig_quit(int signum);
+void				sig_ignore(int signum);
 
 // ft_readline.c
 char				*ft_strjoin_readline(char *s1, char *s2);
@@ -101,7 +100,7 @@ char				*ft_readline(char *prompt);
 // exec.c
 int					handle_files(t_cmd *cmd, t_data *data);
 int					reset_std(t_data *data);
-void				ft_put_env(t_env *env, int is_env);
+int					ft_put_env(t_env *env, int is_env);
 void				ft_put_char_mat(char **mat);
 void				exec_cmd(t_data *data);
 

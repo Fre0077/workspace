@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 10:57:05 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/10 17:12:15 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/10 18:38:15 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,16 @@ void	new_prompt(int signum)
 	rl_replace_line("", 0);
 	rl_redisplay();
 	g_signal = 1;
+}
+
+void	sig_quit(int signum)
+{
+	(void)signum;
+	ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+	exit(131);
+}
+
+void	sig_ignore(int signum)
+{
+	(void)signum;
 }
