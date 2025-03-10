@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 16:57:28 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/10 14:07:45 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/10 17:06:24 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,27 +25,46 @@ int	check_syntax_error(char *line, t_data *data)
 	if ((pos3 != -1 && pos2 > pos3) || pos2 == -1)
 		pos2 = pos3;
 	if (pos != -1 || pos2 != -1)
-		print_syntax_error(line, pos, pos2, data);
+	{
+		if ((pos != -1 && !line[pos]) || (pos2 != -1 && !line[pos2]))
+		{
+			ft_printf("minishell: syntax error near"
+						" unexpected token `newline'\n");
+			data->status = 2;
+		}
+		else
+			print_syntax_error(line, pos, pos2, data);
+	}
 	return (data->status);
 }
 
 //stampa il messaggio di errore corretto
 void	print_syntax_error(char *line, int pos, int pos2, t_data *data)
 {
-	if ((pos != -1 && !line[pos]) || (pos2 != -1 && !line[pos2]))
+	if (pos > pos2 && line[pos2] != '|')
 	{
-		ft_printf("minishell: syntax error near unexpected token `newline'\n");
-		data->status = 1;
+		if (support_print(line, pos, pos2, '<'))
+			data->status = 2;
+		else if (support_print(line, pos, pos2, '>'))
+			data->status = 2;
+		else if ((pos != -1 && line[pos] == '|')
+				|| (pos2 != -1 && line[pos2] == '|'))
+		{
+			ft_printf("minishell: syntax error near unexpected token `|'\n");
+			data->status = 2;
+		}
 	}
-	if (support_print(line, pos, pos2, '<'))
-		data->status = 1;
-	else if (support_print(line, pos, pos2, '>'))
-		data->status = 1;
-	else if ((pos != -1 && line[pos + 1] == '|') 
-			|| (pos2 != -1 && line[pos2 + 1] == '|'))
+	else
 	{
-		ft_printf("minishell: syntax error near unexpected token `|'\n");
-		data->status = 1;
+		if ((pos != -1 && line[pos] == '|') || (pos2 != -1 && line[pos2] == '|'))
+		{
+			ft_printf("minishell: syntax error near unexpected token `|'\n");
+			data->status = 2;
+		}
+		else if (support_print(line, pos, pos2, '<'))
+			data->status = 2;
+		else if (support_print(line, pos, pos2, '>'))
+			data->status = 2;
 	}
 }
 
@@ -58,13 +77,13 @@ int	support_print(char *line, int pos, int pos2, char c)
 		if ((pos2 != -1 && line[pos2] && line[pos2 + 1] == c)
 			|| (pos != -1 && line[pos] && line[pos + 1] == c))
 		{
-			ft_printf("minishell: syntax error near unexpected token `%c%c'\n"
-						, c, c);
+			ft_printf("minishell: syntax error"
+						" near unexpected token `%c%c'\n", c, c);
 		}
 		else
 		{
-			ft_printf("minishell: syntax error near unexpected token `%c'\n"
-						, c);
+			ft_printf("minishell: syntax error"
+						" near unexpected token `%c'\n", c);
 		}
 		return (1);
 	}
