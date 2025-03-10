@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/08 14:45:02 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/10 08:26:52 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ char				*remove_char(char *word, int i, t_data *data);
 //------------------------------------------------------------
 //dollar_stupid.c 3
 
+char				*status_report(char *word, int *i, t_data *data);
 char				*copy_in_str_stupid(char *word, int *i, int j,
 						t_data *data);
 char				*dollar_converter_stupid(char *word, int *i, t_data *data);
