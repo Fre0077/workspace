@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/10 09:45:27 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/10 17:03:51 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,23 +127,29 @@ int	reset_std(t_data *data)
 	return (0);
 }
 
+int	print_PWD(char *pwd)
+{
+	printf("%s\n", pwd);
+	return (0);
+}
+
 //TODO: do check on data->status and if value is -1 exit program with status 1
 int	call_function(t_data *data)
 {
 	if (handle_files(data->cmds, data) == -1)
 		return (-1);
-	if (data->cmds == NULL)
-		return (data->status = 1, 0);
+	/* if (data->cmds == NULL)
+		return (data->status = 1, 0); */
 	if (ft_strncmp(data->cmds->cmd, "echo", 5) == 0)
-		exec_echo(data->cmds->args);
+		data->status = exec_echo(data->cmds->args);
 	else if (ft_strncmp(data->cmds->cmd, "cd", 3) == 0)
-		exec_cd(data);
+		data->status = exec_cd(data);
 	else if (ft_strncmp(data->cmds->cmd, "pwd", 4) == 0)
-		printf("%s\n", data->pwd);
+		data->status = print_PWD(data->pwd);
 	else if (ft_strncmp(data->cmds->cmd, "export", 7) == 0)
-		exec_export(data->cmds, data->env);
+		data->status = exec_export(data->cmds, data->env);
 	else if (ft_strncmp(data->cmds->cmd, "unset", 6) == 0)
-		exec_unset(data);
+		data->status = exec_unset(data);
 	else if (ft_strncmp(data->cmds->cmd, "env", 4) == 0)
 		ft_put_env(data->env, TRUE);
 	else if (ft_strncmp(data->cmds->cmd, "exit", 5) == 0)
@@ -244,7 +250,7 @@ void	exec_cmd(t_data *data)
 			close(fd[0]);
 			data->cmds = data->cmds->next;
 			exec_cmd(data);
-			// waitpid(pid, NULL, 0);
+			waitpid(pid, NULL, 0);
 		}
 	}
 	else

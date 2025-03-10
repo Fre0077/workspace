@@ -6,13 +6,53 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/10 14:10:03 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/10 17:04:12 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	g_signal;
+
+int	check_is_folder(char *file)
+{
+	struct stat	buf;
+
+	if (!file)
+		return (0);
+	if (stat(file, &buf) == 0)
+	{
+		if (S_ISDIR(buf.st_mode))
+		{
+			ft_printf("minishell: %s: is a directory\n", file);
+			return (1);
+		}
+	}
+	return (0);
+}
+
+int	check_files(t_cmd *cmds)
+{
+	int		i;
+
+	while (cmds)
+	{
+		if (check_is_folder(cmds->file_a) == 1
+			|| check_is_folder(cmds->file_o) == 1)
+		{
+			return (1);
+		}
+		i = 0;
+		while (cmds->file_i && cmds->file_i[i])
+		{
+			if (check_is_folder(cmds->file_i[i]) == 1)
+				return (1);
+			i++;
+		}
+		cmds = cmds->next;
+	}
+	return (0);
+}
 
 // ctrl + d -> EOF (get_next_line returns NULL) -> exit
 int	main(int ac, char **av, char **env)
@@ -44,10 +84,10 @@ int	main(int ac, char **av, char **env)
 		print_data(&data);
 		printf("status: %d\n", data.status);
 		ft_printf("-------------------------------------------\n");
-		if (data.status == 1)
+		if (data.status != 0)
 		{
-			free_cmds(data.cmds);
 			data.status = 0;
+			free_cmds(data.cmds);
 			history = ft_strtrim(line, "\n ");
 			// history = ft_strdup(line);
 			add_history(history);
@@ -57,6 +97,12 @@ int	main(int ac, char **av, char **env)
 		}
 		if (data.cmds == NULL)
 			continue ;
+		if (check_files(data.cmds) == 1)
+		{
+			free_cmds(data.cmds);
+			data.status = 1;
+			continue ;
+		}
 		if (data.cmds->cmd == NULL)
 		{
 			// printf("cmds: %s\n", data.cmds->cmd);

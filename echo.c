@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 10:46:54 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 15:21:24 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/10 16:20:06 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	handle_echo_flags(char **args)
 
 	i = 0;
 	f = 0;
-	while (args[i])
+	while (args && args[i])
 	{
 		j = 0;
 		while (args[i][j] == ' ')
@@ -41,13 +41,11 @@ int	handle_echo_flags(char **args)
 	return (f);
 }
 
-void	exec_echo(char **args)
+int	exec_echo(char **args)
 {
 	int		i;
 	int		f;
 
-	if (!args)
-		return ;
 	i = 0;
 	f = handle_echo_flags(args);
 	if (f != 0)
@@ -61,4 +59,5 @@ void	exec_echo(char **args)
 	}
 	if (f == 0)
 		printf("\n");
+	return (0);
 }

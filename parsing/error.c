@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 16:57:28 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/10 14:07:45 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/10 14:27:49 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	print_syntax_error(char *line, int pos, int pos2, t_data *data)
 		data->status = 1;
 	else if (support_print(line, pos, pos2, '>'))
 		data->status = 1;
-	else if ((pos != -1 && line[pos + 1] == '|') 
-			|| (pos2 != -1 && line[pos2 + 1] == '|'))
+	else if ((pos != -1 && line[pos] == '|') 
+			|| (pos2 != -1 && line[pos2] == '|'))
 	{
 		ft_printf("minishell: syntax error near unexpected token `|'\n");
 		data->status = 1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/10 08:26:52 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/10 17:03:12 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 
 # define HISTORY "/nfs/homes/alborghi/miei_file/42_core/milestone_3/minishell/.history"
 
@@ -77,6 +78,7 @@ typedef struct s_data
 	int				stdo;
 	int				stdi;
 	int				prompt;
+	int				out;
 }					t_data;
 
 // main.c
@@ -107,7 +109,7 @@ void				exec_cmd(t_data *data);
 void				handle_delimiter(char **delimiter, int doi, t_data *data);
 
 // echo.c
-void				exec_echo(char **args);
+int					exec_echo(char **args);
 
 // cd.c
 int					check_key(char *var, char *key);
