@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/10 18:53:13 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/10 21:35:19 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,11 +158,6 @@ t_words				*dollar_manager(t_data *data, t_words *words);
 //error.c 4
 
 int					check_syntax_error(char *line, t_data *data);
-void				print_syntax_error(char *line, int pos, int pos2
-						, t_data *data);
-int					support_print(char *line, int pos, int pos2, char c);
-int					search_for_minmag(char *line, char c);
-int					search_for_pip(char *line);
 //------------------------------------------------------------
 //exit.c 5
 
