@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 15:26:43 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/10 09:45:27 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,6 +210,7 @@ void	exec_cmd(t_data *data)
 	int	fd[2];
 	int	pid;
 
+	printf("exec_cmd\n");
 	if (check_cmds(data->cmds, data->env) == 1)
 		return ;
 	if (check_pipe(data->cmds))

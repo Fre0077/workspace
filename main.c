@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/10 14:19:42 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/10 17:08:57 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	main(int ac, char **av, char **env)
 			// printf("cmds: %s\n", data.cmds->cmd);
 			handle_files(data.cmds, &data);
 			free_cmds(data.cmds);
+			reset_std(&data);
 			continue ;
 		}
 		data.head = data.cmds;
