@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 16:57:28 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/11 09:07:57 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/11 09:32:05 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,9 @@ void	find_after_error(char *line, t_data *data)
 {
 	int	i;
 
-	ft_printf("pattaat mosca: %c\n", line[0]);
 	i = 0;
 	while (line[i] && ft_strchr("<>| ", line[i]) != NULL && !data->status)
 	{
-		ft_printf("pattaat mosca2D\n");
 		if (line[i] == '>' || line[i] == '<')
 		{
 			if (line[i + 1] == line[i])
