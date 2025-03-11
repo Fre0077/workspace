@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 10:14:20 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/01/20 10:35:25 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:41:39 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	process(char *command, char **env)
 	{
 		free(path);
 		free_arr(arg);
-		ft_printf("Error\nno process\n");
+		printf("Error\nno process\n");
 		exit (EXIT_FAILURE);
 	}
 	free(path);
@@ -75,14 +75,14 @@ int	cicle(char *cmd, char **env)
 	{
 		close(pip[0]);
 		if (dup2(pip[1], STDOUT_FILENO) == -1)
-			return (ft_printf("Error\nbad dup\n"), 0);
+			return (printf("Error\nbad dup\n"), 0);
 		process(cmd, env);
 	}
 	else
 	{
 		close(pip[1]);
 		if (dup2(pip[0], STDIN_FILENO) == -1)
-			return (ft_printf("Error\nbad dup\n"), 0);
+			return (printf("Error\nbad dup\n"), 0);
 	}
 	return (1);
 }
@@ -94,19 +94,19 @@ int	main(int ac, char **av, char **env)
 	int		fd_in;
 
 	if (ac < 4)
-		return (ft_printf("Error\ntoo few arguments\n"), 0);
+		return (printf("Error\ntoo few arguments\n"), 0);
 	fd_in = check_in(av);
 	fd_out = check_out(av, ac);
 	if (fd_in == -1 || fd_out == -1)
-		return (ft_printf("Error\nfile not opened\n"), 0);
+		return (printf("Error\nfile not opened\n"), 0);
 	i = 1;
 	if (confront(av[1], "here_doc", 0, -1))
 		i = 2;
 	while (++i < ac - 2)
 		if (cicle(av[i], env) == 0)
-			return (ft_printf("Error\nbad input dup\n"), 0);
+			return (printf("Error\nbad input dup\n"), 0);
 	if (dup2(fd_out, 1) == -1)
-		return (ft_printf("Error\nbad output dup\n"), 0);
+		return (printf("Error\nbad output dup\n"), 0);
 	process(av[i], env);
 	return (0);
 }

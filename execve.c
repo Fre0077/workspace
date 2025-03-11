@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:23:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 11:38:03 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:41:39 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ int	exec_execve(t_data *data)
 	path = get_env(data->env, "PATH");
 	exec = find_path(data->cmds->cmd, path);
 	if (!exec)
-		return (ft_printf("minishell: %s: No such file or directory\n",
+		return (printf("minishell: %s: No such file or directory\n",
 				data->cmds->cmd), 127);
 	// if (execute_command(exec, argv, env) != 0)
 	// 	return (printf("exec error!\n"), free_execve(exec, argv, env), 1);

@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 15:04:36 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/03/03 11:32:48 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:41:39 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,22 +70,22 @@ int	check_in(char **av)
 	if (confront(av[1], "here_doc", 0, -1))
 	{
 		pipe(pip);
-		ft_printf("pipe heredoc> ");
+		printf("pipe heredoc> ");
 		buf = get_next_line(0);
 		while (confront(buf, av[2], 0, ft_strlen(av[2])) == 0)
 		{
 			write(pip[1], buf, ft_strlen(buf));
-			ft_printf("pipe heredoc> ");
+			printf("pipe heredoc> ");
 			buf = get_next_line(0);
 		}
 		close(pip[1]);
 		if (dup2(pip[0], 0) == -1)
-			return (ft_printf("Error\nbad input dup\n"), 0);
+			return (printf("Error\nbad input dup\n"), 0);
 		return (0);
 	}
 	fd_in = open(av[1], O_RDWR);
 	if (dup2(fd_in, 0) == -1)
-		return (ft_printf("Error\nbad input dup\n"), 0);
+		return (printf("Error\nbad input dup\n"), 0);
 	return (fd_in);
 }
 

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "printf.h"
 
 static int	ft_check_arg(const char *input, va_list *arg, int *i, int *len)
 {
@@ -38,7 +38,7 @@ static int	ft_check_arg(const char *input, va_list *arg, int *i, int *len)
 	return ((*i)++, 1);
 }
 
-int	ft_printf(const char *input, ...)
+int	printf(const char *input, ...)
 {
 	va_list	arg;
 	int		i;
@@ -63,6 +63,6 @@ int	ft_printf(const char *input, ...)
 
 // int main()
 // {
-// 	int i = ft_printf("cioa come va la vita: %X", 11);
-// 	ft_printf("\n%d\n", i);
+// 	int i = printf("cioa come va la vita: %X", 11);
+// 	printf("\n%d\n", i);
 // }

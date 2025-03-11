@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 14:32:38 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 17:22:58 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_put_env(t_env *env, int is_env)
 	while (env)
 	{
 		if (!(is_env == TRUE && env->is_env == FALSE))
-			ft_printf("%s\n", env->var);
+			printf("%s\n", env->var);
 		env = env->next;
 	}
 	return (0);
@@ -96,7 +96,7 @@ int	handle_files(t_cmd *cmd, t_data *data)
 	if (cmd->file_i)
 	{
 		if (open_last(cmd->file_i, cmd->doi) == -1)
-			return (ft_printf("minishell: No such file or directory\n"), -1);
+			return (printf("minishell: No such file or directory\n"), -1);
 	}
 	if (cmd->file_o)
 	{
@@ -228,13 +228,10 @@ void	exec_cmd(t_data *data)
 				ft_exit(data, 1);
 			}
 			close(fd[1]);
-			// call_function(data);
 			if (call_function(data) == -1)
 			{
-				close(STDOUT_FILENO);
 				ft_exit(data, 130);
 			}
-			close(STDOUT_FILENO);
 			ft_exit(data, 0);
 		}
 		else
@@ -245,14 +242,21 @@ void	exec_cmd(t_data *data)
 				close(fd[0]);
 				ft_exit(data, 1);
 			}
-			close(fd[0]);
+			if (!is_builtin(data->cmds->cmd))
+				close(fd[0]);
+			else
+				data->fds = add_int_list(data->fds, fd[0]);
 			data->cmds = data->cmds->next;
 			exec_cmd(data);
-			waitpid(pid, &status, 0);
-			if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+			if (!check_pipe(data->cmds))
 			{
-				data->out = WEXITSTATUS(status);
-				return ;
+				waitpid(pid, &status, 0);
+				close(fd[0]);
+				if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+				{
+					data->out = WEXITSTATUS(status);
+					return ;
+				}
 			}
 		}
 	}

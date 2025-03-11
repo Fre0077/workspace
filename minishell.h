@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 11:21:36 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 17:33:04 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,12 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
+typedef struct s_int_list
+{
+	int				n;
+	struct s_int_list	*next;
+}					t_int_list;
+
 typedef struct s_data
 {
 	t_env			*env;
@@ -74,12 +80,14 @@ typedef struct s_data
 	char			*find;
 	char			*home;
 	char			*pwd;
+	t_int_list		*fds;
 	int				status;
 	int				stdo;
 	int				stdi;
 	int				prompt;
 	int				out;
 }					t_data;
+
 
 // main.c
 
@@ -132,6 +140,12 @@ int					exec_execve(t_data *data);
 
 // ft_exit.c
 void				ft_exit_builtin(t_data *data);
+
+// int_list.c
+t_int_list			*new_int_list(int n);
+t_int_list			*add_int_list(t_int_list *list, int n);
+void				free_int_list(t_int_list *list);
+void				close_fds(t_int_list *fds);
 
 //char_manager.c 4
 

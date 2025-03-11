@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putbase_long.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 17:52:19 by fde-sant          #+#    #+#             */
-/*   Updated: 2024/11/29 07:25:08 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:41:39 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "printf.h"
 
 int	ft_putbase_long(unsigned long n, char *base)
 {

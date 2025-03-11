@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 16:57:28 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/11 09:32:05 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/11 15:41:39 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ void	support_print(char c, int witch, t_data *data)
 {
 	if (witch == 1)
 	{
-		ft_printf("minishell: syntax error"
+		printf("minishell: syntax error"
 			" near unexpected token `%c'\n", c);
 		data->status = 2;
 	}
 	else
 	{
-		ft_printf("minishell: syntax error"
+		printf("minishell: syntax error"
 			" near unexpected token `%c%c'\n", c, c);
 		data->status = 2;
 	}
@@ -62,7 +62,7 @@ void	print_minmag_error(char *line, int *i, char c, t_data *data)
 		l++;
 	if (!line[l])
 	{
-		ft_printf("minishell: syntax error near unexpected token `newline'\n");
+		printf("minishell: syntax error near unexpected token `newline'\n");
 		data->status = 2;
 	}
 	else
@@ -83,12 +83,12 @@ void	print_pipe_error(char *line, int i, t_data *data)
 		l++;
 	if (j == 0)
 	{
-		ft_printf("minishell: syntax error near unexpected token `|'\n");
+		printf("minishell: syntax error near unexpected token `|'\n");
 		data->status = 2;
 	}
 	else if(!line[l])
 	{
-		ft_printf("minishell: syntax error near unexpected token `newline'\n");
+		printf("minishell: syntax error near unexpected token `newline'\n");
 		data->status = 2;
 	}
 	else
