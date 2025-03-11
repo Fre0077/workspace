@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:23:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 10:04:48 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 11:15:34 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	execute_command(char *path, char **argv, char **env)
 {
 	pid_t	pid;
 	int		status;
-	
+
 	pid = fork();
 	if (pid == -1)
 	return (perror("fork"), -1);
@@ -126,7 +126,9 @@ int	execute_command(char *path, char **argv, char **env)
 	}
 	else
 	{
+		signal(SIGINT, sig_here);
 		waitpid(pid, &status, 0);
+		signal(SIGINT, new_prompt);
 		free_execve(path, argv, env);
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
 			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);

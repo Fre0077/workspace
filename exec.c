@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 10:55:33 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 11:07:27 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,10 +229,10 @@ void	exec_cmd(t_data *data)
 			if (call_function(data) == -1)
 			{
 				close(STDOUT_FILENO);
-				ft_exit(data, -1);
+				ft_exit(data, 130);
 			}
 			close(STDOUT_FILENO);
-			ft_exit(data, 1);
+			ft_exit(data, 0);
 		}
 		else
 		{
@@ -246,9 +246,9 @@ void	exec_cmd(t_data *data)
 			data->cmds = data->cmds->next;
 			exec_cmd(data);
 			waitpid(pid, &status, 0);
-			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+			if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
 			{
-				data->out = 130;
+				data->out = WEXITSTATUS(status);
 				return ;
 			}
 		}

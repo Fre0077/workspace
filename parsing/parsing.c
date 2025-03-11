@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/11 09:14:11 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/11 10:58:33 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ t_cmd	*parsing(char *line, t_data *data)
 	if (check_syntax_error(line, data))
 		return (cmds);
 	words = word_slicer(line, data);
-	print_word(words);
+	// print_word(words);
 	head = words;
 	command_slicer(cmds, &words, data, &head);
 	first = cmds;

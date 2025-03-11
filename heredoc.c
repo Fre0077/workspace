@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:57:54 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 10:24:46 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 11:05:32 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,10 @@ int	skip_useless(char **delimiter)
 	while (delimiter[i + 1])
 	{
 		line = readline("> ");
+		if (g_signal == 130)
+		{
+			return (-1);
+		}
 		if (!line || !line[0])
 		{
 			printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", j, delimiter[i]);
@@ -114,16 +118,21 @@ void	handle_delimiter(char **delimiter, int doi, t_data *data)
 		i++;
 	}
 	signal(SIGINT, sig_here);
-	ft_printf("system error: internal problem\n");
-	ft_exit(data, 1);
 	i = skip_useless(delimiter);
+	if (i == -1)
+	{
+		signal(SIGINT, new_prompt);
+		return ;
+	}
 	pipe(fd);
 	read_last(delimiter[i], fd[1], data, q);
 	close(fd[1]);
 	if (doi == 2 && data->cmds && data->cmds->cmd && dup2(fd[0], 0) == -1)
 	{
 		close(fd[0]);
+		signal(SIGINT, new_prompt);
 		return ;
 	}
 	close(fd[0]);
+	signal(SIGINT, new_prompt);
 }

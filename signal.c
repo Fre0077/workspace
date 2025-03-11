@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 10:57:05 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 10:30:32 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 11:07:33 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	sig_here(int signum)
 	if (signum == SIGINT)
 	{
 		g_signal = 130;
-		close(0);
+		printf("\n");
+		close(0);	
 	}
 }
