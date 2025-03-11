@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/10 18:32:16 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 10:55:33 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ void	free_files(t_cmd *cmd)
 int	handle_files(t_cmd *cmd, t_data *data)
 {
 	handle_delimiter(cmd->delimiter, cmd->doi, data);
+	if (g_signal == 130)
+		return (g_signal = 0, data->out = 130, -1);
 	if (cmd->file_i)
 	{
 		if (open_last(cmd->file_i, cmd->doi) == -1)
@@ -203,6 +205,7 @@ void	exec_cmd(t_data *data)
 {
 	int	fd[2];
 	int	pid;
+	int status;
 
 	if (check_cmds(data->cmds, data->env) == 1)
 		return ;
@@ -222,7 +225,12 @@ void	exec_cmd(t_data *data)
 				ft_exit(data, 1);
 			}
 			close(fd[1]);
-			call_function(data);
+			// call_function(data);
+			if (call_function(data) == -1)
+			{
+				close(STDOUT_FILENO);
+				ft_exit(data, -1);
+			}
 			close(STDOUT_FILENO);
 			ft_exit(data, 1);
 		}
@@ -237,7 +245,12 @@ void	exec_cmd(t_data *data)
 			close(fd[0]);
 			data->cmds = data->cmds->next;
 			exec_cmd(data);
-			waitpid(pid, NULL, 0);
+			waitpid(pid, &status, 0);
+			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+			{
+				data->out = 130;
+				return ;
+			}
 		}
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/10 18:40:26 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 10:09:03 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ int	main(int ac, char **av, char **env)
 			data.status = 0;
 			free_cmds(data.cmds);
 			history = ft_strtrim(line, "\n ");
-			// history = ft_strdup(line);
 			add_history(history);
 			write_history(HISTORY);
 			free(history);
@@ -109,6 +108,10 @@ int	main(int ac, char **av, char **env)
 			handle_files(data.cmds, &data);
 			free_cmds(data.cmds);
 			reset_std(&data);
+			history = ft_strtrim(line, "\n ");
+			add_history(history);
+			write_history(HISTORY);
+			free(history);
 			continue ;
 		}
 		data.head = data.cmds;

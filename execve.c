@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:23:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/10 18:41:30 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 10:04:48 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,8 @@ int	execute_command(char *path, char **argv, char **env)
 	return (perror("fork"), -1);
 	if (pid == 0)
 	{
-		// signal(SIGQUIT, sig_quit);
+		signal(SIGQUIT, SIG_DFL);
+		signal(SIGINT, SIG_DFL);
 		execve(path, argv, env);
 		perror("execve");
 		ft_exit(NULL, 1);

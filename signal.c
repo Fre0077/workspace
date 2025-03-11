@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 10:57:05 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/10 18:38:15 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 10:30:32 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,16 @@ void	sig_quit(int signum)
 
 void	sig_ignore(int signum)
 {
+	printf("\001");
 	(void)signum;
+	printf("\002");
+}
+
+void	sig_here(int signum)
+{
+	if (signum == SIGINT)
+	{
+		g_signal = 130;
+		close(0);
+	}
 }

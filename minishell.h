@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/10 18:53:13 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 10:30:57 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ void				init_signals(void);
 void				new_prompt(int signum);
 void				sig_quit(int signum);
 void				sig_ignore(int signum);
+void				sig_here(int signum);
 
 // ft_readline.c
 char				*ft_strjoin_readline(char *s1, char *s2);

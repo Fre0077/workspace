@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:57:54 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/07 19:01:55 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 10:24:46 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,9 @@ void	handle_delimiter(char **delimiter, int doi, t_data *data)
 			delimiter[i] = remove_quote(delimiter[i]);
 		i++;
 	}
+	signal(SIGINT, sig_here);
+	ft_printf("system error: internal problem\n");
+	ft_exit(data, 1);
 	i = skip_useless(delimiter);
 	pipe(fd);
 	read_last(delimiter[i], fd[1], data, q);
