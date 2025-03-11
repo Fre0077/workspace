@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:13 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/08 14:34:00 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:03:30 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	print_cmd(t_cmd *cmds)
 	ft_printf("cmds:-----\n");
 	while (cmds != NULL)
 	{
-		ft_printf("cmd: %s\n", cmds->cmd);
+		ft_printf("cmd:  %s\n", cmds->cmd);
 		i = -1;
 		ft_printf("arg: ");
 		if (cmds->args != NULL)

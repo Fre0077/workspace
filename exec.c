@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 11:07:27 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 14:32:38 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ int	check_cmds(t_cmd *cmds, t_env *env)
 
 	path = get_env(env, "PATH");
 	if (!path)
-		return (printf("command not found: %s\n", cmds->cmd), 1);
+		return (printf("command not found: %s\n", cmds->cmd), 127);
 	tmp = cmds;
 	while (tmp)
 	{
@@ -194,7 +194,7 @@ int	check_cmds(t_cmd *cmds, t_env *env)
 		else
 			exec = find_path(tmp->cmd, path);
 		if (!exec)
-			return (printf("command not found: %s\n", tmp->cmd), 1);
+			return (printf("command not found: %s\n", tmp->cmd), 127);
 		tmp = tmp->next;
 		free(exec);
 	}
@@ -207,8 +207,11 @@ void	exec_cmd(t_data *data)
 	int	pid;
 	int status;
 
-	if (check_cmds(data->cmds, data->env) == 1)
+	if (check_cmds(data->cmds, data->env) != 0)
+	{
+		data->out = 127;
 		return ;
+	}
 	if (check_pipe(data->cmds))
 	{
 		if (pipe(fd) == -1)

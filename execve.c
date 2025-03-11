@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:23:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 11:15:34 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 11:38:03 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,11 +156,13 @@ int	exec_execve(t_data *data)
 	if (strncmp(data->cmds->cmd, "./", 2) == 0
 		|| strncmp(data->cmds->cmd, "/", 1) == 0)
 	{
-		printf("execve: %s\n", data->cmds->cmd);
+		// printf("execve: %s\n", data->cmds->cmd);
 		exec = ft_strdup(data->cmds->cmd);
-		if (!exec || execute_command(exec, argv, env) == -1)
-			return (printf("exec error!\n"), free_execve(exec, argv, env), 1);
-		return (0);
+		// if (!exec || execute_command(exec, argv, env) == -1)
+		// 	return (printf("exec error!\n"), free_execve(exec, argv, env), 1);
+		if (!exec)
+			return (ft_free_mat_char(argv), ft_free_mat_char(env), 1);
+		return (execute_command(exec, argv, env));
 	}
 	path = get_env(data->env, "PATH");
 	exec = find_path(data->cmds->cmd, path);
