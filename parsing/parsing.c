@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/10 08:08:17 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/11 09:14:11 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int	count_args(t_words **words)
 	t_words	*tmp;
 	int		i;
 
-	(*words) = (*words)->next;
+	if ((*words)->pipe == 0)
+		(*words) = (*words)->next;
 	tmp = *words;
 	i = -1;
 	while (++i + 1 && tmp != NULL && tmp->pipe == 0)
@@ -56,7 +57,7 @@ void	command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h)
 		(*h) = (*words);
 	if (data->status || (*words) == NULL)
 		return ;
-	cmds->cmd = (*words)->word;
+	set_cmd(cmds, words);
 	i = count_args(words);
 	cmds->args = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!(cmds->args))
@@ -98,6 +99,7 @@ t_cmd	*parsing(char *line, t_data *data)
 	if (check_syntax_error(line, data))
 		return (cmds);
 	words = word_slicer(line, data);
+	print_word(words);
 	head = words;
 	command_slicer(cmds, &words, data, &head);
 	first = cmds;

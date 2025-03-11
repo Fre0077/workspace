@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 16:50:47 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/11 09:38:50 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds)
 		find = findable_file(words);
 	}
 	tmp = words;
-	while (tmp != NULL)
+	while (tmp != NULL && !tmp->pipe)
 		tmp = dollar_manager(data, tmp);
 	return (words);
 }

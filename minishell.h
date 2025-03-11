@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 10:30:57 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 10:57:22 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,13 +133,14 @@ int					exec_execve(t_data *data);
 // ft_exit.c
 void				ft_exit_builtin(t_data *data);
 
-//char_manager.c 3
+//char_manager.c 4
 
 int					quote_checker(char *line, int i);
 char				*dup_till_n(char *start, int n, t_data *data);
 char				*remove_char(char *word, int i, t_data *data);
+void				set_cmd(t_cmd *cmds, t_words **words);
 //------------------------------------------------------------
-//dollar_stupid.c 3
+//dollar_stupid.c 4
 
 char				*status_report(char *word, int *i, t_data *data);
 char				*copy_in_str_stupid(char *word, int *i, int j,
@@ -158,12 +159,11 @@ t_words				*dollar_manager(t_data *data, t_words *words);
 //------------------------------------------------------------
 //error.c 4
 
+void				support_print(char c, int witch, t_data *data);
+void				find_after_error(char *line, t_data *data);
+void				print_minmag_error(char *line, int *i, char c, t_data *data);
+void				print_pipe_error(char *line, int i, t_data *data);
 int					check_syntax_error(char *line, t_data *data);
-void				print_syntax_error(char *line, int pos, int pos2
-						, t_data *data);
-int					support_print(char *line, int pos, int pos2, char c);
-int					search_for_minmag(char *line, char c);
-int					search_for_pip(char *line);
 //------------------------------------------------------------
 //exit.c 5
 
