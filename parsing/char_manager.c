@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:11:55 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/07 15:07:04 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/11 09:09:19 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,13 @@ char	*remove_char(char *word, int i, t_data *data)
 	while (word[++j])
 		new_word[++l] = word[j];
 	return (free(word), new_word);
+}
+
+//controlla che il cmd impostato sia corretto
+void	set_cmd(t_cmd *cmds, t_words **words)
+{
+	if ((*words)->pipe)
+		cmds->cmd = NULL;
+	else
+		cmds->cmd = (*words)->word;
 }

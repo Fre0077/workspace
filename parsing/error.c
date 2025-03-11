@@ -6,12 +6,13 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 16:57:28 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/10 22:00:15 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/11 09:07:57 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+//printa l'errore in base ai caratteri ed il loro numero
 void	support_print(char c, int witch, t_data *data)
 {
 	if (witch == 1)
@@ -28,6 +29,7 @@ void	support_print(char c, int witch, t_data *data)
 	}
 }
 
+//trova la parte sbagliata in seguito al carattere passatogli
 void	find_after_error(char *line, t_data *data)
 {
 	int	i;
@@ -50,6 +52,7 @@ void	find_after_error(char *line, t_data *data)
 	}
 }
 
+//in base all'errore trovato con < & > printa
 void	print_minmag_error(char *line, int *i, char c, t_data *data)
 {
 	int	l;
@@ -68,6 +71,7 @@ void	print_minmag_error(char *line, int *i, char c, t_data *data)
 		find_after_error(&line[*i + 1], data);
 }
 
+//in base all'errore trovato con | printa
 void	print_pipe_error(char *line, int i, t_data *data)
 {
 	int	j;
