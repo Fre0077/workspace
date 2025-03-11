@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/10 19:08:48 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/11 13:44:16 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,14 @@ char	*dollar_converter_stupid(char *word, int *i, t_data *data)
 		return (remove_char(word, *i - 1, data));
 	if (word[*i + 1] == '?')
 		word = status_report (word, i, data);
-	else if (ft_isalpha(word[*i + 1]) || word[*i + 1] == '_')
+	else if (ft_isalnum(word[*i + 1]) || word[*i + 1] == '_')
 	{
 		*i += 1;
-		while (ft_isalpha(word[*i]) || word[*i] == '_')
-			*i += 1;
+		if (!ft_isdigit(word[*i]))
+		{
+			while (ft_isalnum(word[*i]) || word[*i] == '_')
+				*i += 1;
+		}
 		word = copy_in_str(word, i, j, data);
 	}
 	else

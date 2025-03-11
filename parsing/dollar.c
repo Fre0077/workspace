@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/10 08:18:34 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/11 13:49:55 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,15 @@ t_words	*dollar_converter(char *word, int *i, t_data *data, t_words *words)
 	j = *i;
 	if (word[*i + 1] == '?')
 		words->word = status_report (words->word, i, data);
-	else if (ft_isalpha(word[*i + 1]) || word[*i + 1] == '_')
+	else if (ft_isalnum(word[*i + 1]) || word[*i + 1] == '_')
 	{
 		*i += 1;
-		while (ft_isalpha(word[*i]) || word[*i] == '_')
+		if (!ft_isdigit(word[*i]))
+		{
+			while (ft_isalnum(word[*i]) || word[*i] == '_')
+				*i += 1;
+		}
+		else
 			*i += 1;
 		words->word = copy_in_str(word, i, j, data);
 		if (quote_checker(NULL, 0) == 0)
