@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/12 14:54:20 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/03/12 16:44:52 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,11 @@ int	main(int ac, char **av, char **env)
 		data.cmds = parsing(line, &data);
 		if (data.cmds == NULL)
 			continue ;
-		printf("-------------------------------------------\n");
-		print_cmd(data.cmds);
-		print_data(&data);
-		printf("status: %d\n", data.status);
-		printf("-------------------------------------------\n");
+		// printf("-------------------------------------------\n");
+		// print_cmd(data.cmds);
+		// print_data(&data);
+		// printf("status: %d\n", data.status);
+		// printf("-------------------------------------------\n");
 		if (data.status != 0)
 		{
 			data.status = 0;

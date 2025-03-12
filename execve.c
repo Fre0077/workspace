@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:23:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 18:34:32 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/12 16:49:21 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,6 @@ int	exec_execve(t_data *data)
 	path = get_env(data->env, "PATH");
 	exec = find_path(data->cmds->cmd, path);
 	if (!exec)
-		return (printf("%s: command not found\n", data->cmds->cmd), 127);
+		return (printf("%s: command not found\n", data->cmds->cmd), free_execve(exec, argv, env), 127);
 	return (execute_command(exec, argv, env));
 }
