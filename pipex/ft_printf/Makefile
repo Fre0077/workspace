@@ -1,10 +1,10 @@
-NAME = ft_printf.a
+NAME = printf.a
 LIBFT = libft/libft.a
 LIBFTDIR = libft/
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-FILE = ft_printf.c ft_putbase.c ft_putbase_long.c
+FILE = printf.c ft_putbase.c ft_putbase_long.c
 
 OBJ = $(FILE:.c=.o)
 
@@ -37,7 +37,7 @@ re:		fclean all
 # 	@make clean
 # 	@$(MAKE) fclean -C $(LIBFTDIR)
 # 	@echo "runnig program..."
-# 	@$(CC) $(CFLAGS) ft_printf.c libftprintf.a -o o
+# 	@$(CC) $(CFLAGS) printf.c libftprintf.a -o o
 # 	@clear
 # 	@./o
 

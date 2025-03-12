@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:29:44 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 10:09:46 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 17:18:40 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	init_data(t_data *data, char **env)
 	data->cmds = NULL;
 	data->head = NULL;
 	data->status = 0;
+	data->fds = NULL;
 	data->out = 0;
 	data->home = ft_strdup(get_env(data->env, "HOME"));
 	if (!data->home)

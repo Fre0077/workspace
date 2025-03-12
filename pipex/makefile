@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+         #
+#    By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/18 09:01:52 by fde-sant          #+#    #+#              #
-#    Updated: 2025/01/20 10:19:43 by fde-sant         ###   ########.fr        #
+#    Updated: 2025/03/11 15:41:39 by alborghi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex.a
-FT_PRINTF = ft_printf/ft_printf.a
-DIR_FT_PRINTF = ft_printf/
+printf = printf/printf.a
+DIR_printf = printf/
 GET_NEXT_LINE = get_next_line/get_next_line.a
 DIR_GET_NEXT_LINE = get_next_line/
 FLAGS = -Wall -Wextra -Werror -g
@@ -22,13 +22,13 @@ FILE = pipex.c ft_split_add.c utils.c get_next_line/get_next_line.c\
 
 OBJ = $(FILE:.c=.o)
 
-all:		$(NAME) $(FT_PRINTF)
-	@cc pipex.c $(NAME) $(FT_PRINTF) $(FLAGS) -o "pipex"
-	@$(MAKE) fclean -C $(DIR_FT_PRINTF)
+all:		$(NAME) $(printf)
+	@cc pipex.c $(NAME) $(printf) $(FLAGS) -o "pipex"
+	@$(MAKE) fclean -C $(DIR_printf)
 	@make fclean
 
-$(FT_PRINTF):	
-	@$(MAKE) -C $(DIR_FT_PRINTF)
+$(printf):	
+	@$(MAKE) -C $(DIR_printf)
 
 $(NAME):	$(OBJ)
 	@ar rcs $(NAME) $(OBJ)

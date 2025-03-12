@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 15:34:35 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/12 10:24:10 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	check_is_folder(char *file)
 	{
 		if (S_ISDIR(buf.st_mode))
 		{
-			ft_printf("minishell: %s: is a directory\n", file);
+			printf("minishell: %s: is a directory\n", file);
 			return (1);
 		}
 	}
@@ -75,17 +75,17 @@ int	main(int ac, char **av, char **env)
 		line = readline(MINI);
 		if (line == NULL)
 		{
-			ft_printf("exit\n");
+			printf("exit\n");
 			ft_exit(&data, 0);
 		}
 		data.cmds = parsing(line, &data);
 		if (data.cmds == NULL)
 			continue ;
-		// ft_printf("-------------------------------------------\n");
+		// printf("-------------------------------------------\n");
 		// print_cmd(data.cmds);
 		// print_data(&data);
 		// printf("status: %d\n", data.status);
-		// ft_printf("-------------------------------------------\n");
+		// printf("-------------------------------------------\n");
 		if (data.status != 0)
 		{
 			data.status = 0;

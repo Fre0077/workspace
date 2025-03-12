@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:01:27 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/10 16:57:03 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:41:39 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_put_export(t_env *env)
 		write(1, "declare -x ", 11);
 		write(1, tmp->var, i);
 		if (tmp->var[i])
-			ft_printf("\"%s\"", &tmp->var[i]);
+			printf("\"%s\"", &tmp->var[i]);
 		else if (tmp->var[i - 1] == '=')
 			write(1, "\"\"", 2);
 		write(1, "\n", 1);
@@ -120,14 +120,14 @@ int	check_arg(char *arg, char *cmd)
 	i = 0;
 	if (ft_isdigit(arg[0]) == 1)
 	{
-		ft_printf("minishell: %s: `%s': not a valid identifier\n", cmd, arg);
+		printf("minishell: %s: `%s': not a valid identifier\n", cmd, arg);
 		return (1);
 	}
 	while (arg[i] && arg[i] != '=' && arg[i] != '+')
 	{
 		if (ft_isalnum(arg[i]) == 0 && arg[i] != '_')
 		{
-			ft_printf("minishell: %s: `%s': not a valid identifier\n", cmd,
+			printf("minishell: %s: `%s': not a valid identifier\n", cmd,
 				arg);
 			return (1);
 		}
@@ -135,12 +135,12 @@ int	check_arg(char *arg, char *cmd)
 	}
 	if (i == 0)
 	{
-		ft_printf("minishell: %s: `%s': not a valid identifier\n", cmd, arg);
+		printf("minishell: %s: `%s': not a valid identifier\n", cmd, arg);
 		return (1);
 	}
 	if (arg[i] == '+' && arg[i + 1] != '=')
 	{
-		ft_printf("minishell: %s: `%s': not a valid identifier\n", cmd, arg);
+		printf("minishell: %s: `%s': not a valid identifier\n", cmd, arg);
 		return (1);
 	}
 	return (0);

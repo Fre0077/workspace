@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 10:57:05 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 11:07:33 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:50:12 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	init_signals(void)
 void	new_prompt(int signum)
 {
 	(void)signum;
-	ft_printf("\n");
+	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
