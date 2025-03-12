@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:23:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 15:41:39 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/11 18:34:32 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,9 @@ int	execute_command(char *path, char **argv, char **env)
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGINT, SIG_DFL);
 		execve(path, argv, env);
-		perror("execve");
+		printf("minishell: %s: ", path);
+		perror("");
+		printf("\n");
 		ft_exit(NULL, 1);
 	}
 	else
@@ -150,27 +152,20 @@ int	exec_execve(t_data *data)
 	char	**env;
 
 	if (!data->cmds->cmd || strncmp(data->cmds->cmd, "", 1) == 0)
-		return (printf("execve: command not found: %s\n", data->cmds->cmd), 1);
+		return (printf("%s: command not found\n", data->cmds->cmd), 1);
 	argv = get_args(data->cmds);
 	env = env_to_mat(data->env);
 	if (strncmp(data->cmds->cmd, "./", 2) == 0
 		|| strncmp(data->cmds->cmd, "/", 1) == 0)
 	{
-		// printf("execve: %s\n", data->cmds->cmd);
-		exec = ft_strdup(data->cmds->cmd);
-		// if (!exec || execute_command(exec, argv, env) == -1)
-		// 	return (printf("exec error!\n"), free_execve(exec, argv, env), 1);
+		exec = ft_strdup(data->cmds->cmd);	
 		if (!exec)
-			return (ft_free_mat_char(argv), ft_free_mat_char(env), 1);
+			return (printf("minishell: %s: No such file or directory\n", data->cmds->cmd), ft_free_mat_char(argv), ft_free_mat_char(env), 1);
 		return (execute_command(exec, argv, env));
 	}
 	path = get_env(data->env, "PATH");
 	exec = find_path(data->cmds->cmd, path);
 	if (!exec)
-		return (printf("minishell: %s: No such file or directory\n",
-				data->cmds->cmd), 127);
-	// if (execute_command(exec, argv, env) != 0)
-	// 	return (printf("exec error!\n"), free_execve(exec, argv, env), 1);
-	// return (0);
+		return (printf("%s: command not found\n", data->cmds->cmd), 127);
 	return (execute_command(exec, argv, env));
 }
