@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 18:34:01 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/12 19:20:40 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ char				*ft_strjoin_readline(char *s1, char *s2);
 char				*ft_readline(char *prompt);
 
 // exec.c
+int					is_builtin(char *cmd);
 int					handle_files(t_cmd *cmd, t_data *data);
 int					reset_std(t_data *data);
 int					ft_put_env(t_env *env, int is_env);

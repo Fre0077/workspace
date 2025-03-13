@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 16:57:28 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/11 15:41:39 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/12 19:14:17 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,5 @@ int	check_syntax_error(char *line, t_data *data)
 		if (data->status == 2)
 			return (1);
 	}
-	return (0);
+	return (quote_checker("1", 1), 0);
 }
