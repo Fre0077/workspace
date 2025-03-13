@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 16:57:28 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/12 19:14:17 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/13 09:51:41 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,12 @@ void	print_pipe_error(char *line, int i, t_data *data)
 	l = i + 1;
 	while (line[l] && line[l] == ' ')
 		l++;
-	if (j == 0)
+	if (j == -1)
 	{
 		printf("minishell: syntax error near unexpected token `|'\n");
 		data->status = 2;
 	}
-	else if(!line[l])
+	else if (!line[l])
 	{
 		printf("minishell: syntax error near unexpected token `newline'\n");
 		data->status = 2;

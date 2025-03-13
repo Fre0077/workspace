@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:16 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/12 14:49:50 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/03/13 08:28:32 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ t_words	*dollar_manager(t_data *data, t_words *words)
 		if (check != pre)
 			words->word = remove_char(words->word, i, data);
 		else if (check != 1 && words->word[i] == '$'
-				&& (i == 0 || words->word[i - 1] != '\\'))
+			&& (i == 0 || words->word[i - 1] != '\\'))
 			words = dollar_converter(words->word, &i, data, words);
 		else if (((check != 1 && words->word[i] == '$')
 				|| words->word[i] == '\'' || words->word[i] == '\"')
