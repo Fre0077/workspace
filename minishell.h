@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 18:34:01 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/13 22:21:24 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,17 @@ typedef struct s_int_list
 
 typedef struct s_data
 {
-	t_env			*env;
-	t_cmd			*cmds;
+	t_int_list		*fds;
 	t_cmd			*head;
+	t_cmd			*cmds;
+	t_env			*env;
 	char			*find;
 	char			*home;
 	char			*pwd;
-	t_int_list		*fds;
 	int				status;
+	int				prompt;
 	int				stdo;
 	int				stdi;
-	int				prompt;
 	int				out;
 }					t_data;
 
@@ -171,10 +171,15 @@ t_words				*dollar_converter(char *word, int *i, t_data *data,
 char				*dollar_remover(char *word, int *i, int check, t_data *data);
 t_words				*dollar_manager(t_data *data, t_words *words);
 //------------------------------------------------------------
-//error.c 4
+//error_support.c 3
 
-void				support_print(char c, int witch, t_data *data);
-void				find_after_error(char *line, t_data *data);
+char				*find_next_heredoc(char *line, t_data *data);
+void				find_heredoc_only(char *line, t_data * data);
+//------------------------------------------------------------
+//error.c 5
+
+void				support_print(char *line, char c, int witch, t_data *data);
+void				find_after_error(char *true_line, char *line, t_data *data);
 void				print_minmag_error(char *line, int *i, char c, t_data *data);
 void				print_pipe_error(char *line, int i, t_data *data);
 int					check_syntax_error(char *line, t_data *data);
