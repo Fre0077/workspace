@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:01:27 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 15:41:39 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/12 18:11:20 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,14 @@ void	ft_put_export(t_env *env)
 			i++;
 		if (tmp->var[i] == '=')
 			i++;
+			//TODO: ft_printf
 		write(1, "declare -x ", 11);
 		write(1, tmp->var, i);
 		if (tmp->var[i])
 			printf("\"%s\"", &tmp->var[i]);
 		else if (tmp->var[i - 1] == '=')
-			write(1, "\"\"", 2);
-		write(1, "\n", 1);
+			printf("\"\"");
+		printf("\n");
 		tmp = tmp->next;
 	}
 }

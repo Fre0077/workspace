@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:13 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/11 15:41:39 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/12 18:51:36 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	print_cmd(t_cmd *cmds)
 	printf("cmds:-----\n");
 	while (cmds != NULL)
 	{
-		printf("cmd:  %s\n", cmds->cmd);
+		printf("cmd: '%s'\n", cmds->cmd);
 		i = -1;
 		printf("arg: ");
 		if (cmds->args != NULL)

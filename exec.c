@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 18:21:54 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/12 18:34:26 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ void	exec_cmd(t_data *data)
 {
 	int	fd[2];
 	int	pid;
-	int status;
+	// int status;
 
 	if (check_pipe(data->cmds))
 	{
@@ -245,13 +245,13 @@ void	exec_cmd(t_data *data)
 			exec_cmd(data);
 			if (!check_pipe(data->cmds))
 			{
-				waitpid(pid, &status, 0);
 				close(fd[0]);
-				if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-				{
-					data->out = WEXITSTATUS(status);
-					return ;
-				}
+				// waitpid(pid, &status, 0);
+				// if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+				// {
+				// 	data->out = WEXITSTATUS(status);
+				// 	return ;
+				// }
 			}
 		}
 	}

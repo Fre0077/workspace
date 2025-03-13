@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 16:57:28 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/13 22:21:42 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/13 22:35:01 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,5 +119,5 @@ int	check_syntax_error(char *line, t_data *data)
 		if (data->status == 2)
 			return (1);
 	}
-	return (0);
+	return (quote_checker("1", 1), 0);
 }

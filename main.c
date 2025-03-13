@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/12 16:44:52 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/12 19:35:17 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,16 +76,19 @@ int	main(int ac, char **av, char **env)
 		if (line == NULL)
 		{
 			printf("exit\n");
-			ft_exit(&data, 0);
+			ft_exit(&data, data.out);
 		}
 		data.cmds = parsing(line, &data);
-		if (data.cmds == NULL)
+		if (data.cmds == NULL || data.cmds->cmd == NULL)
+		{
+			data.status = 0;
 			continue ;
-		// printf("-------------------------------------------\n");
-		// print_cmd(data.cmds);
-		// print_data(&data);
-		// printf("status: %d\n", data.status);
-		// printf("-------------------------------------------\n");
+		}
+		printf("-------------------------------------------\n");
+		print_cmd(data.cmds);
+		print_data(&data);
+		printf("status: %d\n", data.status);
+		printf("-------------------------------------------\n");
 		if (data.status != 0)
 		{
 			data.status = 0;
@@ -102,7 +105,8 @@ int	main(int ac, char **av, char **env)
 			data.status = 1;
 			continue ;
 		}
-		if (data.cmds->cmd == NULL || data.cmds->cmd[0] == '\0')
+		if (data.cmds->cmd == NULL)
+		// if (data.cmds->cmd == NULL || data.cmds->cmd[0] == '\0')
 		{
 			// printf("cmds: %s\n", data.cmds->cmd);
 			handle_files(data.cmds, &data);
@@ -116,6 +120,23 @@ int	main(int ac, char **av, char **env)
 		}
 		data.head = data.cmds;
 		exec_cmd(&data);
+		if ((data.head && data.head->next) || (data.head && !is_builtin(data.head->cmd) && data.out == 0))
+		{
+			int status = 0;
+			while (waitpid(-1, &status, 0) >= 0)
+			{
+				if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+				{
+					data.out = WEXITSTATUS(status);
+				}
+			}
+			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+				ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+			if (WIFSIGNALED(status))
+				data.out = (WTERMSIG(status) + 128);
+			if (WIFEXITED(status))
+				data.out = (WEXITSTATUS(status));
+		}
 		reset_std(&data);
 		// if (check_status(&data) == 1)
 		// 	ft_exit(&data, 1);
@@ -127,5 +148,5 @@ int	main(int ac, char **av, char **env)
 		write_history(HISTORY);
 		free(history);
 	}
-	ft_exit(&data, 1);
+	ft_exit(&data, data.out);
 }

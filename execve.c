@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:23:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/12 16:49:21 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/12 18:37:37 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,17 +111,18 @@ void	ft_put_char_mat(char **mat)
 int	execute_command(char *path, char **argv, char **env)
 {
 	pid_t	pid;
-	int		status;
+	// int		status;
 
 	pid = fork();
 	if (pid == -1)
-	return (perror("fork"), -1);
+		return (perror("fork"), free_execve(path, argv, env), -1);
 	if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGINT, SIG_DFL);
 		execve(path, argv, env);
 		printf("minishell: %s: ", path);
+		free_execve(path, argv, env);
 		perror("");
 		printf("\n");
 		ft_exit(NULL, 1);
@@ -129,15 +130,15 @@ int	execute_command(char *path, char **argv, char **env)
 	else
 	{
 		signal(SIGINT, sig_here);
-		waitpid(pid, &status, 0);
+		// waitpid(pid, &status, 0);
 		signal(SIGINT, new_prompt);
 		free_execve(path, argv, env);
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
-		if (WIFSIGNALED(status))
-			return (WTERMSIG(status) + 128);
-		if (WIFEXITED(status))
-			return (WEXITSTATUS(status));
+		// if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+		// 	ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+		// if (WIFSIGNALED(status))
+		// 	return (WTERMSIG(status) + 128);
+		// if (WIFEXITED(status))
+		// 	return (WEXITSTATUS(status));
 		return (1);
 	}
 	return (0);
@@ -155,10 +156,14 @@ int	exec_execve(t_data *data)
 		return (printf("%s: command not found\n", data->cmds->cmd), 1);
 	argv = get_args(data->cmds);
 	env = env_to_mat(data->env);
+	
+	// if (ft_strchr(data->cmds->cmd, '/') != NULL)
+	// {
 	if (strncmp(data->cmds->cmd, "./", 2) == 0
 		|| strncmp(data->cmds->cmd, "/", 1) == 0)
 	{
 		exec = ft_strdup(data->cmds->cmd);	
+		// access(tmp, F_OK | X_OK)
 		if (!exec)
 			return (printf("minishell: %s: No such file or directory\n", data->cmds->cmd), ft_free_mat_char(argv), ft_free_mat_char(env), 1);
 		return (execute_command(exec, argv, env));
