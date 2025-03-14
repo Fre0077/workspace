@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:13 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/12 18:51:36 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/14 18:47:29 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	print_cmd(t_cmd *cmds)
 		{
 			while (cmds->args[++i] != NULL)
 				printf("%s, ", cmds->args[i]);
-			printf("%s\n", cmds->args[i]);
+			printf("%p\n", cmds->args[i]);
 		}
 		else
 			printf("(nil)\n");

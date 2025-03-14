@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/12 19:31:26 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/14 18:44:21 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-//se stai veramente leggendo questa descrizione ho paura il il tuo QI
+//se stai veramente leggendo questa descrizione ho paura per il tuo QI
 int	count_args(t_words **words)
 {
 	t_words	*tmp;
@@ -21,13 +21,16 @@ int	count_args(t_words **words)
 	if ((*words)->pipe == 0)
 		(*words) = (*words)->next;
 	tmp = *words;
-	i = -1;
-	while (++i + 1 && tmp != NULL && tmp->pipe == 0)
+	i = 0;
+	while (tmp != NULL && tmp->pipe == 0)
+	{
 		tmp = tmp->next;
+		i++;
+	}
 	return (i);
 }
 
-//alloca un nodo di cmds tutto inpostato a NULL
+//alloca un nodo di cmds tutto impostato a NULL
 t_cmd	*calloc_cmds(t_data *data)
 {
 	t_cmd	*cmds;
@@ -109,5 +112,6 @@ t_cmd	*parsing(char *line, t_data *data)
 		else
 			cmds = new_command(cmds, &words, data);
 	}
+	print_cmd(first);
 	return (free_words_only_pointers(head), first);
 }
