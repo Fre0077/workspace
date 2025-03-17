@@ -16,6 +16,7 @@ int_list.c \
 parsing/char_manager.c \
 parsing/dollar_stupid.c \
 parsing/dollar.c \
+parsing/error_support.c \
 parsing/error.c \
 parsing/exit.c \
 parsing/extra_free.c \
