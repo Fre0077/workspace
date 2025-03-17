@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:57:54 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 11:05:32 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:30:19 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	skip_useless(char **delimiter)
 		}
 		if (!line || !line[0])
 		{
-			printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", j, delimiter[i]);
+			ft_printe("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", j, delimiter[i]);
 			j = 1;
 			i++;
 			continue ;
@@ -83,7 +83,7 @@ void	read_last(char *delimiter, int fd, t_data *data, int q)
 		line = readline("> ");
 		if (!line)
 		{
-			printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", j, delimiter);
+			ft_printe("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", j, delimiter);
 			break ;
 		}
 		if (ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)

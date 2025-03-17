@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:01:27 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/12 18:11:20 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:41:11 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ void	ft_put_export(t_env *env)
 			i++;
 		if (tmp->var[i] == '=')
 			i++;
-			//TODO: ft_printf
+		//TODO: ft_printf
 		write(1, "declare -x ", 11);
 		write(1, tmp->var, i);
 		if (tmp->var[i])
-			printf("\"%s\"", &tmp->var[i]);
+			ft_printf("\"%s\"", &tmp->var[i]);
 		else if (tmp->var[i - 1] == '=')
-			printf("\"\"");
-		printf("\n");
+			ft_printf("\"\"");
+		ft_printf("\n");
 		tmp = tmp->next;
 	}
 }
@@ -121,14 +121,14 @@ int	check_arg(char *arg, char *cmd)
 	i = 0;
 	if (ft_isdigit(arg[0]) == 1)
 	{
-		printf("minishell: %s: `%s': not a valid identifier\n", cmd, arg);
+		ft_printe("minishell: %s: `%s': not a valid identifier\n", cmd, arg);
 		return (1);
 	}
 	while (arg[i] && arg[i] != '=' && arg[i] != '+')
 	{
 		if (ft_isalnum(arg[i]) == 0 && arg[i] != '_')
 		{
-			printf("minishell: %s: `%s': not a valid identifier\n", cmd,
+			ft_printe("minishell: %s: `%s': not a valid identifier\n", cmd,
 				arg);
 			return (1);
 		}
@@ -136,12 +136,12 @@ int	check_arg(char *arg, char *cmd)
 	}
 	if (i == 0)
 	{
-		printf("minishell: %s: `%s': not a valid identifier\n", cmd, arg);
+		ft_printe("minishell: %s: `%s': not a valid identifier\n", cmd, arg);
 		return (1);
 	}
 	if (arg[i] == '+' && arg[i + 1] != '=')
 	{
-		printf("minishell: %s: `%s': not a valid identifier\n", cmd, arg);
+		ft_printe("minishell: %s: `%s': not a valid identifier\n", cmd, arg);
 		return (1);
 	}
 	return (0);
@@ -157,9 +157,13 @@ int	exec_export(t_cmd *cmds, t_env *env)
 	while (cmds->args[i])
 	{
 		if (check_arg(cmds->args[i], "export") == 1)
+		{
+			i++;
+			continue ;
+		}
+		else if (export_cmd(cmds->args[i], env) == 1)
 			return (1);
-		if (export_cmd(cmds->args[i], env) == 1)
-			return (1);
+		ft_printf("export %s\n", cmds->args[i]);
 		i++;
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/12 19:20:40 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:04:00 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+# include <errno.h>
 
 # define HISTORY "/nfs/homes/alborghi/miei_file/42_core/milestone_3/minishell/.history"
 
@@ -81,6 +82,7 @@ typedef struct s_data
 	char			*home;
 	char			*pwd;
 	t_int_list		*fds;
+	t_int_list		*pids;
 	int				status;
 	int				stdo;
 	int				stdi;
@@ -99,7 +101,6 @@ int					init_data(t_data *data, char **env);
 void				init_signals(void);
 void				new_prompt(int signum);
 void				sig_quit(int signum);
-void				sig_ignore(int signum);
 void				sig_here(int signum);
 
 // ft_readline.c
@@ -145,6 +146,7 @@ void				ft_exit_builtin(t_data *data);
 // int_list.c
 t_int_list			*new_int_list(int n);
 t_int_list			*add_int_list(t_int_list *list, int n);
+t_int_list			*remove_node(t_int_list *list);
 void				free_int_list(t_int_list *list);
 void				close_fds(t_int_list *fds);
 

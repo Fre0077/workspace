@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 17:15:30 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 18:12:29 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:03:42 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,17 @@ t_int_list	*add_int_list(t_int_list *list, int n)
 	if (!tmp->next)
 		return (free_int_list(list), NULL);
 	return (list);
+}
+
+t_int_list	*remove_node(t_int_list *list)
+{
+	t_int_list	*tmp;
+
+	if (!list)
+		return (NULL);
+	tmp = list->next;
+	free(list);
+	return (tmp);
 }
 
 void	free_int_list(t_int_list *list)

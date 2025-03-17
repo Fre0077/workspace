@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/12 19:35:17 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/13 17:20:13 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	check_is_folder(char *file)
 	{
 		if (S_ISDIR(buf.st_mode))
 		{
-			printf("minishell: %s: is a directory\n", file);
+			ft_printe("minishell: %s: is a directory\n", file);
 			return (1);
 		}
 	}
@@ -75,7 +75,7 @@ int	main(int ac, char **av, char **env)
 		line = readline(MINI);
 		if (line == NULL)
 		{
-			printf("exit\n");
+			ft_printf("exit\n");
 			ft_exit(&data, data.out);
 		}
 		data.cmds = parsing(line, &data);
@@ -84,11 +84,11 @@ int	main(int ac, char **av, char **env)
 			data.status = 0;
 			continue ;
 		}
-		printf("-------------------------------------------\n");
-		print_cmd(data.cmds);
-		print_data(&data);
-		printf("status: %d\n", data.status);
-		printf("-------------------------------------------\n");
+		// ft_printf("-------------------------------------------\n");
+		// print_cmd(data.cmds);
+		// print_data(&data);
+		// ft_printf("status: %d\n", data.status);
+		// ft_printf("-------------------------------------------\n");
 		if (data.status != 0)
 		{
 			data.status = 0;
@@ -106,9 +106,7 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		}
 		if (data.cmds->cmd == NULL)
-		// if (data.cmds->cmd == NULL || data.cmds->cmd[0] == '\0')
 		{
-			// printf("cmds: %s\n", data.cmds->cmd);
 			handle_files(data.cmds, &data);
 			free_cmds(data.cmds);
 			reset_std(&data);
@@ -120,27 +118,40 @@ int	main(int ac, char **av, char **env)
 		}
 		data.head = data.cmds;
 		exec_cmd(&data);
-		if ((data.head && data.head->next) || (data.head && !is_builtin(data.head->cmd) && data.out == 0))
-		{
-			int status = 0;
-			while (waitpid(-1, &status, 0) >= 0)
+		int status = 0;
+		// if ((data.head && data.head->next) || (data.head && !is_builtin(data.head->cmd) && data.out == 0))
+		// {
+			while (data.pids && waitpid(data.pids->n, &status, 0) >= 0)
 			{
+				// ft_printe("%d\n", status);
+				if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+				{
+					ft_printe("Quit (core dumped)\n");
+					g_signal = 0;
+					break;
+				}
 				if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
 				{
 					data.out = WEXITSTATUS(status);
 				}
+				data.pids = remove_node(data.pids);
 			}
-			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-				ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+			// if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+			// 	ft_printe("Quit (core dumped)\n");
+			// if (data.out == 131)
+			// 	ft_printe("Quit (core dumped)\n");
 			if (WIFSIGNALED(status))
 				data.out = (WTERMSIG(status) + 128);
 			if (WIFEXITED(status))
 				data.out = (WEXITSTATUS(status));
-		}
+		// }
+		init_signals();
 		reset_std(&data);
 		// if (check_status(&data) == 1)
 		// 	ft_exit(&data, 1);
 		free_cmds(data.head);
+		close_fds(data.fds);
+		data.fds = NULL;
 		data.head = NULL;
 		data.cmds = NULL;
 		history = ft_strtrim(line, "\n ");

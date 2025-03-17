@@ -72,6 +72,26 @@ GET_NEXT_LINE_L = \
 get_next_line.c
 GET_NEXT_LINE = $(addprefix get_next_line/, $(GET_NEXT_LINE_L))
 
+MY_PRINTF_L = \
+ft_char.c \
+ft_handle_flags.c \
+ft_hexa.c \
+ft_nbrs.c \
+ft_parsing.c \
+ft_printf.c \
+ft_strs.c \
+ft_void.c
+MY_PRINTF = $(addprefix my_printf/, $(MY_PRINTF_L))
+
+MY_PRINTE_L = \
+ft_char.c \
+ft_hexa.c \
+ft_nbrs.c \
+ft_printe.c \
+ft_strs.c \
+ft_void.c
+MY_PRINTE = $(addprefix my_printe/, $(MY_PRINTE_L))
+
 SRCS = \
 $(MY_LST) \
 $(MY_MEM) \
@@ -79,6 +99,8 @@ $(MY_NBR) \
 $(MY_PUT) \
 $(MY_STR) \
 $(GET_NEXT_LINE) \
+$(MY_PRINTE) \
+$(MY_PRINTF) \
 
 OBJS = $(SRCS:.c=.o)
 
