@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 21:34:49 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/13 22:33:44 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/18 09:42:38 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,19 @@ char	*find_next_heredoc(char *line, t_data *data)
 	return(str);
 }
 
-void	find_heredoc_only(char *line, t_data * data)
+void	find_heredoc_only(char *line, t_data * data, char *limit)
 {
 	char	**arr;
 	char	*str;
 	int		i;
 
-	i = -1;
+	i = 1;
 	arr = NULL;
 	str = NULL;
-	while (line[++i])
+	while (line[++i] && (limit != &line[i] || limit == NULL))
 	{
-		if (i != 0 && line[i - 1] == '<' && line[i] == '<'
-			&& line[i + 1] != '<'&& line[i + 1] != '>')
+		if (i > 1 && line[i - 1] == '<' && line[i] == '<' && line[i - 2] != '<'
+			&& line[i - 2] != '>' && line[i + 1] != '<'&& line[i + 1] != '>')
 		{
 			str = find_next_heredoc(&line[i + 1], data);
 			arr = ft_append_line(arr, str);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:12:42 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/12 18:54:25 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/17 18:30:05 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_words	*pipe_manager(int *i, t_data *data, t_words *words)
 	words = words->next;
 	words->word = str;
 	words->pipe = 1;
+	words->took = 0;
 	*i += 1;
 	return (words);
 }
@@ -56,6 +57,7 @@ t_words	*new_word(t_words *words, char *str, t_data *data)
 	words = words->next;
 	words->word = str;
 	words->pipe = 0;
+	words->took = 0;
 	return (words);
 }
 
@@ -69,13 +71,12 @@ t_words	*word_slicer(char *line, t_data *data)
 	i = 0;
 	while (line[i] == ' ')
 		i++;
-	// if (line[i] == '\0')
-	// 	return (NULL);
 	words = (t_words *)malloc(sizeof(t_words));
 	if (!words)
 		ft_exit(data, 1);
 	words->word = next_word(line, &i, data);
 	words->pipe = 0;
+	words->took = 0;
 	first = words;
 	while (line[i])
 	{

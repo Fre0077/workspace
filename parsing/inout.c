@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/11 09:38:50 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/17 18:12:06 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*find_after_word(char *find, t_words **tmp, t_data *data)
 	char	*arr[2];
 
 	first = (*tmp);
-	while ((*tmp) != NULL && (*tmp)->pipe == 0)
+	while ((*tmp) != NULL && ((*tmp)->pipe == 0 || (*tmp) == first))
 	{
 		arr[1] = ft_strstr((*tmp)->word, find);
 		if (arr[1] != NULL)
@@ -40,13 +40,13 @@ char	*find_after_word(char *find, t_words **tmp, t_data *data)
 	return ((*tmp) = first, arr[0]);
 }
 
-char	*findable_file(t_words *words)
+char	*findable_file(t_words *words, int witch)
 {
 	t_words	*tmp;
 	int		i;
 
 	tmp = words;
-	while (tmp != NULL && tmp->pipe == 0)
+	while (tmp != NULL && (tmp->pipe == 0 || (tmp == words && witch)))
 	{
 		i = 0;
 		while (tmp->word != NULL && tmp->word[i]
@@ -135,7 +135,7 @@ t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds)
 	t_words	*tmp;
 
 	cmds->doi = 0;
-	find = findable_file(words);
+	find = findable_file(words, 1);
 	while (!data->status && find != NULL)
 	{
 		data->find = find;
@@ -143,7 +143,7 @@ t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds)
 		free (find);
 		if (data->status)
 			break ;
-		find = findable_file(words);
+		find = findable_file(words, 0);
 	}
 	tmp = words;
 	while (tmp != NULL && !tmp->pipe)

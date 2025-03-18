@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/13 22:35:12 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/18 09:28:52 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_words
 {
 	char			*word;
 	int				pipe;
+	int				took;
 	struct s_words	*next;
 }					t_words;
 
@@ -175,11 +176,11 @@ t_words				*dollar_manager(t_data *data, t_words *words);
 //error_support.c 3
 
 char				*find_next_heredoc(char *line, t_data *data);
-void				find_heredoc_only(char *line, t_data * data);
+void				find_heredoc_only(char *line, t_data * data, char *limit);
 //------------------------------------------------------------
 //error.c 5
 
-void				support_print(char *line, char c, int witch, t_data *data);
+void				support_print(char *line, char *c, int witch, t_data *data);
 void				find_after_error(char *true_line, char *line, t_data *data);
 void				print_minmag_error(char *line, int *i, char c, t_data *data);
 void				print_pipe_error(char *line, int i, t_data *data);
@@ -216,7 +217,7 @@ char				*remove_finded(char *word, char *finded, t_data *data);
 //inout.c 5
 
 char				*find_after_word(char *find, t_words **tmp, t_data *data);
-char				*findable_file(t_words *words);
+char				*findable_file(t_words *words, int witch);
 void				open_useless_file(t_cmd *cmds, int witch);
 void				check_file(char *find, t_words **words, t_cmd *cmds,
 						t_data *data);

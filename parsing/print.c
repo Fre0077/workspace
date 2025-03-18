@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:06:13 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/14 18:47:29 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/17 17:59:04 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	print_i_delimiter(t_cmd *cmds)
 	{
 		while (cmds->file_i[++i] != NULL)
 			printf("%s, ", cmds->file_i[i]);
-		printf("%s\n", cmds->file_i[i]);
+		printf("(nil)\n");
 	}
 	else
 		printf("(nil)\n");
@@ -46,7 +46,7 @@ void	print_i_delimiter(t_cmd *cmds)
 	{
 		while (cmds->delimiter[++i] != NULL)
 			printf("%s, ", cmds->delimiter[i]);
-		printf("%s\n", cmds->delimiter[i]);
+		printf("(nil)\n");
 	}
 	else
 		printf("(nil)\n");
