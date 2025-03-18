@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/18 09:56:29 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/18 13:15:01 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,7 @@ void	command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h)
 	int		i;
 	int		j;
 
-	(*words) = inout_manager(*words, data, cmds);
-	if (h != NULL)
-		(*h) = (*words);
+	(*words) = inout_manager(*words, data, cmds, h);
 	if (data->status || (*words) == NULL)
 		return ;
 	set_cmd(cmds, words);
@@ -80,13 +78,13 @@ void	command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h)
 }
 
 //crea un nuovo nodo per la lista cmds
-t_cmd	*new_command(t_cmd *cmds, t_words **words, t_data *data)
+t_cmd	*new_command(t_cmd *cmds, t_words **words, t_data *data, t_words **h)
 {
 	t_cmd	*new_cmd;
 
 	new_cmd = calloc_cmds(data);
 	cmds->next = new_cmd;
-	command_slicer(new_cmd, words, data, NULL);
+	command_slicer(new_cmd, words, data, h);
 	return (new_cmd);
 }
 
@@ -110,14 +108,14 @@ t_cmd	*parsing(char *line, t_data *data)
 	first = cmds;
 	while (!data->status && words != NULL)
 	{
-		//print_word(words);
-		print_cmd(first);
-		if (words->pipe == 1)
+		//print_word(head);
+		if (words->pipe == 1 && words->took == 1)
 			words = words->next;
 		else
-			cmds = new_command(cmds, &words, data);
+			cmds = new_command(cmds, &words, data, &head);
+		//print_cmd(first);
+		//print_word(words);
 	}
 	//print_word(head);
-	free_words_only_pointers(head);
-	return (first);
+	return (free_words_only_pointers(head), first);
 }

@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/17 18:12:06 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/18 13:18:02 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,25 +128,46 @@ void	check_file(char *find, t_words **words, t_cmd *cmds, t_data *data)
 	}
 }
 
+int	head_protector(t_words *words, t_words **h, char *find)
+{
+	if (ft_strstr((*h)->word, find))
+		return (1);
+	if (ft_strstr(words->word, find))
+	{
+		while ((*h) != words && (*h)->next != NULL && (*h)->next != words)
+			(*h) = (*h)->next;
+		return (2);
+	}
+	return (0);
+}
+
 //verifica tutte le informazioni per i simboli: <, <<, >>, >
-t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds)
+t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds, t_words **h)
 {
 	char	*find;
 	t_words	*tmp;
+	t_words	*tmp_h;
+	int		witch;
 
 	cmds->doi = 0;
 	find = findable_file(words, 1);
+	tmp_h = *h;
+	witch = head_protector(words, &tmp_h, find);
+	printf("###########%d\n", witch);
+	print_word(tmp_h);
 	while (!data->status && find != NULL)
 	{
 		data->find = find;
 		check_file(find, &words, cmds, data);
 		free (find);
-		if (data->status)
-			break ;
 		find = findable_file(words, 0);
 	}
 	tmp = words;
 	while (tmp != NULL && !tmp->pipe)
 		tmp = dollar_manager(data, tmp);
+	if (witch == 1)
+		(*h) = words;
+	else if (witch == 2)
+		tmp_h->next = words;
 	return (words);
 }
