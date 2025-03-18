@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 20:21:59 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/18 13:18:02 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/18 13:24:04 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,8 +153,6 @@ t_words	*inout_manager(t_words *words, t_data *data, t_cmd *cmds, t_words **h)
 	find = findable_file(words, 1);
 	tmp_h = *h;
 	witch = head_protector(words, &tmp_h, find);
-	printf("###########%d\n", witch);
-	print_word(tmp_h);
 	while (!data->status && find != NULL)
 	{
 		data->find = find;
