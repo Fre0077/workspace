@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/17 15:41:28 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/18 09:56:29 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,10 @@ void	command_slicer(t_cmd *cmds, t_words **words, t_data *data, t_words **h)
 		(*words) = (*words)->next;
 	}
 	cmds->divider = NULL;
-	if ((*words) != NULL)
+	if ((*words) != NULL && !(*words)->took)
 		cmds->divider = (*words)->word;
+	if ((*words) != NULL)
+		(*words)->took = 1;
 }
 
 //crea un nuovo nodo per la lista cmds
@@ -103,15 +105,19 @@ t_cmd	*parsing(char *line, t_data *data)
 	cmds = calloc_cmds(data);
 	words = word_slicer(line, data);
 	head = words;
+	//print_word(words);
 	command_slicer(cmds, &words, data, &head);
 	first = cmds;
 	while (!data->status && words != NULL)
 	{
+		//print_word(words);
+		print_cmd(first);
 		if (words->pipe == 1)
 			words = words->next;
 		else
 			cmds = new_command(cmds, &words, data);
 	}
-	// print_cmd(first);
-	return (free_words_only_pointers(head), first);
+	//print_word(head);
+	free_words_only_pointers(head);
+	return (first);
 }

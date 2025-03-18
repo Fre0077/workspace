@@ -6,27 +6,27 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 16:57:28 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/13 22:35:01 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/18 09:30:41 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 //printa l'errore in base ai caratteri ed il loro numero
-void	support_print(char *line, char c, int witch, t_data *data)
+void	support_print(char *line, char *c, int witch, t_data *data)
 {
 	if (witch == 1)
 	{
-		find_heredoc_only(line, data);
+		find_heredoc_only(line, data, c);
 		printf("minishell: syntax error"
-			" near unexpected token `%c'\n", c);
+			" near unexpected token `%c'\n", *c);
 		data->status = 2;
 	}
 	else
 	{
-		find_heredoc_only(line, data);
+		find_heredoc_only(line, data, c);
 		printf("minishell: syntax error"
-			" near unexpected token `%c%c'\n", c, c);
+			" near unexpected token `%c%c'\n", *c, *c);
 		data->status = 2;
 	}
 }
@@ -42,12 +42,12 @@ void	find_after_error(char *true_line, char *line, t_data *data)
 		if (line[i] == '>' || line[i] == '<')
 		{
 			if (line[i + 1] == line[i])
-				support_print(true_line, line[i], 2, data);
+				support_print(true_line, &line[i], 2, data);
 			else
-				support_print(true_line, line[i], 1, data);
+				support_print(true_line, &line[i], 1, data);
 		}
 		else if (line[i] == '|')
-			support_print(line, line[i], 1, data);
+			support_print(line, &line[i], 1, data);
 		i++;
 	}
 }
@@ -64,7 +64,7 @@ void	print_minmag_error(char *line, int *i, char c, t_data *data)
 		l++;
 	if (!line[l])
 	{
-		find_heredoc_only(line, data);
+		find_heredoc_only(line, data, NULL);
 		printf("minishell: syntax error near unexpected token `newline'\n");
 		data->status = 2;
 	}
@@ -86,18 +86,16 @@ void	print_pipe_error(char *line, int i, t_data *data)
 		l++;
 	if (j == -1)
 	{
-		find_heredoc_only(line, data);
+		find_heredoc_only(line, data, &line[j]);
 		printf("minishell: syntax error near unexpected token `|'\n");
 		data->status = 2;
 	}
 	else if (!line[l])
 	{
-		find_heredoc_only(line, data);
+		find_heredoc_only(line, data, NULL);
 		printf("minishell: syntax error near unexpected token `newline'\n");
 		data->status = 2;
 	}
-	else
-		find_after_error(line, &line[i + 1], data);
 }
 
 //controllo per eventuali errori di sintassi
