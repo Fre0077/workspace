@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 10:52:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/10 16:45:28 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:21:07 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	exec_cd(t_data *data)
 	if (!data->cmds)
 		return (1);
 	if (ft_char_mat_len(data->cmds->args) > 1)
-		return (printf("cd: too many arguments\n"), 1);
+		return (ft_printe("cd: too many arguments\n"), 1);
 	oldpwd = getcwd(NULL, 0);
 	if (!data->cmds->args || data->cmds->args[0] == NULL
 		|| data->cmds->args[0][0] == '\0')
@@ -90,7 +90,7 @@ int	exec_cd(t_data *data)
 			|| chdir(get_env(data->env, "HOME")) == -1)
 		{
 			if (get_env(data->env, "HOME") == NULL)
-				write(2, "minishell: cd: HOME not set\n", 28);
+				ft_printe("minishell: cd: HOME not set\n");
 			else
 			{
 				tmp = ft_strjoin("minishell: cd: ", get_env(data->env, "HOME"));
@@ -132,11 +132,11 @@ int	exec_cd(t_data *data)
 				free(oldpwd);
 				return (1);
 			}
-			printf("%s\n", get_env(data->env, "OLDPWD"));
+			ft_printf("%s\n", get_env(data->env, "OLDPWD"));
 		}
 		else
 		{
-			write(2, "minishell: cd: OLDPWD not set\n", 30);
+			ft_printe("minishell: cd: OLDPWD not set\n");
 			free(oldpwd);
 			return (1);
 		}

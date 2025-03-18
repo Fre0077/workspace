@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:23:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/12 18:37:37 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/13 15:10:01 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	ft_put_char_mat(char **mat)
 	i = 0;
 	while (mat && mat[i])
 	{
-		printf("%s\n", mat[i]);
+		ft_printf("%s\n", mat[i]);
 		i++;
 	}
 }
@@ -111,36 +111,38 @@ void	ft_put_char_mat(char **mat)
 int	execute_command(char *path, char **argv, char **env)
 {
 	pid_t	pid;
-	// int		status;
+	int		status;
 
-	pid = fork();
-	if (pid == -1)
-		return (perror("fork"), free_execve(path, argv, env), -1);
-	if (pid == 0)
-	{
-		signal(SIGQUIT, SIG_DFL);
-		signal(SIGINT, SIG_DFL);
+	(void)status;
+	(void)pid;
+	// pid = fork();
+	// if (pid == -1)
+	// 	return (perror("fork"), free_execve(path, argv, env), -1);
+	// if (pid == 0)
+	// {
+		// signal(SIGQUIT, SIG_DFL);
+		// signal(SIGINT, SIG_DFL);
 		execve(path, argv, env);
-		printf("minishell: %s: ", path);
-		free_execve(path, argv, env);
+		ft_printe("minishell: %s: ", path);
 		perror("");
-		printf("\n");
-		ft_exit(NULL, 1);
-	}
-	else
-	{
-		signal(SIGINT, sig_here);
-		// waitpid(pid, &status, 0);
-		signal(SIGINT, new_prompt);
+		ft_printe("\n");
 		free_execve(path, argv, env);
-		// if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-		// 	ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
-		// if (WIFSIGNALED(status))
-		// 	return (WTERMSIG(status) + 128);
-		// if (WIFEXITED(status))
-		// 	return (WEXITSTATUS(status));
-		return (1);
-	}
+		ft_exit(NULL, 1);
+	// }
+	// else
+	// {
+	// 	signal(SIGINT, sig_here);
+	// 	waitpid(pid, &status, 0); //TODO: test if this is needed or the wait in the main needs to be improved
+	// 	signal(SIGINT, new_prompt);
+	// 	free_execve(path, argv, env);
+	// 	// if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+	// 	// 	ft_printe("Quit (core dumped)\n");
+	// 	// if (WIFSIGNALED(status))
+	// 	// 	return (WTERMSIG(status) + 128);
+	// 	// if (WIFEXITED(status))
+	// 	// 	return (WEXITSTATUS(status));
+	// 	return (1);
+	// }
 	return (0);
 }
 
@@ -153,24 +155,24 @@ int	exec_execve(t_data *data)
 	char	**env;
 
 	if (!data->cmds->cmd || strncmp(data->cmds->cmd, "", 1) == 0)
-		return (printf("%s: command not found\n", data->cmds->cmd), 1);
+		return (ft_printe("%s: command not found\n", data->cmds->cmd), 1);
 	argv = get_args(data->cmds);
 	env = env_to_mat(data->env);
-	
 	// if (ft_strchr(data->cmds->cmd, '/') != NULL)
 	// {
 	if (strncmp(data->cmds->cmd, "./", 2) == 0
 		|| strncmp(data->cmds->cmd, "/", 1) == 0)
 	{
-		exec = ft_strdup(data->cmds->cmd);	
-		// access(tmp, F_OK | X_OK)
+		exec = ft_strdup(data->cmds->cmd);
+		if (access(exec, F_OK | X_OK) != 0)
+			return (ft_printe("minishell: %s: No such file or directory\n", data->cmds->cmd), free_execve(exec, argv, env), 1);
 		if (!exec)
-			return (printf("minishell: %s: No such file or directory\n", data->cmds->cmd), ft_free_mat_char(argv), ft_free_mat_char(env), 1);
+			return (ft_printe("minishell: %s: No such file or directory\n", data->cmds->cmd), free_execve(exec, argv, env), 1);
 		return (execute_command(exec, argv, env));
 	}
 	path = get_env(data->env, "PATH");
 	exec = find_path(data->cmds->cmd, path);
 	if (!exec)
-		return (printf("%s: command not found\n", data->cmds->cmd), free_execve(exec, argv, env), 127);
+		return (ft_printe("%s: command not found\n", data->cmds->cmd), free_execve(exec, argv, env), 127);
 	return (execute_command(exec, argv, env));
 }

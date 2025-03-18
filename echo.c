@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 10:46:54 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/11 14:29:10 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:21:34 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,12 @@ int	exec_echo(char **args)
 		i = f;
 	while (args[i])
 	{
-		printf("%s", args[i]);
+		ft_printf("%s", args[i]);
 		i++;
 		if (args[i])
-			printf(" ");
+			ft_printf(" ");
 	}
 	if (f == 0)
-		printf("\n");
+		ft_printf("\n");
 	return (0);
 }

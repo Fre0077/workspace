@@ -1,21 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   my_include.h                                       :+:      :+:    :+:   */
+/*   ft_char.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/04 13:50:20 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/13 13:58:59 by alborghi         ###   ########.fr       */
+/*   Created: 2024/11/28 16:00:15 by alborghi          #+#    #+#             */
+/*   Updated: 2025/03/13 13:54:58 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MY_INCLUDE_H
-# define MY_INCLUDE_H
+#include "../my_include.h"
 
-# include "my_headers/libft.h"
-# include "my_headers/get_next_line.h"
-# include "my_headers/ft_printf.h"
-# include "my_headers/ft_printe.h"
+int	print_char_flags_e(int c, t_params *flags)
+{
+	int	count;
 
-#endif
+	count = 0;
+	if (flags->flags[left_justify] == '-')
+	{
+		count += ft_putchar_fd(c, 2);
+		while (flags->width-- > 1)
+			count += ft_putchar_fd(' ', 2);
+	}
+	else
+	{
+		while (flags->width-- > 1)
+			count += ft_putchar_fd(' ', 2);
+		count += ft_putchar_fd(c, 2);
+	}
+	return (count);
+}

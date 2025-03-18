@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/12 18:34:26 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:02:11 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_put_env(t_env *env, int is_env)
 	while (env)
 	{
 		if (!(is_env == TRUE && env->is_env == FALSE))
-			printf("%s\n", env->var);
+			ft_printf("%s\n", env->var);
 		env = env->next;
 	}
 	return (0);
@@ -40,10 +40,10 @@ int	dup_file(char *file, int std, int mode)
 	fd = open(file, mode, 0644);
 	if (fd == -1)
 		return (free(file), -1);
-	// printf("file: %s\n", file);
+	// ft_"file: %s\n", file);
 	if (dup2(fd, std) == -1)
 		return (free(file), -1);
-	// printf("file: %s\n", file);
+	// ft_printf("file: %s\n", file);
 	close(fd);
 	return (0);
 }
@@ -96,7 +96,7 @@ int	handle_files(t_cmd *cmd, t_data *data)
 	if (cmd->file_i)
 	{
 		if (open_last(cmd->file_i, cmd->doi) == -1)
-			return (printf("minishell: No such file or directory\n"), -1);
+			return (ft_printe("minishell: No such file or directory\n"), -1);
 	}
 	if (cmd->file_o)
 	{
@@ -122,7 +122,7 @@ int	reset_std(t_data *data)
 
 int	print_PWD(char *pwd)
 {
-	printf("%s\n", pwd);
+	ft_printf("%s\n", pwd);
 	return (0);
 }
 
@@ -147,6 +147,7 @@ int	call_function(t_data *data)
 		ft_exit_builtin(data);
 	else
 		data->out = exec_execve(data);
+	ft_exit(data, data->out);
 	return (0);
 }
 
@@ -178,7 +179,7 @@ int	check_cmds(t_cmd *cmds, t_env *env)
 
 	path = get_env(env, "PATH");
 	if (!path)
-		return (printf("command not found: %s\n", cmds->cmd), 127);
+		return (ft_printe("command not found: %s\n", cmds->cmd), 127);
 	tmp = cmds;
 	while (tmp)
 	{
@@ -194,7 +195,7 @@ int	check_cmds(t_cmd *cmds, t_env *env)
 		else
 			exec = find_path(tmp->cmd, path);
 		if (!exec)
-			return (printf("command not found: %s\n", tmp->cmd), 127);
+			return (ft_printe("command not found: %s\n", tmp->cmd), 127);
 		tmp = tmp->next;
 		free(exec);
 	}
@@ -214,6 +215,7 @@ void	exec_cmd(t_data *data)
 		pid = fork();
 		if (pid == -1)
 			return (perror("fork"));
+		data->pids = add_int_list(data->pids, pid);
 		if (pid == 0)
 		{
 			close(fd[0]);
@@ -246,18 +248,25 @@ void	exec_cmd(t_data *data)
 			if (!check_pipe(data->cmds))
 			{
 				close(fd[0]);
-				// waitpid(pid, &status, 0);
-				// if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-				// {
-				// 	data->out = WEXITSTATUS(status);
-				// 	return ;
-				// }
 			}
 		}
 	}
 	else
 	{
-		call_function(data);
+		pid = fork();
+		if (pid == -1)
+			return (perror("fork"));
+		data->pids = add_int_list(data->pids, pid);
+		if (pid == 0)
+		{
+			signal(SIGQUIT, SIG_DFL);
+			signal(SIGINT, SIG_DFL);
+			call_function(data);
+		}
+		else
+		{
+			signal(SIGINT, sig_here);
+		}
 		reset_std(data);
 	}
 }
