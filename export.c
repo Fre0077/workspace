@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:01:27 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/13 16:41:11 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/17 17:29:56 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,30 @@
  */
 void	ft_put_export(t_env *env)
 {
-	int		i;
+	// int		i;
 	t_env	*tmp;
 
 	tmp = env;
+	// while (tmp)
+	// {
+	// 	i = 0;
+	// 	while (tmp->var[i] && tmp->var[i] != '=')
+	// 		i++;
+	// 	if (tmp->var[i] == '=')
+	// 		i++;
+	// 	//TODO: ft_printf
+	// 	write(1, "declare -x ", 11);
+	// 	write(1, tmp->var, i);
+	// 	if (tmp->var[i])
+	// 		ft_printf("\"%s\"", &tmp->var[i]);
+	// 	else if (tmp->var[i - 1] == '=')
+	// 		ft_printf("\"\"");
+	// 	ft_printf("\n");
+	// 	tmp = tmp->next;
+	// }
 	while (tmp)
 	{
-		i = 0;
-		while (tmp->var[i] && tmp->var[i] != '=')
-			i++;
-		if (tmp->var[i] == '=')
-			i++;
-		//TODO: ft_printf
-		write(1, "declare -x ", 11);
-		write(1, tmp->var, i);
-		if (tmp->var[i])
-			ft_printf("\"%s\"", &tmp->var[i]);
-		else if (tmp->var[i - 1] == '=')
-			ft_printf("\"\"");
-		ft_printf("\n");
+		ft_printf("declare -x %s\n", tmp->var);
 		tmp = tmp->next;
 	}
 }
@@ -64,6 +69,7 @@ int	substitute_env_var(char **var, char *arg)
 
 int	append_env_var(t_env *last, char *arg, int is_env)
 {
+	printf("appending\n");
 	last->next = (t_env *)malloc(sizeof(t_env));
 	if (!last->next)
 		return (1);
@@ -83,6 +89,7 @@ int	append_env_var(t_env *last, char *arg, int is_env)
 		return (1);
 	last->next->is_env = is_env;
 	last->next->next = NULL;
+	printf("var: %s\n", last->next->var);
 	return (0);
 }
 
@@ -102,6 +109,7 @@ int	export_cmd(char *arg, t_env *env)
 	{
 		if (check_key(tmp->var, arg) == TRUE)
 		{
+			printf("found key\n");
 			if (substitute_env_var(&(tmp->var), arg) == 1)
 				return (1);
 			tmp->is_env = is_env;
@@ -163,7 +171,7 @@ int	exec_export(t_cmd *cmds, t_env *env)
 		}
 		else if (export_cmd(cmds->args[i], env) == 1)
 			return (1);
-		ft_printf("export %s\n", cmds->args[i]);
+		ft_printf("added to export %s\n", cmds->args[i]);
 		i++;
 	}
 	return (0);

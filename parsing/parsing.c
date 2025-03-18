@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/14 18:44:21 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/17 15:41:28 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,6 @@ t_cmd	*parsing(char *line, t_data *data)
 		else
 			cmds = new_command(cmds, &words, data);
 	}
-	print_cmd(first);
+	// print_cmd(first);
 	return (free_words_only_pointers(head), first);
 }

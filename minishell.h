@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/17 12:07:50 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/17 12:08:28 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ typedef struct s_int_list
 
 typedef struct s_data
 {
-	t_int_list		*fds;
 	t_cmd			*head;
 	t_cmd			*cmds;
 	t_env			*env;

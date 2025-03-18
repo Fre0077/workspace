@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/13 16:02:11 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/17 15:49:20 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,8 @@ int	call_function(t_data *data)
 {
 	if (handle_files(data->cmds, data) == -1)
 		return (-1);
+	if (!data->cmds->cmd)
+		return (0);
 	if (ft_strncmp(data->cmds->cmd, "echo", 5) == 0)
 		data->out = exec_echo(data->cmds->args);
 	else if (ft_strncmp(data->cmds->cmd, "cd", 3) == 0)

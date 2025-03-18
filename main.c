@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/13 17:20:13 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/18 09:51:40 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,12 @@ int	main(int ac, char **av, char **env)
 			ft_printf("exit\n");
 			ft_exit(&data, data.out);
 		}
+		history = ft_strtrim(line, "\n ");
+		add_history(history);
+		write_history(HISTORY);
+		free(history);
 		data.cmds = parsing(line, &data);
-		if (data.cmds == NULL || data.cmds->cmd == NULL)
+		if (data.cmds == NULL)
 		{
 			data.status = 0;
 			continue ;
@@ -93,10 +97,6 @@ int	main(int ac, char **av, char **env)
 		{
 			data.status = 0;
 			free_cmds(data.cmds);
-			history = ft_strtrim(line, "\n ");
-			add_history(history);
-			write_history(HISTORY);
-			free(history);
 			continue ;
 		}
 		if (check_files(data.cmds) == 1)
@@ -105,59 +105,35 @@ int	main(int ac, char **av, char **env)
 			data.status = 1;
 			continue ;
 		}
-		if (data.cmds->cmd == NULL)
-		{
-			handle_files(data.cmds, &data);
-			free_cmds(data.cmds);
-			reset_std(&data);
-			history = ft_strtrim(line, "\n ");
-			add_history(history);
-			write_history(HISTORY);
-			free(history);
-			continue ;
-		}
+		do_heredoc(&data);
 		data.head = data.cmds;
 		exec_cmd(&data);
 		int status = 0;
-		// if ((data.head && data.head->next) || (data.head && !is_builtin(data.head->cmd) && data.out == 0))
-		// {
-			while (data.pids && waitpid(data.pids->n, &status, 0) >= 0)
+		while (data.pids && waitpid(data.pids->n, &status, 0) >= 0)
+		{
+			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
 			{
-				// ft_printe("%d\n", status);
-				if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-				{
-					ft_printe("Quit (core dumped)\n");
-					g_signal = 0;
-					break;
-				}
-				if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-				{
-					data.out = WEXITSTATUS(status);
-				}
-				data.pids = remove_node(data.pids);
+				ft_printe("Quit (core dumped)\n");
+				g_signal = 0;
+				break;
 			}
-			// if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-			// 	ft_printe("Quit (core dumped)\n");
-			// if (data.out == 131)
-			// 	ft_printe("Quit (core dumped)\n");
-			if (WIFSIGNALED(status))
-				data.out = (WTERMSIG(status) + 128);
-			if (WIFEXITED(status))
-				data.out = (WEXITSTATUS(status));
-		// }
+			if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+			{
+				data.out = WEXITSTATUS(status);
+			}
+			data.pids = remove_node(data.pids);
+		}
+		if (WIFSIGNALED(status))
+			data.out = (WTERMSIG(status) + 128);
+		if (WIFEXITED(status))
+			data.out = (WEXITSTATUS(status));
 		init_signals();
 		reset_std(&data);
-		// if (check_status(&data) == 1)
-		// 	ft_exit(&data, 1);
 		free_cmds(data.head);
 		close_fds(data.fds);
 		data.fds = NULL;
 		data.head = NULL;
 		data.cmds = NULL;
-		history = ft_strtrim(line, "\n ");
-		add_history(history);
-		write_history(HISTORY);
-		free(history);
 	}
 	ft_exit(&data, data.out);
 }
