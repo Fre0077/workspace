@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:22:52 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/10 17:19:48 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/19 12:46:07 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ int	exec_unset(t_data *data)
 	while (data->cmds->args[i])
 	{
 		key = data->cmds->args[i];
-		if (check_arg(key, "unset") == 1)
-			return (1);
-		if (ft_strncmp(key, "_", 2) == 0)
+		if (ft_strncmp(key, "_", 2) == 0 || check_arg(key, "unset") == 1)
 		{
 			i++;
 			continue ;
