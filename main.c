@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/19 10:50:30 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/19 12:25:26 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	main(int ac, char **av, char **env)
 	line = NULL;
 	while (1)
 	{
+		data.status = 0;
 		g_signal = 0;
 		free(line);
 		line = readline(MINI);

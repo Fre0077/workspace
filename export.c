@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:01:27 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/18 10:45:04 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/19 12:27:31 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,30 +19,25 @@
  */
 void	ft_put_export(t_env *env)
 {
-	// int		i;
+	int		i;
 	t_env	*tmp;
 
 	tmp = env;
-	// while (tmp)
-	// {
-	// 	i = 0;
-	// 	while (tmp->var[i] && tmp->var[i] != '=')
-	// 		i++;
-	// 	if (tmp->var[i] == '=')
-	// 		i++;
-	// 	//TODO: ft_printf
-	// 	write(1, "declare -x ", 11);
-	// 	write(1, tmp->var, i);
-	// 	if (tmp->var[i])
-	// 		ft_printf("\"%s\"", &tmp->var[i]);
-	// 	else if (tmp->var[i - 1] == '=')
-	// 		ft_printf("\"\"");
-	// 	ft_printf("\n");
-	// 	tmp = tmp->next;
-	// }
 	while (tmp)
 	{
-		ft_printf("declare -x %s\n", tmp->var);
+		i = 0;
+		while (tmp->var[i] && tmp->var[i] != '=')
+			i++;
+		if (tmp->var[i] == '=')
+			i++;
+		//TODO: ft_printf
+		write(1, "declare -x ", 11);
+		write(1, tmp->var, i);
+		if (tmp->var[i])
+			ft_printf("\"%s\"", &tmp->var[i]);
+		else if (tmp->var[i - 1] == '=')
+			ft_printf("\"\"");
+		ft_printf("\n");
 		tmp = tmp->next;
 	}
 }
@@ -110,7 +105,6 @@ int	export_cmd(char *arg, t_env *env)
 			if (substitute_env_var(&(tmp->var), arg) == 1)
 				return (1);
 			tmp->is_env = is_env;
-			ft_put_export(env);
 			return (0);
 		}
 		if (!tmp->next)
