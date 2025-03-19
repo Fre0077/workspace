@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/19 11:31:54 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/19 11:43:35 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ int	call_function(t_data *data)
 {
 	if (handle_files(data->cmds, data) == -1)
 		return (-1);
-	if (!data->cmds->cmd)
+	if (!data->cmds->cmd || (data->head->next && is_builtin(data->cmds->cmd)))
 		return (0);
 	if (ft_strncmp(data->cmds->cmd, "echo", 5) == 0)
 		data->out = exec_echo(data->cmds->args);
@@ -150,7 +150,7 @@ int	call_function(t_data *data)
 	else if (ft_strncmp(data->cmds->cmd, "env", 4) == 0)
 		data->out = ft_put_env(data->env, TRUE);
 	else if (ft_strncmp(data->cmds->cmd, "exit", 5) == 0)
-		ft_exit_builtin(data);
+			ft_exit_builtin(data);
 	else
 		data->out = exec_execve(data);
 	return (0);
@@ -249,6 +249,7 @@ void	exec_cmd(t_data *data)
 			else
 				data->fds = add_int_list(data->fds, fd[0]);
 			data->cmds = data->cmds->next;
+			// TODO: this should be inside a fork
 			exec_cmd(data);
 			if (!check_pipe(data->cmds))
 			{
