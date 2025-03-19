@@ -12,6 +12,7 @@ unset.c \
 execve.c \
 ft_exit.c \
 heredoc.c \
+do_heredoc.c \
 int_list.c \
 parsing/char_manager.c \
 parsing/dollar_stupid.c \

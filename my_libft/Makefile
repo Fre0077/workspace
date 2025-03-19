@@ -106,7 +106,7 @@ OBJS = $(SRCS:.c=.o)
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -I./my_headers 
+CFLAGS = -Wall -Wextra -Werror -g -I./my_headers 
 
 all: $(NAME)
 

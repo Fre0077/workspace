@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/19 10:49:53 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/19 11:31:41 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,9 @@ void				exec_cmd(t_data *data);
 void				handle_delimiter(char **delimiter, int doi, t_data *data);
 
 // do_heredoc.c
+int					check_heredoc(t_cmd *cmd);
 int					do_heredoc(t_data *data);
+int					read_heredoc(void);
 
 // echo.c
 int					exec_echo(char **args);

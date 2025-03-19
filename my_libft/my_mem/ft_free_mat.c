@@ -30,6 +30,8 @@ void	*ft_free_mat_char(char **mat)
 {
 	int	i;
 
+	if (!mat)
+		return (NULL);
 	i = 0;
 	while (mat && mat[i])
 	{

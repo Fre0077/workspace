@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/19 10:48:47 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/19 11:31:54 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,11 @@ void	free_files(t_cmd *cmd)
 
 int	handle_files(t_cmd *cmd, t_data *data)
 {
-	// handle_delimiter(cmd->delimiter, cmd->doi, data);
+	if (cmd->delimiter && check_heredoc(cmd->next) == 1)
+	{
+		if (read_heredoc() == 1)
+			return (-1);
+	}
 	if (g_signal == 130)
 		return (g_signal = 0, data->out = 130, -1);
 	if (cmd->file_i)

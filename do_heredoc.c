@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 09:51:57 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/19 10:49:09 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/19 11:33:17 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_heredoc(t_cmd *cmd)
 {
-	if (!cmd->cmd)
+	if (!cmd || !cmd->cmd)
 		return (0);
 	while (cmd->cmd)
 	{
@@ -31,7 +31,7 @@ int	skip_heredoc(char **delimiter)
 	int		i;
 
 	i = 0;
-	while (1)
+	while (delimiter[i])
 	{
 		line = readline("> ");
 		if (!line)
@@ -39,7 +39,8 @@ int	skip_heredoc(char **delimiter)
 		if (ft_strncmp(line, delimiter[i], ft_strlen(delimiter[i]) + 1) == 0)
 		{
 			free(line);
-			break ;
+			i++;
+			continue;
 		}
 		free(line);
 	}
@@ -51,11 +52,14 @@ int	save_heredoc(char **delimiter)
 	char	*line;
 	int		i;
 	int		fd;
+	int		flag;
 
 	i = 0;
 	fd = open(".heredoc", O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
 		return (1);
+	line = NULL;
+	flag = 1;
 	while (1)
 	{
 		line = readline("> ");
@@ -66,6 +70,7 @@ int	save_heredoc(char **delimiter)
 			free(line);
 			break ;
 		}
+		line = ft_strtrim_free(line, "\n");
 		ft_putendl_fd(line, fd);
 		free(line);
 	}
@@ -84,7 +89,7 @@ int	do_heredoc(t_data *data)
 	tmp = data->cmds;
 	while (tmp)
 	{
-		if (tmp->delimiter && check_heredoc(data))
+		if (tmp->delimiter && check_heredoc(tmp->next) == 1)
 		{
 			if (skip_heredoc(tmp->delimiter) == 1)
 				return (1);
@@ -95,5 +100,30 @@ int	do_heredoc(t_data *data)
 		}
 		tmp = tmp->next;
 	}
+	return (0);
+}
+
+int	read_heredoc(void)
+{
+	int		fd;
+	char	*line;
+	int		pipe_fd[2];
+
+	fd = open(".heredoc", O_RDONLY);
+	if (fd == -1)
+		return (1);
+	if (pipe(pipe_fd) == -1)
+		return (1);
+	line = get_next_line(fd);
+	while (line)
+	{
+		ft_putstr_fd(line, pipe_fd[1]);
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
+	close(pipe_fd[1]);
+	dup2(pipe_fd[0], 0);
+	close(pipe_fd[0]);
 	return (0);
 }
