@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/17 15:49:20 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/19 10:48:47 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	free_files(t_cmd *cmd)
 
 int	handle_files(t_cmd *cmd, t_data *data)
 {
-	handle_delimiter(cmd->delimiter, cmd->doi, data);
+	// handle_delimiter(cmd->delimiter, cmd->doi, data);
 	if (g_signal == 130)
 		return (g_signal = 0, data->out = 130, -1);
 	if (cmd->file_i)
@@ -149,7 +149,6 @@ int	call_function(t_data *data)
 		ft_exit_builtin(data);
 	else
 		data->out = exec_execve(data);
-	ft_exit(data, data->out);
 	return (0);
 }
 
@@ -255,20 +254,7 @@ void	exec_cmd(t_data *data)
 	}
 	else
 	{
-		pid = fork();
-		if (pid == -1)
-			return (perror("fork"));
-		data->pids = add_int_list(data->pids, pid);
-		if (pid == 0)
-		{
-			signal(SIGQUIT, SIG_DFL);
-			signal(SIGINT, SIG_DFL);
-			call_function(data);
-		}
-		else
-		{
-			signal(SIGINT, sig_here);
-		}
+		call_function(data);
 		reset_std(data);
 	}
 }

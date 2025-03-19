@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:01:27 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/17 17:29:56 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/18 10:45:04 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ int	substitute_env_var(char **var, char *arg)
 
 int	append_env_var(t_env *last, char *arg, int is_env)
 {
-	printf("appending\n");
 	last->next = (t_env *)malloc(sizeof(t_env));
 	if (!last->next)
 		return (1);
@@ -89,7 +88,6 @@ int	append_env_var(t_env *last, char *arg, int is_env)
 		return (1);
 	last->next->is_env = is_env;
 	last->next->next = NULL;
-	printf("var: %s\n", last->next->var);
 	return (0);
 }
 
@@ -109,16 +107,17 @@ int	export_cmd(char *arg, t_env *env)
 	{
 		if (check_key(tmp->var, arg) == TRUE)
 		{
-			printf("found key\n");
 			if (substitute_env_var(&(tmp->var), arg) == 1)
 				return (1);
 			tmp->is_env = is_env;
+			ft_put_export(env);
 			return (0);
 		}
 		if (!tmp->next)
 			return (append_env_var(tmp, arg, is_env));
 		tmp = tmp->next;
 	}
+	ft_put_export(env);
 	return (0);
 }
 
@@ -171,7 +170,6 @@ int	exec_export(t_cmd *cmds, t_env *env)
 		}
 		else if (export_cmd(cmds->args[i], env) == 1)
 			return (1);
-		ft_printf("added to export %s\n", cmds->args[i]);
 		i++;
 	}
 	return (0);

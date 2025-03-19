@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 09:57:09 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/18 09:56:29 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/18 10:55:17 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ t_cmd	*parsing(char *line, t_data *data)
 	while (!data->status && words != NULL)
 	{
 		//print_word(words);
-		print_cmd(first);
+		// print_cmd(first);
 		if (words->pipe == 1)
 			words = words->next;
 		else

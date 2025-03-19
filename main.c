@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/18 09:56:36 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/18 10:43:12 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	main(int ac, char **av, char **env)
 			data.status = 1;
 			continue ;
 		}
-		do_heredoc(&data);
+		// do_heredoc(&data);
 		data.head = data.cmds;
 		exec_cmd(&data);
 		int status = 0;

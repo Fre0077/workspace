@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:23:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/13 15:10:01 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/18 11:18:26 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,34 +115,34 @@ int	execute_command(char *path, char **argv, char **env)
 
 	(void)status;
 	(void)pid;
-	// pid = fork();
-	// if (pid == -1)
-	// 	return (perror("fork"), free_execve(path, argv, env), -1);
-	// if (pid == 0)
-	// {
-		// signal(SIGQUIT, SIG_DFL);
-		// signal(SIGINT, SIG_DFL);
+	pid = fork();
+	if (pid == -1)
+		return (perror("fork"), free_execve(path, argv, env), -1);
+	if (pid == 0)
+	{
+		signal(SIGQUIT, SIG_DFL);
+		signal(SIGINT, SIG_DFL);
 		execve(path, argv, env);
 		ft_printe("minishell: %s: ", path);
 		perror("");
 		ft_printe("\n");
 		free_execve(path, argv, env);
 		ft_exit(NULL, 1);
-	// }
-	// else
-	// {
-	// 	signal(SIGINT, sig_here);
-	// 	waitpid(pid, &status, 0); //TODO: test if this is needed or the wait in the main needs to be improved
-	// 	signal(SIGINT, new_prompt);
-	// 	free_execve(path, argv, env);
-	// 	// if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-	// 	// 	ft_printe("Quit (core dumped)\n");
-	// 	// if (WIFSIGNALED(status))
-	// 	// 	return (WTERMSIG(status) + 128);
-	// 	// if (WIFEXITED(status))
-	// 	// 	return (WEXITSTATUS(status));
-	// 	return (1);
-	// }
+	}
+	else
+	{
+		signal(SIGINT, sig_here);
+		waitpid(pid, &status, 0); //TODO: test if this is needed or the wait in the main needs to be improved
+		signal(SIGINT, new_prompt);
+		free_execve(path, argv, env);
+		// if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+		// 	ft_printe("Quit (core dumped)\n");
+		// if (WIFSIGNALED(status))
+		// 	return (WTERMSIG(status) + 128);
+		// if (WIFEXITED(status))
+		// 	return (WEXITSTATUS(status));
+		return (status);
+	}
 	return (0);
 }
 
@@ -158,10 +158,7 @@ int	exec_execve(t_data *data)
 		return (ft_printe("%s: command not found\n", data->cmds->cmd), 1);
 	argv = get_args(data->cmds);
 	env = env_to_mat(data->env);
-	// if (ft_strchr(data->cmds->cmd, '/') != NULL)
-	// {
-	if (strncmp(data->cmds->cmd, "./", 2) == 0
-		|| strncmp(data->cmds->cmd, "/", 1) == 0)
+	if (ft_strchr(data->cmds->cmd, '/') != NULL)
 	{
 		exec = ft_strdup(data->cmds->cmd);
 		if (access(exec, F_OK | X_OK) != 0)
