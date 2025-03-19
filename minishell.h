@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/18 10:43:03 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/19 10:49:53 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,8 @@ char				*findable_file(t_words *words, int witch);
 void				open_useless_file(t_cmd *cmds, int witch);
 void				check_file(char *find, t_words **words, t_cmd *cmds,
 						t_data *data);
-t_words				*inout_manager(t_words *words, t_data *data, t_cmd *cmds);
+t_words				*inout_manager(t_words *words, t_data *data, t_cmd *cmds,
+						t_words **h);
 //------------------------------------------------------------
 //parsing.c 5
 
@@ -234,7 +235,8 @@ int					count_args(t_words **words);
 t_cmd				*calloc_cmds(t_data *data);
 void				command_slicer(t_cmd *cmds, t_words **words,
 						t_data *data, t_words **h);
-t_cmd				*new_command(t_cmd *cmds, t_words **words, t_data *data);
+t_cmd				*new_command(t_cmd *cmds, t_words **words, t_data *data,
+						t_words **h);
 t_cmd				*parsing(char *line, t_data *data);
 //------------------------------------------------------------
 //print.c 3
