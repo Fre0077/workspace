@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 16:57:28 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/18 09:30:41 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/19 13:55:23 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	print_minmag_error(char *line, int *i, char c, t_data *data)
 	if (line[*i + 1] == c)
 		*i += 1;
 	l = *i + 1;
-	while (line[l] == ' ' || (line[l] == c && l == *i + 1))
+	while (line[l] == ' ' || (line[l] == c && l != *i + 1))
 		l++;
 	if (!line[l])
 	{
@@ -79,7 +79,7 @@ void	print_pipe_error(char *line, int i, t_data *data)
 	int	l;
 
 	j = i;
-	while (j > 0 && (line[j] == ' ' || line[j] == '|'))
+	while (j >= 0 && (line[j] == ' ' || line[j] == '|'))
 		j--;
 	l = i + 1;
 	while (line[l] && line[l] == ' ')
@@ -117,5 +117,6 @@ int	check_syntax_error(char *line, t_data *data)
 		if (data->status == 2)
 			return (1);
 	}
+	data->out = data->status;
 	return (quote_checker("1", 1), 0);
 }
