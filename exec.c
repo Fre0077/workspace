@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/19 18:33:08 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/20 15:37:48 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,23 @@ void	exec_cmd(t_data *data)
 	}
 	else
 	{
-		call_function(data);
+		if (!data->head->next)
+			call_function(data);
+		else
+		{
+			pid = fork();
+			if (pid == -1)
+				return (perror("fork"));
+			data->pids = add_int_list(data->pids, pid);
+			if (pid == 0)
+			{
+				if (call_function(data) == -1)
+				{
+					ft_exit(data, 130);
+				}
+				ft_exit(data, data->out);
+			}
+		}
 		reset_std(data);
 	}
 }
