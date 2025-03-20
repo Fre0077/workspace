@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_support.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 21:34:49 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/18 09:42:38 by fre007           ###   ########.fr       */
+/*   Updated: 2025/03/19 13:47:01 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	find_heredoc_only(char *line, t_data * data, char *limit)
 	char	*str;
 	int		i;
 
-	i = 1;
+	i = -1;
 	arr = NULL;
 	str = NULL;
 	while (line[++i] && (limit != &line[i] || limit == NULL))
