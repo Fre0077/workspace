@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 09:33:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/19 12:42:52 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/19 18:33:08 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,27 +90,27 @@ void	free_files(t_cmd *cmd)
 
 int	handle_files(t_cmd *cmd, t_data *data)
 {
-	if (cmd->delimiter)
+	if (cmd->here_file)
 	{
-		if (read_heredoc() == 1)
+		if (read_heredoc(cmd->here_file) == 1)
 			return (-1);
 	}
-	if (g_signal == 130)
+	if (g_signal == 2)
 		return (g_signal = 0, data->out = 130, -1);
 	if (cmd->file_i)
 	{
 		if (open_last(cmd->file_i, cmd->doi) == -1)
-			return (ft_printe("minishell: No such file or directory\n"), -1);
+			return (perror("minishell"), -1);
 	}
 	if (cmd->file_o)
 	{
 		if (dup_file(cmd->file_o, 1, O_CREAT | O_WRONLY | O_TRUNC) == -1)
-			return (-1);
+			return (cmd->file_o = NULL, perror("minishell"), -1);
 	}
 	else if (cmd->file_a)
 	{
 		if (dup_file(cmd->file_a, 1, O_CREAT | O_WRONLY | O_APPEND) == -1)
-			return (-1);
+			return (cmd->file_a = NULL, perror("minishell"), -1);
 	}
 	return (0);
 }
@@ -134,8 +134,8 @@ int	print_PWD(char *pwd)
 int	call_function(t_data *data)
 {
 	if (handle_files(data->cmds, data) == -1)
-		return (-1);
-	if (!data->cmds->cmd || (data->head->next && is_builtin(data->cmds->cmd)))
+		return (-1); 
+	if (!data->cmds->cmd)
 		return (0);
 	if (ft_strncmp(data->cmds->cmd, "echo", 5) == 0)
 		data->out = exec_echo(data->cmds->args);
@@ -175,38 +175,6 @@ int	is_builtin(char *cmd)
 	return (0);
 }
 
-// TODO: add check for commands with relative and absolute path
-int	check_cmds(t_cmd *cmds, t_env *env)
-{
-	char	*path;
-	char	*exec;
-	t_cmd	*tmp;
-
-	path = get_env(env, "PATH");
-	if (!path)
-		return (ft_printe("command not found: %s\n", cmds->cmd), 127);
-	tmp = cmds;
-	while (tmp)
-	{
-		if (is_builtin(tmp->cmd) == 1)
-		{
-			tmp = tmp->next;
-			continue ;
-		}
-		//TODO: redo this part of the check
-		if ((!ft_strncmp(tmp->cmd, "./", 2) || !ft_strncmp(tmp->cmd, "/", 1))
-			&& access(tmp->cmd, F_OK) == 0)
-			exec = ft_strdup(tmp->cmd);
-		else
-			exec = find_path(tmp->cmd, path);
-		if (!exec)
-			return (ft_printe("command not found: %s\n", tmp->cmd), 127);
-		tmp = tmp->next;
-		free(exec);
-	}
-	return (0);
-}
-
 void	exec_cmd(t_data *data)
 {
 	int	fd[2];
@@ -234,7 +202,7 @@ void	exec_cmd(t_data *data)
 			{
 				ft_exit(data, 130);
 			}
-			ft_exit(data, 0);
+			ft_exit(data, data->out);
 		}
 		else
 		{

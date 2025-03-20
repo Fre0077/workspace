@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:23:19 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/18 11:18:26 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/19 18:18:33 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	ft_put_char_mat(char **mat)
 }
 
 // + 128 to get the signal number
-int	execute_command(char *path, char **argv, char **env)
+int	execute_command(char *path, char **argv, char **env, t_data *data)
 {
 	pid_t	pid;
 	int		status;
@@ -127,7 +127,7 @@ int	execute_command(char *path, char **argv, char **env)
 		perror("");
 		ft_printe("\n");
 		free_execve(path, argv, env);
-		ft_exit(NULL, 1);
+		ft_exit(data, 1);
 	}
 	else
 	{
@@ -135,12 +135,12 @@ int	execute_command(char *path, char **argv, char **env)
 		waitpid(pid, &status, 0); //TODO: test if this is needed or the wait in the main needs to be improved
 		signal(SIGINT, new_prompt);
 		free_execve(path, argv, env);
-		// if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-		// 	ft_printe("Quit (core dumped)\n");
-		// if (WIFSIGNALED(status))
-		// 	return (WTERMSIG(status) + 128);
-		// if (WIFEXITED(status))
-		// 	return (WEXITSTATUS(status));
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+			ft_printe("Quit (core dumped)\n");
+		if (WIFSIGNALED(status))
+			return (WTERMSIG(status) + 128);
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
 		return (status);
 	}
 	return (0);
@@ -155,7 +155,7 @@ int	exec_execve(t_data *data)
 	char	**env;
 
 	if (!data->cmds->cmd || strncmp(data->cmds->cmd, "", 1) == 0)
-		return (ft_printe("%s: command not found\n", data->cmds->cmd), 1);
+		return (ft_printe("%s: command not found\n", data->cmds->cmd), 127);
 	argv = get_args(data->cmds);
 	env = env_to_mat(data->env);
 	if (ft_strchr(data->cmds->cmd, '/') != NULL)
@@ -165,11 +165,11 @@ int	exec_execve(t_data *data)
 			return (ft_printe("minishell: %s: No such file or directory\n", data->cmds->cmd), free_execve(exec, argv, env), 1);
 		if (!exec)
 			return (ft_printe("minishell: %s: No such file or directory\n", data->cmds->cmd), free_execve(exec, argv, env), 1);
-		return (execute_command(exec, argv, env));
+		return (execute_command(exec, argv, env, data));
 	}
 	path = get_env(data->env, "PATH");
 	exec = find_path(data->cmds->cmd, path);
 	if (!exec)
 		return (ft_printe("%s: command not found\n", data->cmds->cmd), free_execve(exec, argv, env), 127);
-	return (execute_command(exec, argv, env));
+	return (execute_command(exec, argv, env, data));
 }

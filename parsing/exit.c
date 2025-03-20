@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:04:44 by fre007            #+#    #+#             */
-/*   Updated: 2025/03/19 11:32:03 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/19 17:33:12 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	free_cmds(t_cmd *cmds)
 		free(tmp->file_a);
 		ft_free_mat_char(tmp->file_i);
 		ft_free_mat_char(tmp->delimiter);
+		if (tmp->here_file)
+			free(tmp->here_file);
 		free(tmp);
 	}
 }

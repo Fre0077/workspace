@@ -6,29 +6,13 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 10:57:05 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/13 15:05:53 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/19 17:02:39 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern int	g_signal;
-
-void	init_signals(void)
-{
-	signal(SIGC, new_prompt);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-void	new_prompt(int signum)
-{
-	(void)signum;
-	ft_printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	g_signal = 1;
-}
 
 void	sig_quit(int signum)
 {
@@ -39,10 +23,25 @@ void	sig_quit(int signum)
 
 void	sig_here(int signum)
 {
-	if (signum == SIGINT)
-	{
-		g_signal = 130;
-		printf("\n");
-		close(0);	
-	}
+	g_signal = signum;
+}
+
+void	sig_ignore(int signum)
+{
+	g_signal = signum;
+}
+
+void	init_signals(void)
+{
+	signal(SIGC, new_prompt);
+	signal(SIGQUIT, sig_ignore);
+}
+
+void	new_prompt(int signum)
+{
+	g_signal = signum;
+	ft_printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }

@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:07:37 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/19 11:31:41 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/19 17:34:23 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <errno.h>
+# include <termios.h>
 
 # define HISTORY "/nfs/homes/alborghi/miei_file/42_core/milestone_3/minishell/.history"
 
@@ -58,6 +59,7 @@ typedef struct s_cmd
 	char			*file_o; // trunck (out)
 	char			*file_a; // append (out)
 	int				doi; //controll last readed input file (0 1 2)
+	char			*here_file;
 	struct s_cmd	*next;
 }					t_cmd;
 
@@ -122,7 +124,7 @@ void				handle_delimiter(char **delimiter, int doi, t_data *data);
 // do_heredoc.c
 int					check_heredoc(t_cmd *cmd);
 int					do_heredoc(t_data *data);
-int					read_heredoc(void);
+int					read_heredoc(char *file);
 
 // echo.c
 int					exec_echo(char **args);

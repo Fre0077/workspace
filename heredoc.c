@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:57:54 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/19 10:46:25 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/19 17:02:48 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	skip_useless(char **delimiter)
 	while (delimiter[i + 1])
 	{
 		line = readline("> ");
-		if (g_signal == 130)
+		if (g_signal == 2)
 		{
 			return (-1);
 		}

@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:06:42 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/19 12:25:26 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/03/19 14:46:43 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,25 +109,28 @@ int	main(int ac, char **av, char **env)
 		do_heredoc(&data);
 		data.head = data.cmds;
 		exec_cmd(&data);
-		int status = 0;
-		while (data.pids && waitpid(data.pids->n, &status, 0) >= 0)
+		if (data.pids)
 		{
-			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+			int status = 0;
+			while (data.pids && waitpid(data.pids->n, &status, 0) >= 0)
 			{
-				ft_printe("Quit (core dumped)\n");
-				g_signal = 0;
-				break;
+				if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+				{
+					ft_printe("Quit (core dumped)\n");
+					g_signal = 0;
+					break;
+				}
+				if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+				{
+					data.out = WEXITSTATUS(status);
+				}
+				data.pids = remove_node(data.pids);
 			}
-			if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-			{
-				data.out = WEXITSTATUS(status);
-			}
-			data.pids = remove_node(data.pids);
+			if (WIFSIGNALED(status))
+				data.out = (WTERMSIG(status) + 128);
+			if (WIFEXITED(status))
+				data.out = (WEXITSTATUS(status));
 		}
-		if (WIFSIGNALED(status))
-			data.out = (WTERMSIG(status) + 128);
-		if (WIFEXITED(status))
-			data.out = (WEXITSTATUS(status));
 		init_signals();
 		reset_std(&data);
 		free_cmds(data.head);
