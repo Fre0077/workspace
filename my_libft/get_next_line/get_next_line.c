@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 08:53:04 by alborghi          #+#    #+#             */
-/*   Updated: 2025/01/23 10:18:08 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/01 15:32:40 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,17 @@ char	*get_rest(char *buf)
 	return (buf);
 }
 
+/**
+ * @brief Get the next line from a file descriptor
+ * @param fd The file descriptor to read from
+ * 
+ */
 char	*get_next_line(int fd)
 {
 	static char	*buf[4096];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > 4096)
 		return (NULL);
 	if (!buf[fd])
 		buf[fd] = ft_calloc(BUFFER_SIZE + 1, sizeof(char));

@@ -5,13 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/13 14:07:51 by alborghi          #+#    #+#             */
-/*   Updated: 2025/03/13 14:16:07 by alborghi         ###   ########.fr       */
+/*   Created: 2025/03/21 11:14:48 by alborghi          #+#    #+#             */
+/*   Updated: 2025/03/21 11:15:01 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_E
-# define FT_PRINTF_E
+#ifndef FT_PRINTE_H
+# define FT_PRINTE_H
 
 # include "ft_printf.h"
 # include "libft.h"
