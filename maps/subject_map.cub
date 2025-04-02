@@ -1,7 +1,7 @@
-NO north.xpm
-SO south.xpm
-WE west.xpm
-EA east.xpm
+NO textures_xpm/acacia_log.xpm
+SO textures_xpm/acacia_log.xpm
+WE textures_xpm/acacia_log.xpm
+EA textures_xpm/acacia_log.xpm
 
 F 220,100,0
 C 225,30,0

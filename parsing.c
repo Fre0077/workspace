@@ -5,87 +5,71 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/01 13:51:53 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/02 16:32:51 by alborghi         ###   ########.fr       */
+/*   Created: 2025/04/02 18:31:09 by alborghi          #+#    #+#             */
+/*   Updated: 2025/04/02 19:00:52 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	check_file(char *file)
-{
-	int		len;
-	int		fd;
-
-	len = ft_strlen(file);
-	if (len < 5 || ft_strncmp(file + len - 4, ".cub", 4) != 0)
-		return (ft_printe("Error\nWrong file extension\n"), 1);
-	fd = open(file, O_RDONLY);
-	if (fd == -1)
-		return (ft_printe("Error\nFile does not exist\n"), 1);
-	close(fd);
-	return (0);
-}
-
-int	process_line(char *line, t_data *data)
-{
-	if (ft_strncmp(line, "NO ", 3) == 0)
-		data->no = ft_strdup(line + 3);
-	else if (ft_strncmp(line, "SO ", 3) == 0)
-		data->so = ft_strdup(line + 3);
-	else if (ft_strncmp(line, "EA ", 3) == 0)
-		data->ea = ft_strdup(line + 3);
-	else if (ft_strncmp(line, "WE ", 3) == 0)
-		data->we = ft_strdup(line + 3);
-	else if (ft_strncmp(line, "F ", 2) == 0)
-		data->f = ft_strdup(line + 2);
-	else if (ft_strncmp(line, "C ", 2) == 0)
-		data->c = ft_strdup(line + 2);
-	else if (ft_strncmp(line, "\n", 1) == 0)
-		return (0);
-	else
-		return (1);
-	return (0);
-}
-
-void	ft_put_map(char **mat)
+// - 42 - 6 = -48 = - '0' non osare toccare
+int	safe_atoi(char *s)
 {
 	int	i;
+	int	n;
 
-	i = 0;
-	while (mat && mat[i])
-	{
-		ft_putstr_fd(mat[i], 1);
-		i++;
-	}
+	if (ft_strlen_int(s) > 3 || !s)
+		return (-1);
+	i = -1;
+	while (s[++i])
+		if (!ft_isdigit(s[i]))
+			return (-1);
+	n = ft_atoi(s);
+	if (n > 255)
+		return (-1);
+	return (n);
+}
+//pere per camilla
+
+int	parse_colors(t_data *data)
+{
+	char	**split;
+
+	split = ft_split(data->f->color, ',');
+	if (!split || ft_char_mat_len(split) != 3)
+		return (ft_printe("Error\nInvalid floor color\n"), 1);
+	data->f->red = safe_atoi(split[0]);
+	data->f->green = safe_atoi(split[1]);
+	data->f->blue = safe_atoi(split[2]);
+	if (data->f->red == -1 || data->f->green == -1 || data->f->blue == -1)
+		return (ft_printe("Error\nInvalid floor color\n"), 1);
+	ft_free_mat_char(split);
+	split = ft_split(data->c->color, ',');
+	if (!split || ft_char_mat_len(split) != 3)
+		return (ft_printe("Error\nInvalid ceiling color\n"), 1);
+	data->c->red = safe_atoi(split[0]);
+	data->c->green = safe_atoi(split[1]);
+	data->c->blue = safe_atoi(split[2]);
+	if (data->c->red == -1 || data->c->green == -1 || data->c->blue == -1)
+		return (ft_printe("Error\nInvalid ceiling color\n"), 1);
+	ft_free_mat_char(split);
+	printf("F: %d,%d,%d\n", data->f->red, data->f->green, data->f->blue);
+	printf("C: %d,%d,%d\n", data->c->red, data->c->green, data->c->blue);
+	return (0);
 }
 
-int	parse_file(char *file, t_data *data)
+// TODO: segfault, move parse_colors to the end of the 3 ifs
+int	parsing(t_data *data, char *file)
 {
-	int		fd;
-	char	*line;
-
-	if (check_file(file) == 1)
+	if (read_file(file, data) == 1)
 		return (1);
-	fd = open(file, O_RDONLY);
-	if (fd == -1)
-		return (ft_printe("Error\nError opening the file\n"), 1);
-	line = get_next_line(fd);
-	if (!line)
-		return (ft_printe("Error\nError reading the file\n"), close(fd), 1);
-	while (line)
-	{
-		if (process_line(line, data) == 1)
-			break ;
-		free(line);
-		line = get_next_line(fd);
-	}
-	while (line)
-	{
-		data->map = ft_append_line(data->map, line);
-		line = get_next_line(fd);
-	}
-	close(fd);
-	ft_put_map(data->map);
+	if (parse_colors(data) == 1)
+		return (ft_printe("Error\nInvalid color\n"), 1);
+	if (!data->no || !data->so || !data->ea || !data->we)
+		return (ft_printe("Error\nMissing texture path\n"), 1);
+	if (!data->f || !data->c)
+		return (ft_printe("Error\nMissing color\n"), 1);
+	if (!data->map)
+		return (ft_printe("Error\nMissing map\n"), 1);
 	return (0);
 }

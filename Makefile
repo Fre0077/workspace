@@ -2,11 +2,13 @@ NAME = cub3d
 
 SRCS = \
 main.c \
+read_file.c \
 parsing.c \
-init_mlx.c
+init_mlx.c \
+exit.c
 
 CFLAGS = -Wall -Wextra -Werror -g
-MINIFLAGS = -lXext -lX11 -lm
+MINIFLAGS = -lX11 -lXext -lm
 
 LIBFT = my_libft/libft.a
 
@@ -15,7 +17,7 @@ MLX = minilibx-linux/libmlx.a
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(MLX) $(SRCS)
-	gcc $(CFLAGS) $(MINIFLAGS) -o $(NAME) $(SRCS) $(LIBFT) $(MLX)
+	gcc $(CFLAGS) -o $(NAME) $(SRCS) $(LIBFT) $(MLX) $(MINIFLAGS)
 
 $(LIBFT):
 	make -C my_libft
