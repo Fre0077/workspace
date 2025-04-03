@@ -2,12 +2,14 @@ NAME = cub3d
 
 SRCS = \
 main.c \
+init.c \
+print_all.c \
 read_file.c \
 parsing.c \
 init_mlx.c \
 exit.c
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -O3
 MINIFLAGS = -lX11 -lXext -lm
 
 LIBFT = my_libft/libft.a

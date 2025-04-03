@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/02 18:34:03 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/03 18:31:14 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,15 @@ typedef struct s_color
 	int		blue;
 }			t_color;
 
+typedef struct s_screen
+{
+	void	*img;
+	char	*addr;
+	int		line_length;
+	int		endian;
+	int		bpp;
+}			t_screen;
+
 typedef struct s_data
 {
 	char	**map;
@@ -49,7 +58,19 @@ typedef struct s_data
 	void	*mlx;
 	void	*win;
 	int		status;
+	t_screen	*screen;
 }			t_data;
+
+// init.c
+t_img		*init_img(void);
+t_color		*init_color(void);
+t_data		*init_data(void);
+
+// print_all.c
+void		print_img(t_img *img);
+void		print_color(t_color *col);
+void		print_map(char **mat);
+void		print_data(t_data *data);
 
 // read_file.c
 /**

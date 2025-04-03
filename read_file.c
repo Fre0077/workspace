@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:51:53 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/02 18:29:29 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/03 10:12:49 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,6 @@ int	check_file(char *file)
 
 int	allocate_texture_path(char *path, t_img *img)
 {
-	img = (t_img *)ft_calloc(1, sizeof(t_img));
-	if (!img)
-		return (ft_printe("Error\nFunction calloc failed\n"), 1);
 	img->path = ft_strtrim(path, " \n");
 	if (!img->path)
 		return (ft_printe("Error\nFunction strtrim failed\n"), 1);
@@ -39,9 +36,6 @@ int	allocate_texture_path(char *path, t_img *img)
 
 int	allocate_color(char *color, t_color *col)
 {
-	col = (t_color *)ft_calloc(1, sizeof(t_color));
-	if (!col)
-		return (ft_printe("Error\nFunction calloc failed\n"), 1);
 	col->color = ft_strtrim(color, " \n");
 	if (!col->color)
 		return (ft_printe("Error\nFunction strtrim failed\n"), 1);

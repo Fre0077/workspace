@@ -6,13 +6,13 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 18:31:09 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/02 19:00:52 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/03 10:59:32 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// - 42 - 6 = -48 = - '0' non osare toccare
+// - 42 - 6 = -48 = - '0'
 int	safe_atoi(char *s)
 {
 	int	i;
@@ -31,7 +31,7 @@ int	safe_atoi(char *s)
 }
 //pere per camilla
 
-int	parse_colors(t_data *data)
+int	load_colors(t_data *data)
 {
 	char	**split;
 
@@ -53,23 +53,44 @@ int	parse_colors(t_data *data)
 	if (data->c->red == -1 || data->c->green == -1 || data->c->blue == -1)
 		return (ft_printe("Error\nInvalid ceiling color\n"), 1);
 	ft_free_mat_char(split);
-	printf("F: %d,%d,%d\n", data->f->red, data->f->green, data->f->blue);
-	printf("C: %d,%d,%d\n", data->c->red, data->c->green, data->c->blue);
 	return (0);
 }
 
-// TODO: segfault, move parse_colors to the end of the 3 ifs
+int	load_textures(t_data * data)
+{
+	data->no->img = mlx_xpm_file_to_image(data->mlx, data->no->path,
+			&data->no->width, &data->no->height);
+	if (!data->no->img)
+		return (ft_printe("Error\nInvalid north texture\n"), 1);
+	data->so->img = mlx_xpm_file_to_image(data->mlx, data->so->path,
+			&data->so->width, &data->so->height);
+	if (!data->so->img)
+		return (ft_printe("Error\nInvalid south texture\n"), 1);
+	data->ea->img = mlx_xpm_file_to_image(data->mlx, data->ea->path,
+			&data->ea->width, &data->ea->height);
+	if (!data->ea->img)
+		return (ft_printe("Error\nInvalid east texture\n"), 1);
+	data->we->img = mlx_xpm_file_to_image(data->mlx, data->we->path,
+			&data->we->width, &data->we->height);
+	if (!data->we->img)
+		return (ft_printe("Error\nInvalid west texture\n"), 1);
+	return (0);
+}
+
 int	parsing(t_data *data, char *file)
 {
 	if (read_file(file, data) == 1)
 		return (1);
-	if (parse_colors(data) == 1)
-		return (ft_printe("Error\nInvalid color\n"), 1);
-	if (!data->no || !data->so || !data->ea || !data->we)
-		return (ft_printe("Error\nMissing texture path\n"), 1);
-	if (!data->f || !data->c)
+	if (!data->f->color || !data->c->color)
 		return (ft_printe("Error\nMissing color\n"), 1);
+	if (!data->no->path || !data->so->path || !data->ea->path
+		|| !data->we->path)
+		return (ft_printe("Error\nMissing texture path\n"), 1);
 	if (!data->map)
 		return (ft_printe("Error\nMissing map\n"), 1);
+	if (load_colors(data) == 1)
+		return (ft_printe("Error\nInvalid color\n"), 1);
+	if (load_textures(data) == 1)
+		return (ft_printe("Error\nInvalid texture\n"), 1);
 	return (0);
 }
