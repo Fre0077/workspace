@@ -6,17 +6,17 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:54:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/03 18:29:00 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/04 12:39:58 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_img	*init_img()
+t_ft_img	*init_img()
 {
-	t_img	*img;
+	t_ft_img	*img;
 
-	img = (t_img *)ft_calloc(1, sizeof(t_img));
+	img = (t_ft_img *)ft_calloc(1, sizeof(t_ft_img));
 	if (!img)
 		return (ft_printe("Error\nFunction calloc failed\n"), NULL);
 	img->img = NULL;
@@ -57,6 +57,8 @@ t_data	*init_data()
 	data->c = init_color();
 	data->map = NULL;
 	data->mlx = mlx_init();
+	data->player = (t_viktor){0, 0, 0};	//TODO: initialize player position after map parsing
+	data->status = 0;
 	data->screen = (t_screen *)ft_calloc(1, sizeof(t_screen));
 	if (!data->screen)
 		return (ft_printe("Error\nFunction calloc failed\n"), NULL);

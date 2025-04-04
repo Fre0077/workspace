@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:42:48 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/03 18:40:14 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/04 17:33:26 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,52 +19,52 @@ int	key_hook(int keycode, t_data *data)
 	return (0);
 }
 
-void calculate_img(t_data *data)
-{
-    int map_y;
-    int map_x;
-    int pixel_y;
-    int pixel_x;
+// void calculate_img(t_data *data)
+// {
+//     int map_y;
+//     int map_x;
+//     int pixel_y;
+//     int pixel_x;
 
-	map_y = 0;
-    while (data->map[map_y])
-    {
-        map_x = 0;
-        while (data->map[map_y][map_x] != '\n' && data->map[map_y][map_x] != '\0')
-        {
-            unsigned int color;
-            if (data->map[map_y][map_x] == '1')
-                color = 0xFFFFFF;
-            else if (data->map[map_y][map_x] == '0')
-                color = 0x000000;
-			else if (ft_strchr("NSWE", data->map[map_y][map_x]))
-				color = 0x00FF00;
-            else
-                color = 0xFF0000;
+// 	map_y = 0;
+//     while (data->map[map_y])
+//     {
+//         map_x = 0;
+//         while (data->map[map_y][map_x] != '\n' && data->map[map_y][map_x] != '\0')
+//         {
+//             unsigned int color;
+//             if (data->map[map_y][map_x] == '1')
+//                 color = 0xFFFFFF;
+//             else if (data->map[map_y][map_x] == '0')
+//                 color = 0x000000;
+// 			else if (ft_strchr("NSWE", data->map[map_y][map_x]))
+// 				color = 0x00FF00;
+//             else
+//                 color = 0xFF0000;
 
-            pixel_y = 0;
-            while (pixel_y < 16)
-            {
-                pixel_x = 0;
-                while (pixel_x < 16)
-                {
-                    int screen_y = (map_y * 16) + pixel_y;
-                    int screen_x = (map_x * 16) + pixel_x;
-                    if (screen_y < HEIGHT && screen_x < WIDTH)
-                    {
-                        *(unsigned int *)(data->screen->addr + 
-                            (screen_y * data->screen->line_length) + 
-                            (screen_x * (data->screen->bpp / 8))) = color;
-                    }
-                    pixel_x++;
-                }
-                pixel_y++;
-            }
-            map_x++;
-        }
-        map_y++;
-    }
-}
+//             pixel_y = 0;
+//             while (pixel_y < 16)
+//             {
+//                 pixel_x = 0;
+//                 while (pixel_x < 16)
+//                 {
+//                     int screen_y = (map_y * 16) + pixel_y;
+//                     int screen_x = (map_x * 16) + pixel_x;
+//                     if (screen_y < HEIGHT && screen_x < WIDTH)
+//                     {
+//                         *(unsigned int *)(data->screen->addr + 
+//                             (screen_y * data->screen->line_length) + 
+//                             (screen_x * (data->screen->bpp / 8))) = color;
+//                     }
+//                     pixel_x++;
+//                 }
+//                 pixel_y++;
+//             }
+//             map_x++;
+//         }
+//         map_y++;
+//     }
+// }
 
 int	frame(void *arg)
 {
@@ -82,6 +82,7 @@ int	frame(void *arg)
 		return (ft_printe("Error\nFailed to get data address\n"), 1);
 	calculate_img(data);
 	mlx_put_image_to_window(data->mlx, data->win, data->screen->img, 0, 0);
+	// ft_close(data);
 	return (0);
 }
 

@@ -1,13 +1,15 @@
 NAME = cub3d
 
 SRCS = \
-main.c \
-init.c \
-print_all.c \
-read_file.c \
-parsing.c \
+dist_wall.c \
+exit.c \
 init_mlx.c \
-exit.c
+init.c \
+main.c \
+parsing.c \
+print_all.c \
+read_check.c \
+read_file.c
 
 CFLAGS = -Wall -Wextra -Werror -g -O3
 MINIFLAGS = -lX11 -lXext -lm
@@ -34,6 +36,5 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 	make -C my_libft fclean
-	make -C minilibx-linux fclean
 
 re: fclean all

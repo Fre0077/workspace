@@ -6,13 +6,13 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:15:55 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/03 10:56:21 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/04 15:00:12 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	print_img(t_img *img)
+void	print_img(t_ft_img *img)
 {
 	ft_printf("Image path: %s\n", img->path);
 	ft_printf("Image width: %d\n", img->width);
@@ -35,25 +35,25 @@ void	print_map(char **mat)
 	i = 0;
 	while (mat && mat[i])
 	{
-		ft_putstr_fd(mat[i], 1);
+		ft_printf("%s\n", mat[i]);
 		i++;
 	}
 }
 
 void	print_data(t_data *data)
 {
-	printf("North texture:\n");
+	ft_printf("North texture:\n");
 	print_img(data->no);
-	printf("\nSouth texture:\n");
+	ft_printf("\nSouth texture:\n");
 	print_img(data->so);
-	printf("\nEast texture:\n");
+	ft_printf("\nEast texture:\n");
 	print_img(data->ea);
-	printf("\nWest texture:\n");
+	ft_printf("\nWest texture:\n");
 	print_img(data->we);
-	printf("\nFloor color:\n");
+	ft_printf("\nFloor color:\n");
 	print_color(data->f);
-	printf("\nCeiling color:\n");
+	ft_printf("\nCeiling color:\n");
 	print_color(data->c);
-	printf("\nMap:\n");
+	ft_printf("\nMap:\n");
 	print_map(data->map);
 }

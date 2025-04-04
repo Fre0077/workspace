@@ -6,13 +6,13 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 17:18:45 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/03 10:05:25 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/04 12:39:58 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	free_img(t_img *img, void *mlx)
+void	free_img(t_ft_img *img, void *mlx)
 {
 	if (!img)
 		return ;

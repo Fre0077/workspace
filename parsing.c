@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 18:31:09 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/03 10:59:32 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/04 16:39:28 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	safe_atoi(char *s)
 		return (-1);
 	return (n);
 }
-//pere per camilla
+//pere per c******a
 
 int	load_colors(t_data *data)
 {
@@ -77,10 +77,37 @@ int	load_textures(t_data * data)
 	return (0);
 }
 
-int	parsing(t_data *data, char *file)
+void	find_player(t_data *data)
 {
-	if (read_file(file, data) == 1)
-		return (1);
+	int	i;
+	int	j;
+
+	i = -1;
+	while (data->map[++i])
+	{
+		j = -1;
+		while (data->map[i][++j])
+		{
+			if (ft_strchr("NSWE", data->map[i][j]))
+			{
+				data->player.x = j + 0.5;
+				data->player.y = i + 0.5;
+				if (data->map[i][j] == 'N')
+					data->player.angle = 270;
+				else if (data->map[i][j] == 'S')
+					data->player.angle = 90;
+				else if (data->map[i][j] == 'E')
+					data->player.angle = 0;
+				else if (data->map[i][j] == 'W')
+					data->player.angle = 180;
+				return ;
+			}
+		}
+	}
+}
+
+int	parsing(t_data *data)
+{
 	if (!data->f->color || !data->c->color)
 		return (ft_printe("Error\nMissing color\n"), 1);
 	if (!data->no->path || !data->so->path || !data->ea->path
@@ -88,9 +115,10 @@ int	parsing(t_data *data, char *file)
 		return (ft_printe("Error\nMissing texture path\n"), 1);
 	if (!data->map)
 		return (ft_printe("Error\nMissing map\n"), 1);
-	if (load_colors(data) == 1)
+	if (load_colors(data))
 		return (ft_printe("Error\nInvalid color\n"), 1);
-	if (load_textures(data) == 1)
+	if (load_textures(data))
 		return (ft_printe("Error\nInvalid texture\n"), 1);
+	find_player(data);
 	return (0);
 }
