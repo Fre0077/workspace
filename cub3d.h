@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/04 17:37:52 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/04 18:18:34 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # define HEIGHT 900
 # define FOV 42 * 2
 # define TILE_SIZE 128
+# define M_PI 3.14159265358979323846
 
 typedef struct s_viktor
 {
@@ -58,6 +59,12 @@ typedef struct s_screen
 	int		bpp;
 }			t_screen;
 
+typedef struct s_ray
+{
+	t_viktor	dir;
+	t_viktor	plane;
+}			t_ray;
+
 typedef struct s_data
 {
 	char	**map;
@@ -72,6 +79,7 @@ typedef struct s_data
 	int		status;
 	t_screen	*screen;
 	t_viktor	player;
+	t_ray	ray;
 }			t_data;
 
 //dist_wall.c
