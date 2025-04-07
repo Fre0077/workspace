@@ -6,20 +6,26 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:42:48 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/06 21:00:45 by fre007           ###   ########.fr       */
+/*   Updated: 2025/04/07 08:45:56 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "X11/keysymdef.h"
+#include "X11/keysym.h"
 
 int	key_press(int key, t_data *data)
 {
-	if (key == 65307)
+	if (key == XK_Escape)
 		ft_close(data);
-	else if (key == 65361)
+	else if (key == XK_Left)
 		data->player.angle--;
-	else if (key == 65363)
+	else if (key == XK_Right)
 		data->player.angle++;
+	if (data->player.angle >= 360)
+		data->player.angle -= 360;
+	if (data->player.angle < 0)
+		data->player.angle += 360;
 	return (0);
 }
 
@@ -43,6 +49,8 @@ int	mouse_move(int x, int y, t_data *data)
 		data->player.angle -= 360;
 	if (data->player.angle < 0)
 		data->player.angle += 360;
+	mlx_mouse_hide(data->mlx, data->win);
+	mlx_mouse_move(data->mlx, data->win, WIDTH / 2, HEIGHT / 2);
 	return (0);
 }
 
@@ -138,8 +146,6 @@ int	init_mlx(t_data *data)
 	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "Cub3D");
 	if (!data->win)
 		return (ft_printe("Error\nFailed to create window\n"), 1);
-	mlx_mouse_hide(data->mlx, data->win);
-	mlx_mouse_move(data->mlx, data->win, WIDTH / 2, HEIGHT / 2);
 	mlx_hook(data->win, 6, 1L<<6, mouse_move, data);
 	mlx_hook(data->win, 17, 0, ft_close, data);
 	mlx_hook(data->win, 2, 1L<<0, key_press, data);
