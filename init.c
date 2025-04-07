@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:54:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/04 12:39:58 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/06 20:43:33 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ t_data	*init_data()
 	data = (t_data *)ft_calloc(1, sizeof(t_data));
 	if (!data)
 		return (ft_printe("Error\nFunction calloc failed\n"), NULL);
+	data->mouse_x = -1;
 	data->no = init_img();
 	data->so = init_img();
 	data->ea = init_img();

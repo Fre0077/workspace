@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/04 17:37:52 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/06 20:19:38 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,15 @@
 
 # define WIDTH 1440
 # define HEIGHT 900
-# define FOV 42 * 2
+# define FOV 90
 # define TILE_SIZE 128
+# define M_PI 3.14159265358979323846
+
+typedef struct s_pkey
+{
+	int	dex;
+	int	six;
+}			t_pkey;
 
 typedef struct s_viktor
 {
@@ -60,23 +67,25 @@ typedef struct s_screen
 
 typedef struct s_data
 {
-	char	**map;
+	int			mouse_x;
+	char		**map;
 	t_ft_img	*no;
 	t_ft_img	*so;
 	t_ft_img	*ea;
 	t_ft_img	*we;
-	t_color	*f;
-	t_color	*c;
-	void	*mlx;
-	void	*win;
-	int		status;
+	t_color		*f;
+	t_color		*c;
+	t_pkey 		pkey;
+	void		*mlx;
+	void		*win;
+	int			status;
 	t_screen	*screen;
 	t_viktor	player;
 }			t_data;
 
 //dist_wall.c
 int			hit(t_data *data, t_viktor tmp);
-double		calculate_dist(t_data *data, double angle);
+double		calculate_dist(t_data *data, double angle, double r);
 void		calculate_img(t_data *data);
 
 // exit.c
@@ -85,7 +94,9 @@ void		free_color(t_color *col);
 int			ft_close(t_data *data);
 
 // init_mlx.c
-int			key_hook(int keycode, t_data *data);
+int	key_press(int key, t_data *data);
+int	key_realese(int key, t_data *data);
+int	move_update(t_data *data);
 int			frame(void *arg);
 int			init_mlx(t_data *data);
 
@@ -107,12 +118,14 @@ void		print_map(char **mat);
 void		print_data(t_data *data);
 
 // read_check.c
+
 int			check_file(char *file);
 int			check_player(t_data *data);
 int			check_char(t_data *data);
 int			check_auschwitz(t_data *data);
 
 // read_file.c
+
 int			allocate_texture_path(char *path, t_ft_img *img);
 int			allocate_color(char *color, t_color *col);
 int			process_line(char *line, t_data *data);
