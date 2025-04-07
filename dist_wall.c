@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dist_wall.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 11:21:12 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/06 17:03:39 by fre007           ###   ########.fr       */
+/*   Updated: 2025/04/07 13:52:49 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,43 @@ double	rad(double rad)
 
 	if (rad != -1)
 		radd = rad;
-	//printf("#########%f\n", radd);
 	return (radd);
+}
+
+double	mult_of_90(double num, char direct)
+{
+	double rest;
+
+	rest = r(num);
+	if (rest == 0 && direct == '<')
+		num = (int)(((int)(num / 90) - 1) * 90);
+	else if (direct == '<')
+		num = (int)(((int)(num / 90)) * 90);
+	else
+		num = (int)(((int)(num / 90) + 1) * 90);
+	return (num);
+}
+
+double	calculate_angle(double angle, double cost, char sign)
+{
+	double	supp;
+
+	if (sign == '-')
+	{
+		angle = angle - cost;
+		supp = mult_of_90(angle, '<');
+		if ((int)(supp / 90) % 2 == 1)
+			supp = mult_of_90(angle, '>');
+		return (fabs(supp - angle));
+	}
+	else
+	{
+		angle = angle + cost;
+		supp = mult_of_90(angle, '>');
+		if ((int)(supp / 90) % 2 == 1)
+			supp = mult_of_90(angle, '<');
+		return (fabs(supp - angle));
+	}
 }
 
 double	zero_case(t_data *data, t_viktor *tm, t_viktor dir, int witch)
@@ -57,8 +92,6 @@ double	zero_case(t_data *data, t_viktor *tm, t_viktor dir, int witch)
 		if (witch % 2 == 0)
 		{
 			dist[0] = fabs(((int)tm->x + (dir.x > 0)) - data->player.x);
-			//printf("------\ncalc: %d  -  %f\n", ((int)tm->x + (dir.x > 0)), data->player.x);
-			//printf("dist0: %f\n-------\n", dist[0]);
 			tm->x += dir.x;
 			dist[2] = dist[0];
 		}
@@ -68,7 +101,6 @@ double	zero_case(t_data *data, t_viktor *tm, t_viktor dir, int witch)
 			tm->y += dir.y;
 			dist[2] = dist[1];
 		}
-		//printf("tmp pos: %f %f    witch: %d\n", tm->x, tm->y, witch);
 	}
 	return(dist[2]);
 }
@@ -77,13 +109,6 @@ void	first_step(double dist[], t_viktor *tmp, t_viktor player, t_viktor dir)
 {
 	dist[0] = fabs(((int)player.x + (dir.x > 0)) - player.x) / cos(rad(-1));
 	dist[1] = fabs(((int)player.y + (dir.y > 0)) - player.y) / sin(rad(-1));
-	//printf("calc: %f  -  %f\n", ((int)player.x + dir.x), player.x);
-	//printf("calc: %f  -  %f\n", ((int)player.y + dir.y), player.y);
-	//printf("angle: %f\n", r(angle));
-	//printf("cos: %f\n", cos(r(angle)));
-	//printf("sin: %f\n", sin(r(angle)));
-	//printf("first-dist0: %f\n", dist[0]);
-	//printf("first-dist1: %f\n", dist[1]);
 	if (dist[0] <= dist[1])
 	{
 		tmp->x += dir.x;
@@ -94,14 +119,13 @@ void	first_step(double dist[], t_viktor *tmp, t_viktor player, t_viktor dir)
 		tmp->y += dir.y;
 		dist[2] = dist[1];
 	}
-	//printf("first tmp pos: %f %f\n", tmp->x, tmp->y);
 }
 
 double calculate_dist(t_data *data, double angle, double ra)
 {
 	t_viktor	tm;
 	t_viktor	dir;
-	double		dist[3]; //dist[0]:x dist[1]:y
+	double		dis[3];
 
 	tm = data->player;
 	rad(ra);
@@ -109,54 +133,33 @@ double calculate_dist(t_data *data, double angle, double ra)
 	dir.y = sin(angle * (M_PI / 180.0)) / fabs(sin(angle * (M_PI / 180.0)));
 	if (isnan(dir.y))
 		dir.y = 1;
-	//printf("dir.x: %f\n", dir.x);
-	//printf("dir.y: %f\n", dir.y);
 	if (r(angle) == 0)
 		return (zero_case(data, &tm, dir, ((int)angle) / 90));
-	first_step(dist, &tm, data->player, dir);
-	//printf("dist0: %f\n", dist[0]);
-	//printf("dist1: %f\n", dist[1]);
+	first_step(dis, &tm, data->player, dir);
 	while (!hit(data, tm))
 	{
-		dist[0] = fabs(((int)tm.x + (dir.x > 0)) - data->player.x) / cos(rad(-1));
-		dist[1] = fabs(((int)tm.y + (dir.y > 0)) - data->player.y) / sin(rad(-1));
-		if (dist[0] < dist[1])
-		{
-			//printf("------\n");
-			//printf("calc: %f  -  %f\n", ((int)tm.x + dir.x), data->player.x);
-			//printf("angle: %f\n", r(angle));
-			//printf("cos: %f\n", cos(r(angle)));
-			//printf("dist0: %f\n", dist[0]);
-			tm.x += dir.x;
-			dist[2] = dist[0];
-			//printf("dist2: %f\n", dist[2]);
-			//printf("-------\n");
-		}
-		else
-		{
-			//printf("dist1: %f\n", dist[1]);
-			tm.y += dir.y;
-			dist[2] = dist[1];
-		}
-		//printf("tmp pos: %f %f\n", tm.x, tm.y);
+		dis[0] = fabs(((int)tm.x + (dir.x > 0)) - data->player.x) / cos(rad(-1));
+		dis[1] = fabs(((int)tm.y + (dir.y > 0)) - data->player.y) / sin(rad(-1));
+		tm.x += (dir.x * (dis[0] < dis[1]));
+		tm.y += (dir.y * (dis[0] > dis[1]));
+		dis[2] = dis[1];
+		if (dis[0] < dis[1])
+			dis[2] = dis[0];
 	}
-	return(dist[2]);
+	return(dis[2]);
 }
 
-void	put_texture(t_data *data, int i, double dist)
+void	put_texture(t_data *data, int i, double dist, double corr_angle)
 {
 	int		j;
 	int		color;
 	int		wall;
 
-	//ft_printf("cazzo\n");
-	//printf("dist: %f\n", ((double)dist));
+	//(void)corr_angle;
 	if (dist <= 1)
 		wall = HEIGHT;
 	else
-		wall = (HEIGHT / dist);
-	//printf("wall: %d", wall);
-	//ft_printf("cazzo  %d   %d\n", wall, dist);
+		wall = (HEIGHT / (dist * cos(corr_angle * (M_PI / 180.0))));
 	j = -1;
 	while (++j < HEIGHT)
 	{
@@ -168,76 +171,26 @@ void	put_texture(t_data *data, int i, double dist)
 			color = data->f->red << 16 | data->f->green << 8 | data->f->blue;
 		*(unsigned int *)(data->screen->addr + (j * data->screen->line_length)
 				+ (i * (data->screen->bpp / 8))) = color;
-		//ft_printf("j: %d", j);
-	}
-}
-
-double	mult_of_90(double num, char direct)
-{
-	double rest;
-
-	rest = r(num);
-	if (rest == 0 && direct == '<')
-		num = (int)(((int)(num / 90) - 1) * 90);
-	else if (direct == '<')
-		num = (int)(((int)(num / 90)) * 90);
-	else
-		num = (int)(((int)(num / 90) + 1) * 90);
-	//printf("mult_of_90: %f\n", num);
-	return (num);
-}
-
-double	calculate_angle(double angle, double cost, char sign)
-{
-	double	supp;
-
-	if (sign == '-')
-	{
-		angle = angle - cost;
-		supp = mult_of_90(angle, '<');
-		if ((int)(supp / 90) % 2 == 1)
-			supp = mult_of_90(angle, '>');
-		//printf("calculate_angle: %f  supp: %f   angle: %f\n", fabs(supp - angle), supp, angle);
-		return (fabs(supp - angle));
-	}
-	else
-	{
-		angle = angle + cost;
-		supp = mult_of_90(angle, '>');
-		if ((int)(supp / 90) % 2 == 1)
-			supp = mult_of_90(angle, '<');
-		//printf("calculate_angle: %f  supp: %f   angle: %f\n", fabs(supp - angle), supp, angle);
-		return (fabs(supp - angle));
 	}
 }
 
 void calculate_img(t_data *data)
 {
 	int		i;
-	//int		j = 720;
 	double	cost;
 	double	dist;
 
-	//printf("player pos: %f %f\n", data->player.x, data->player.y);
 	i = -1;
 	cost = (double)FOV / (double)WIDTH;
-	//printf("###########cost: %f\n", cost);
-	//printf("###########angle: %f\n", data->player.angle);
-	//data->player.angle = 359;
 	while (++i < WIDTH / 2)
 	{
-		//printf("##############\n");
-		//printf("1calc-angle: %f\n", calculate_angle(data->player.angle, (cost * i), '-'));
-		dist = calculate_dist(data, (data->player.angle - (cost * i)), calculate_angle(data->player.angle, (cost * i), '-') * (M_PI / 180.0));
-		//printf("dist[%d]: %f\n", 719 - i, dist);
-		put_texture(data, 719 - i, dist);
-		//printf("2calc-angle: %f\n", calculate_angle(data->player.angle, (cost * i), '+'));
-		dist = calculate_dist(data, (data->player.angle + (cost * i)), calculate_angle(data->player.angle, (cost * i), '+') * (M_PI / 180.0));
-		//printf("dist[%d]: %f\n", i + 720, dist);
-		put_texture(data, i + 720, dist);
-		//j--;
-		//if (j == 0)
-		//	break ;
+		dist = calculate_dist(data, (data->player.angle - (cost * i)),
+								calculate_angle(data->player.angle,
+									(cost * i), '-') * (M_PI / 180.0));
+		put_texture(data, 719 - i, dist, ( - (cost * i)));
+		dist = calculate_dist(data, (data->player.angle + (cost * i)),
+								calculate_angle(data->player.angle,
+									(cost * i), '+') * (M_PI / 180.0));
+		put_texture(data, i + 720, dist, (cost * i));
 	}
-	//exit(0);
 }

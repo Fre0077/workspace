@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/07 08:44:11 by fre007           ###   ########.fr       */
+/*   Updated: 2025/04/07 15:31:46 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,20 @@
 
 # define WIDTH 1440
 # define HEIGHT 900
-# define FOV 180
+# define FOV 60
 # define TILE_SIZE 128
+# define MOUSE_SPEED 0.2
+# define MOVE_SPEED 100
 # define M_PI 3.14159265358979323846
 
 typedef struct s_pkey
 {
 	int	dex;
 	int	six;
+	int	w;
+	int	a;
+	int	s;
+	int	d;
 }			t_pkey;
 
 typedef struct s_viktor
@@ -68,6 +74,7 @@ typedef struct s_screen
 typedef struct s_data
 {
 	int			mouse_x;
+	t_pkey		*pkey;
 	char		**map;
 	t_ft_img	*no;
 	t_ft_img	*so;
@@ -75,7 +82,6 @@ typedef struct s_data
 	t_ft_img	*we;
 	t_color		*f;
 	t_color		*c;
-	t_pkey 		pkey;
 	void		*mlx;
 	void		*win;
 	int			status;
@@ -94,9 +100,6 @@ void		free_color(t_color *col);
 int			ft_close(t_data *data);
 
 // init_mlx.c
-int	key_press(int key, t_data *data);
-int	key_realese(int key, t_data *data);
-int	move_update(t_data *data);
 int			frame(void *arg);
 int			init_mlx(t_data *data);
 
