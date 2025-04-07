@@ -6,11 +6,24 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:54:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/07 13:22:13 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/07 18:52:56 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int	init_mlx(t_data *data)
+{
+	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "Cub3D");
+	if (!data->win)
+		return (ft_printe("Error\nFailed to create window\n"), 1);
+	mlx_hook(data->win, 17, 0, ft_close, data);
+	mlx_hook(data->win, 2, 1L<<0, key_press, data);
+	mlx_hook(data->win, 3, 1L<<1, key_release, data);
+	mlx_hook(data->win, 6, 1L<<6, mouse_move, data);
+	mlx_loop_hook(data->mlx, frame, data);
+	return (0);
+}
 
 t_ft_img	*init_img()
 {
@@ -61,6 +74,8 @@ t_data	*init_data()
 	data = (t_data *)ft_calloc(1, sizeof(t_data));
 	if (!data)
 		return (ft_printe("Error\nFunction calloc failed\n"), NULL);
+	data->mouse_speed = 0.2;
+	data->move_speed = 90;
 	data->mouse_x = WIDTH / 2;
 	data->pkey = init_pkey();
 	data->no = init_img();

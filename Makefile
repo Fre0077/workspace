@@ -1,15 +1,19 @@
 NAME = cub3d
 
+HEADER = cub3d.h
+
 SRCS = \
+check_file.c \
+dist_wall_utils.c \
 dist_wall.c \
 exit.c \
-init_mlx.c \
 init.c \
 main.c \
+move_and_camera.c \
 parsing.c \
 print_all.c \
-read_check.c \
-read_file.c
+read_file.c \
+rendering.c
 
 CFLAGS = -Wall -Wextra -Werror -g -O3
 MINIFLAGS = -lX11 -lXext -lm
@@ -20,7 +24,7 @@ MLX = minilibx-linux/libmlx.a
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(MLX) $(SRCS)
+$(NAME): $(LIBFT) $(MLX) $(SRCS) $(HEADER)
 	gcc $(CFLAGS) -o $(NAME) $(SRCS) $(LIBFT) $(MLX) $(MINIFLAGS)
 
 $(LIBFT):

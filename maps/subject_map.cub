@@ -3,8 +3,8 @@ SO textures_xpm/acacia_log.xpm
 WE textures_xpm/acacia_log.xpm
 EA textures_xpm/acacia_log.xpm
 
-F 255,0,0
-C 0,0,255
+F 120,90,77
+C 42,13,25
 
         1111111111111111111111111
         1000000000110000000000001
