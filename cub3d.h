@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/07 19:22:07 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/08 09:33:27 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,13 +128,17 @@ t_color		*init_color(void);
 t_pkey		*init_pkey();
 t_data		*init_data(void);
 //===============================================================
-// move_and_camera.c
+// key_and_mouse.c
 
 int			key_press(int key, t_data *data);
 int			key_release(int key, t_data *data);
 int			mouse_move(int x, int y, t_data *data);
+//===============================================================
+// move_and_camera.c
+
 void		camera_update(t_data *data);
 void		move_update(t_data *data, double angle);
+void		check_move(t_viktor prev, t_data *data);
 //===============================================================
 // parsing.c
 

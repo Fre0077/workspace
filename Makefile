@@ -8,6 +8,7 @@ dist_wall_utils.c \
 dist_wall.c \
 exit.c \
 init.c \
+key_and_mouse.c \
 main.c \
 move_and_camera.c \
 parsing.c \

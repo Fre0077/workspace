@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:54:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/07 18:52:56 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/08 09:46:52 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,22 +74,22 @@ t_data	*init_data()
 	data = (t_data *)ft_calloc(1, sizeof(t_data));
 	if (!data)
 		return (ft_printe("Error\nFunction calloc failed\n"), NULL);
-	data->mouse_speed = 0.2;
-	data->move_speed = 90;
-	data->mouse_x = WIDTH / 2;
-	data->pkey = init_pkey();
 	data->no = init_img();
 	data->so = init_img();
 	data->ea = init_img();
 	data->we = init_img();
-	data->f = init_color();
-	data->c = init_color();
-	data->map = NULL;
-	data->mlx = mlx_init();
-	data->player = (t_viktor){0, 0, 0};	//TODO: initialize player position after map parsing
-	data->status = 0;
 	data->screen = (t_screen *)ft_calloc(1, sizeof(t_screen));
 	if (!data->screen)
 		return (ft_printe("Error\nFunction calloc failed\n"), NULL);
+	data->player = (t_viktor){0, 0, 0};
+	data->f = init_color();
+	data->c = init_color();
+	data->pkey = init_pkey();
+	data->mlx = mlx_init();
+	data->map = NULL;
+	data->move_speed = 70;
+	data->mouse_speed = 0.2;
+	data->mouse_x = WIDTH / 2;
+	data->status = 0;
 	return (data);
 }
