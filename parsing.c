@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 18:31:09 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/06 15:53:15 by fre007           ###   ########.fr       */
+/*   Updated: 2025/04/09 18:14:07 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,24 +56,33 @@ int	load_colors(t_data *data)
 	return (0);
 }
 
-int	load_textures(t_data * data)
+int	mlx_fa_schifo(t_data *data, int	side)
 {
-	data->no->img = mlx_xpm_file_to_image(data->mlx, data->no->path,
-			&data->no->width, &data->no->height);
-	if (!data->no->img)
-		return (ft_printe("Error\nInvalid north texture\n"), 1);
-	data->so->img = mlx_xpm_file_to_image(data->mlx, data->so->path,
-			&data->so->width, &data->so->height);
-	if (!data->so->img)
-		return (ft_printe("Error\nInvalid south texture\n"), 1);
-	data->ea->img = mlx_xpm_file_to_image(data->mlx, data->ea->path,
-			&data->ea->width, &data->ea->height);
-	if (!data->ea->img)
+	data->textures[side]->img = mlx_xpm_file_to_image(data->mlx,
+		data->textures[side]->path,
+			&data->textures[side]->width, &data->textures[side]->height);
+	if (!data->textures[side]->img)
+		return (1);
+	data->textures[side]->img->data = mlx_get_data_addr(
+		data->textures[side]->img,
+		&data->textures[side]->bpp,
+		&data->textures[side]->line_len,
+		&data->textures[side]->endian);
+	if (!data->textures[side]->img->data)
+		return (1);
+	return (0);
+}
+
+int	load_textures(t_data *data)
+{
+	if (mlx_fa_schifo(data, EAST))
 		return (ft_printe("Error\nInvalid east texture\n"), 1);
-	data->we->img = mlx_xpm_file_to_image(data->mlx, data->we->path,
-			&data->we->width, &data->we->height);
-	if (!data->we->img)
+	if (mlx_fa_schifo(data, SOUTH))
+		return (ft_printe("Error\nInvalid south texture\n"), 1);
+	if (mlx_fa_schifo(data, WEST))
 		return (ft_printe("Error\nInvalid west texture\n"), 1);
+	if (mlx_fa_schifo(data, NORTH))
+		return (ft_printe("Error\nInvalid north texture\n"), 1);
 	return (0);
 }
 
@@ -110,8 +119,8 @@ int	parsing(t_data *data)
 {
 	if (!data->f->color || !data->c->color)
 		return (ft_printe("Error\nMissing color\n"), 1);
-	if (!data->no->path || !data->so->path || !data->ea->path
-		|| !data->we->path)
+	if (!data->textures[EAST]->path || !data->textures[SOUTH]->path
+		|| !data->textures[WEST]->path || !data->textures[NORTH]->path)
 		return (ft_printe("Error\nMissing texture path\n"), 1);
 	if (!data->map)
 		return (ft_printe("Error\nMissing map\n"), 1);

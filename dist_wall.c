@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dist_wall.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 11:21:12 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/07 18:52:07 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:18:45 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ double	zero_case(t_data *data, t_viktor *tm, t_viktor dir, int witch)
 			dist[2] = dist[1];
 		}
 	}
-	return(dist[2]);
+	return (dist[2]);
 }
 
 void	first_step(double dist[], t_viktor *tmp, t_viktor player, t_viktor dir)
@@ -53,11 +53,11 @@ void	first_step(double dist[], t_viktor *tmp, t_viktor player, t_viktor dir)
 	}
 }
 
-double calculate_dist(t_data *data, double angle, double ra)
+double	calculate_dist(t_data *data, double angle, double ra, t_viktor *nose)
 {
 	t_viktor	tm;
 	t_viktor	dir;
-	double		dis[3];
+	double		d[3];
 
 	tm = data->player;
 	rad(ra);
@@ -67,16 +67,17 @@ double calculate_dist(t_data *data, double angle, double ra)
 		dir.y = 1;
 	if (r(angle) == 0)
 		return (zero_case(data, &tm, dir, ((int)angle) / 90));
-	first_step(dis, &tm, data->player, dir);
+	first_step(d, &tm, data->player, dir);
 	while (!hit(data, tm))
 	{
-		dis[0] = fabs(((int)tm.x + (dir.x > 0)) - data->player.x) / cos(rad(-1));
-		dis[1] = fabs(((int)tm.y + (dir.y > 0)) - data->player.y) / sin(rad(-1));
-		tm.x += (dir.x * (dis[0] < dis[1]));
-		tm.y += (dir.y * (dis[0] > dis[1]));
-		dis[2] = dis[1];
-		if (dis[0] < dis[1])
-			dis[2] = dis[0];
+		d[0] = fabs(((int)tm.x + (dir.x > 0)) - data->player.x) / cos(rad(-1));
+		d[1] = fabs(((int)tm.y + (dir.y > 0)) - data->player.y) / sin(rad(-1));
+		tm.x += (dir.x * (d[0] < d[1]));
+		tm.y += (dir.y * (d[0] > d[1]));
+		d[2] = d[1];
+		if (d[0] < d[1])
+			d[2] = d[0];
+		*nose = (t_viktor){dir.x, dir.y, (d[2] == d[0])}; //TODO: watch the 45 out
 	}
-	return(dis[2]);
+	return (d[2]);
 }

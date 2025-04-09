@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rendering.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 18:47:42 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/07 18:51:05 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/09 18:22:12 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ int	frame(void *arg)
 	if (!data->screen->img)
 		return (ft_printe("Error\nFailed to create image\n"), 1);
 	data->screen->addr = mlx_get_data_addr(data->screen->img,
-		&data->screen->bpp, &data->screen->line_length, &data->screen->endian);
+			&data->screen->bpp, &data->screen->line_length,
+			&data->screen->endian);
 	if (!data->screen->addr)
 		return (ft_printe("Error\nFailed to get data address\n"), 1);
 	calculate_img(data);
@@ -35,23 +36,28 @@ int	frame(void *arg)
 }
 
 //TODO: []
-void	put_texture(t_data *data, int i, double dist, double corr_angle)
+//TODO: calcolo wall fuori
+void	put_texture(t_data *data, int i, t_ray ray, double corr_angle)
 {
 	int		j;
 	int		color;
 	int		wall;
 
-	if (dist <= 1)
+	if (ray.dist <= 1)
 		wall = HEIGHT;
 	else
-		wall = (HEIGHT / (dist * cos(corr_angle * (M_PI / 180.0))));
+		wall = (HEIGHT / (ray.dist * cos(corr_angle * (M_PI / 180.0))));
 	j = -1;
+	ray.step = 1.0 * TILE_SIZE / wall;
+	ray.pos = ((HEIGHT - ((HEIGHT - wall) / 2)) - HEIGHT / 2 + wall / 2)
+		* ray.step;
+	ray.wall_i = 0;
 	while (++j < HEIGHT)
 	{
 		if (j < (HEIGHT - wall) / 2)
 			color = data->c->red << 16 | data->c->green << 8 | data->c->blue;
 		else if (j < (HEIGHT - ((HEIGHT - wall) / 2)))
-			color = 0x20310F;
+			color = get_wall_color(data, wall, ray);
 		else
 			color = data->f->red << 16 | data->f->green << 8 | data->f->blue;
 		*(unsigned int *)(data->screen->addr + (j * data->screen->line_length)
@@ -59,23 +65,25 @@ void	put_texture(t_data *data, int i, double dist, double corr_angle)
 	}
 }
 
-void calculate_img(t_data *data)
+void	calculate_img(t_data *data)
 {
-	int		i;
-	double	cost;
-	double	dist;
+	int			i;
+	double		cost;
+	t_ray		ray;
 
 	i = -1;
 	cost = (double)FOV / (double)WIDTH;
 	while (++i < WIDTH / 2)
 	{
-		dist = calculate_dist(data, (data->player.angle - (cost * i)),
-								calculate_angle(data->player.angle,
-									(cost * i), '-') * (M_PI / 180.0));
-		put_texture(data, 719 - i, dist, ( - (cost * i)));
-		dist = calculate_dist(data, (data->player.angle + (cost * i)),
-								calculate_angle(data->player.angle,
-									(cost * i), '+') * (M_PI / 180.0));
-		put_texture(data, i + 720, dist, (cost * i));
+		ray.angle = calculate_angle(data->player.angle,
+			(cost * i), '-') * (M_PI / 180.0);
+		ray.dist = calculate_dist(data, (data->player.angle - (cost * i)),
+				ray.angle, &ray.nose);
+		put_texture(data, 719 - i, ray, -(cost * i));
+		ray.angle = calculate_angle(data->player.angle,
+			(cost * i), '+') * (M_PI / 180.0);
+			ray.dist = calculate_dist(data, (data->player.angle + (cost * i)),
+				ray.angle, &ray.nose);
+		put_texture(data, i + 720, ray, (cost * i));
 	}
 }

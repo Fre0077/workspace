@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_and_mouse.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 09:28:08 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/08 09:46:57 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:04:02 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	key_press(int key, t_data *data)
 		if (data->mouse_speed < 0.8)
 			data->mouse_speed = data->mouse_speed * 2;
 	if (key == XK_m)
-		if(data->mouse_speed > 0.05)
+		if (data->mouse_speed > 0.05)
 			data->mouse_speed = data->mouse_speed / 2;
 	return (0);
 }
@@ -60,10 +60,10 @@ int	key_release(int key, t_data *data)
 
 int	mouse_move(int x, int y, t_data *data)
 {
-	(void)y;
 	double	change;
 
-	change = data->mouse_speed * ((abs(x - data->mouse_x) / 5) + 1);	
+	(void)y;
+	change = data->mouse_speed * ((abs(x - data->mouse_x) / 5) + 1);
 	if (x > data->mouse_x)
 		data->player.angle += change;
 	else if (data->mouse_x > x)

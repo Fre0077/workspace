@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:51:53 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/04 15:21:24 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/09 17:29:47 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,18 @@ int	process_line(char *line, t_data *data)
 	int	ret;
 
 	if (ft_strncmp(line, "NO ", 3) == 0)
-		ret = allocate_texture_path(line + 3, data->no);
+		ret = allocate_texture_path(line + 3, data->textures[NORTH]);
 	else if (ft_strncmp(line, "SO ", 3) == 0)
-		ret = allocate_texture_path(line + 3, data->so);
+		ret = allocate_texture_path(line + 3, data->textures[SOUTH]);
 	else if (ft_strncmp(line, "EA ", 3) == 0)
-		ret = allocate_texture_path(line + 3, data->ea);
+		ret = allocate_texture_path(line + 3, data->textures[EAST]);
 	else if (ft_strncmp(line, "WE ", 3) == 0)
-		ret = allocate_texture_path(line + 3, data->we);
+		ret = allocate_texture_path(line + 3, data->textures[WEST]);
 	else if (ft_strncmp(line, "F ", 2) == 0)
 		ret = allocate_color(line + 2, data->f);
 	else if (ft_strncmp(line, "C ", 2) == 0)
 		ret = allocate_color(line + 2, data->c);
-	else if (ft_strncmp(line, "\n", 1) == 0) //TODO: controllare gli spazi
+	else if (ft_strncmp(line, "\n", 1) == 0)
 		return (0);
 	else
 		return (2);
@@ -84,7 +84,7 @@ int	read_file(char *file, t_data *data)
 	line = get_next_line(fd);
 	if (!line)
 		return (ft_printe("Error\nInvalid file\n"), data->status = 1,
-				close(fd), 1);
+			close(fd), 1);
 	while (line)
 	{
 		ret = process_line(line, data);
@@ -100,4 +100,3 @@ int	read_file(char *file, t_data *data)
 	close(fd);
 	return (0);
 }
-

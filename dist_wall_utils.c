@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dist_wall_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 18:51:34 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/07 18:52:01 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:00:57 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ double	r(double angle)
 
 double	rad(double rad)
 {
-	static double radd;
+	static double	radd;
 
 	if (rad != -1)
 		radd = rad;
@@ -46,7 +46,7 @@ double	rad(double rad)
 
 double	mult_of_90(double num, char direct)
 {
-	double rest;
+	double	rest;
 
 	rest = r(num);
 	if (rest == 0 && direct == '<')

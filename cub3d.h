@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/08 09:33:27 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/09 18:19:32 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,14 @@
 # define WIDTH 1440
 # define HEIGHT 900
 # define FOV 60
+
+typedef enum sides
+{
+	EAST,
+	SOUTH,
+	WEST,
+	NORTH
+}				t_sides;
 
 typedef struct s_pkey
 {
@@ -53,6 +61,9 @@ typedef struct s_ft_img
 	char		*path;
 	int			width;
 	int			height;
+	int			endian;
+	int			bpp;
+	int			line_len;
 }				t_ft_img;
 
 typedef struct s_color
@@ -72,12 +83,19 @@ typedef struct s_screen
 	int			bpp;
 }				t_screen;
 
+typedef struct s_ray
+{
+	t_viktor	nose;
+	double		dist;
+	double		angle;
+	double		step;
+	double		wall_i;
+	double		pos;
+}			t_ray;
+
 typedef struct s_data
 {
-	t_ft_img	*no;
-	t_ft_img	*so;
-	t_ft_img	*ea;
-	t_ft_img	*we;
+	t_ft_img	*textures[4];
 	t_screen	*screen;
 	t_viktor	player;
 	t_color		*f;
@@ -112,7 +130,7 @@ double		calculate_angle(double angle, double cost, char sign);
 
 double		zero_case(t_data *data, t_viktor *tm, t_viktor dir, int witch);
 void		first_step(double dist[], t_viktor *tmp, t_viktor player, t_viktor dir);
-double		calculate_dist(t_data *data, double angle, double r);
+double		calculate_dist(t_data *data, double angle, double ra, t_viktor *nose);
 //===============================================================
 // exit.c
 
@@ -120,6 +138,10 @@ void		free_img(t_ft_img *img, void *mlx);
 void		free_color(t_color *col);
 int			ft_close(t_data *data);
 //===============================================================
+// get_wall_color.c
+
+int			get_wall_color(t_data *data, int wall, t_ray ray);
+//================================================================
 // init.c
 
 int			init_mlx(t_data *data);
@@ -166,7 +188,7 @@ int			read_file(char *file, t_data *data);
 //rendering.c
 
 int			frame(void *arg);
-void		put_texture(t_data *data, int i, double dist, double corr_angle);
+void		put_texture(t_data *data, int i, t_ray ray, double corr_angle);
 void 		calculate_img(t_data *data);
 //===============================================================
 

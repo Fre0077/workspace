@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:54:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/08 09:46:52 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/09 17:14:30 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ int	init_mlx(t_data *data)
 	if (!data->win)
 		return (ft_printe("Error\nFailed to create window\n"), 1);
 	mlx_hook(data->win, 17, 0, ft_close, data);
-	mlx_hook(data->win, 2, 1L<<0, key_press, data);
-	mlx_hook(data->win, 3, 1L<<1, key_release, data);
-	mlx_hook(data->win, 6, 1L<<6, mouse_move, data);
+	mlx_hook(data->win, 2, 1L << 0, key_press, data);
+	mlx_hook(data->win, 3, 1L << 1, key_release, data);
+	mlx_hook(data->win, 6, 1L << 6, mouse_move, data);
 	mlx_loop_hook(data->mlx, frame, data);
 	return (0);
 }
 
-t_ft_img	*init_img()
+t_ft_img	*init_img(void)
 {
 	t_ft_img	*img;
 
@@ -39,7 +39,7 @@ t_ft_img	*init_img()
 	return (img);
 }
 
-t_color	*init_color()
+t_color	*init_color(void)
 {
 	t_color	*col;
 
@@ -53,7 +53,7 @@ t_color	*init_color()
 	return (col);
 }
 
-t_pkey	*init_pkey()
+t_pkey	*init_pkey(void)
 {
 	t_pkey	*pkey;
 
@@ -67,17 +67,17 @@ t_pkey	*init_pkey()
 	return (pkey);
 }
 
-t_data	*init_data()
+t_data	*init_data(void)
 {
 	t_data	*data;
 
 	data = (t_data *)ft_calloc(1, sizeof(t_data));
 	if (!data)
 		return (ft_printe("Error\nFunction calloc failed\n"), NULL);
-	data->no = init_img();
-	data->so = init_img();
-	data->ea = init_img();
-	data->we = init_img();
+	data->textures[0] = init_img();
+	data->textures[1] = init_img();
+	data->textures[2] = init_img();
+	data->textures[3] = init_img();
 	data->screen = (t_screen *)ft_calloc(1, sizeof(t_screen));
 	if (!data->screen)
 		return (ft_printe("Error\nFunction calloc failed\n"), NULL);

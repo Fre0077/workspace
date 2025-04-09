@@ -7,6 +7,7 @@ check_file.c \
 dist_wall_utils.c \
 dist_wall.c \
 exit.c \
+get_wall_color.c \
 init.c \
 key_and_mouse.c \
 main.c \

@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:15:55 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/04 15:00:12 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/09 17:29:15 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ void	print_map(char **mat)
 void	print_data(t_data *data)
 {
 	ft_printf("North texture:\n");
-	print_img(data->no);
+	print_img(data->textures[NORTH]);
 	ft_printf("\nSouth texture:\n");
-	print_img(data->so);
+	print_img(data->textures[SOUTH]);
 	ft_printf("\nEast texture:\n");
-	print_img(data->ea);
+	print_img(data->textures[EAST]);
 	ft_printf("\nWest texture:\n");
-	print_img(data->we);
+	print_img(data->textures[WEST]);
 	ft_printf("\nFloor color:\n");
 	print_color(data->f);
 	ft_printf("\nCeiling color:\n");
