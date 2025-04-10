@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:15:55 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/09 17:29:15 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/10 18:09:53 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	print_map(char **mat)
 	i = 0;
 	while (mat && mat[i])
 	{
-		ft_printf("%s\n", mat[i]);
+		ft_printf("|%s|\n", mat[i]);
 		i++;
 	}
 }

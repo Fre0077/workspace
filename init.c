@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:54:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/09 17:14:30 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:47:47 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ t_data	*init_data(void)
 	data->textures[1] = init_img();
 	data->textures[2] = init_img();
 	data->textures[3] = init_img();
+	data->map_img = init_img();
+	data->map_img->path = ft_strdup("textures_xpm/map.xpm");
 	data->screen = (t_screen *)ft_calloc(1, sizeof(t_screen));
 	if (!data->screen)
 		return (ft_printe("Error\nFunction calloc failed\n"), NULL);
@@ -87,7 +89,7 @@ t_data	*init_data(void)
 	data->pkey = init_pkey();
 	data->mlx = mlx_init();
 	data->map = NULL;
-	data->move_speed = 70;
+	data->move_speed = 25;
 	data->mouse_speed = 0.2;
 	data->mouse_x = WIDTH / 2;
 	data->status = 0;

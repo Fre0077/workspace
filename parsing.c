@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 18:31:09 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/10 14:21:59 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:57:55 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,56 +56,58 @@ int	load_colors(t_data *data)
 	return (0);
 }
 
-void ft_put_img_data(t_ft_img *img, int max_pixels) 
-{
-    int i;
-    unsigned int *pixel_ptr;
+// void ft_put_img_data(t_ft_img *img, int max_pixels) 
+// {
+//     int i;
+//     unsigned int *pixel_ptr;
     
-    if (!img || !img->img || !img->img->data)
-        return;
+//     if (!img || !img->img || !img->img->data)
+//         return;
         
-    printf("\nTexture %s (%dx%d) pixel data:\n", 
-			img->path, img->width, img->height);
+//     printf("\nTexture %s (%dx%d) pixel data:\n", 
+// 			img->path, img->width, img->height);
     
-    pixel_ptr = (unsigned int *)img->img->data;
-    for (i = 0; i < max_pixels && i < (img->width * img->height); i++) {
-        printf(" 0x%06X ", pixel_ptr[i]);
-        if ((i + 1) % TILE_SIZE == 0) 
-            printf("\n");
-    }
-    printf("\n");
-}
+//     pixel_ptr = (unsigned int *)img->img->data;
+//     for (i = 0; i < max_pixels && i < (img->width * img->height); i++) {
+//         printf(" 0x%06X ", pixel_ptr[i]);
+//         if ((i + 1) % TILE_SIZE == 0) 
+//             printf("\n");
+//     }
+//     printf("\n");
+// }
 
-int	mlx_fa_schifo(t_data *data, int	side)
+int	mlx_fa_schifo(t_ft_img *img, t_data *data)
 {
-	data->textures[side]->img = mlx_xpm_file_to_image(data->mlx,
-		data->textures[side]->path,
-			&data->textures[side]->width, &data->textures[side]->height);
-	if (!data->textures[side]->img)
+	img->img = mlx_xpm_file_to_image(data->mlx,
+		img->path,
+			&img->width, &img->height);
+	if (!img->img)
 		return (1);
-	data->textures[side]->img->data = mlx_get_data_addr(
-		data->textures[side]->img,
-		&data->textures[side]->bpp,
-		&data->textures[side]->line_len,
-		&data->textures[side]->endian);
-	// ft_put_img_data(data->textures[side], TILE_SIZE * TILE_SIZE);
-	if (!data->textures[side]->img->data)
+	img->img->data = mlx_get_data_addr(
+		img->img,
+		&img->bpp,
+		&img->line_len,
+		&img->endian);
+	// ft_put_img_data(img, TILE_SIZE * TILE_SIZE);
+	if (!img->img->data)
 		return (1);
-	data->textures[side]->data =
-		(unsigned int *)data->textures[side]->img->data;
+	img->data =
+		(unsigned int *)img->img->data;
 	return (0);
 }
 
 int	load_textures(t_data *data)
 {
-	if (mlx_fa_schifo(data, EAST))
+	if (mlx_fa_schifo(data->textures[EAST], data))
 		return (ft_printe("Error\nInvalid east texture\n"), 1);
-	if (mlx_fa_schifo(data, SOUTH))
+	if (mlx_fa_schifo(data->textures[SOUTH], data))
 		return (ft_printe("Error\nInvalid south texture\n"), 1);
-	if (mlx_fa_schifo(data, WEST))
+	if (mlx_fa_schifo(data->textures[WEST], data))
 		return (ft_printe("Error\nInvalid west texture\n"), 1);
-	if (mlx_fa_schifo(data, NORTH))
+	if (mlx_fa_schifo(data->textures[NORTH], data))
 		return (ft_printe("Error\nInvalid north texture\n"), 1);
+	if (mlx_fa_schifo(data->map_img, data))
+		return (ft_printe("Error\nInvalid map texture\n"), 1);
 	return (0);
 }
 
@@ -152,5 +154,7 @@ int	parsing(t_data *data)
 	if (load_textures(data))
 		return (ft_printe("Error\nInvalid texture\n"), 1);
 	find_player(data);
+	data->pos.x = floor(data->player.x);
+	data->pos.y = floor(data->player.y);
 	return (0);
 }

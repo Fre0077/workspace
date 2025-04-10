@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:38:20 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/10 14:25:48 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:44:41 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	get_wall_color(t_data *data, int wall, t_ray *ray, int y)
 	int			pixel_index;
 
 	(void)wall;
-	txt_x = (int)(calc_wall_x(data, *ray) * TILE_SIZE);
+	txt_x = (int)(calc_wall_x(data, *ray) * (TILE_SIZE - 1));
 	if ((ray->nose.angle == 1 && ray->nose.x < 0) || (ray->nose.angle == 0
 		&& ray->nose.y > 0))
 		txt_x = TILE_SIZE - txt_x - 1;
