@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:54:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/09 17:14:30 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/10 22:02:22 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,11 @@ t_pkey	*init_pkey(void)
 	return (pkey);
 }
 
+void	init_minimap_texture(t_data *data)
+{
+	data->textures[4]->path = "head.xpm";
+}
+
 t_data	*init_data(void)
 {
 	t_data	*data;
@@ -78,6 +83,7 @@ t_data	*init_data(void)
 	data->textures[1] = init_img();
 	data->textures[2] = init_img();
 	data->textures[3] = init_img();
+	init_minimap_texture(data);
 	data->screen = (t_screen *)ft_calloc(1, sizeof(t_screen));
 	if (!data->screen)
 		return (ft_printe("Error\nFunction calloc failed\n"), NULL);

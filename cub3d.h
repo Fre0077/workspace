@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/10 08:39:37 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/10 22:01:14 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,17 @@ typedef struct s_ray
 	double		step;
 	double		wall_i;
 	double		pos;
-}			t_ray;
+}				t_ray;
+
+//typedef	struct s_minimap
+//{
+//	t_ft_img	*texture[3];
+	
+//}				t_minimap;
 
 typedef struct s_data
 {
-	t_ft_img	*textures[4];
+	t_ft_img	*textures[7];
 	t_screen	*screen;
 	t_viktor	player;
 	t_color		*f;
@@ -166,6 +172,7 @@ void		check_move(t_viktor prev, t_data *data);
 
 int			safe_atoi(char *s);
 int			load_colors(t_data *data);
+int			mlx_fa_schifo(t_data *data, int	side);
 int			load_textures(t_data * data);
 void		find_player(t_data *data);
 int			parsing(t_data *data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 18:31:09 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/09 18:14:07 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/10 22:02:01 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ int	load_textures(t_data *data)
 		return (ft_printe("Error\nInvalid west texture\n"), 1);
 	if (mlx_fa_schifo(data, NORTH))
 		return (ft_printe("Error\nInvalid north texture\n"), 1);
+	if (mlx_fa_schifo(data, 4))
+		return (ft_printe("Error\nminimaptexture\n"), 1);
 	return (0);
 }
 
