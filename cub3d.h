@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/09 18:19:32 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/10 08:39:37 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ int			ft_close(t_data *data);
 //===============================================================
 // get_wall_color.c
 
-int			get_wall_color(t_data *data, int wall, t_ray ray);
+int			get_wall_color(t_data *data, int wall, t_ray ray, int y);
 //================================================================
 // init.c
 

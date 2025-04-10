@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rendering.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 18:47:42 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/09 18:22:12 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/10 08:49:10 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	put_texture(t_data *data, int i, t_ray ray, double corr_angle)
 		if (j < (HEIGHT - wall) / 2)
 			color = data->c->red << 16 | data->c->green << 8 | data->c->blue;
 		else if (j < (HEIGHT - ((HEIGHT - wall) / 2)))
-			color = get_wall_color(data, wall, ray);
+			color = get_wall_color(data, wall, ray, (j - ((HEIGHT - wall) / 2)) * 127 / wall);
 		else
 			color = data->f->red << 16 | data->f->green << 8 | data->f->blue;
 		*(unsigned int *)(data->screen->addr + (j * data->screen->line_length)
@@ -79,11 +79,14 @@ void	calculate_img(t_data *data)
 			(cost * i), '-') * (M_PI / 180.0);
 		ray.dist = calculate_dist(data, (data->player.angle - (cost * i)),
 				ray.angle, &ray.nose);
+		ray.angle = data->player.angle - (cost * i);
 		put_texture(data, 719 - i, ray, -(cost * i));
 		ray.angle = calculate_angle(data->player.angle,
 			(cost * i), '+') * (M_PI / 180.0);
 			ray.dist = calculate_dist(data, (data->player.angle + (cost * i)),
 				ray.angle, &ray.nose);
+		ray.angle = data->player.angle + (cost * i);
 		put_texture(data, i + 720, ray, (cost * i));
 	}
+	//exit(0);
 }
