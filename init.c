@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:54:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/10 22:02:22 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/10 22:05:18 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ t_data	*init_data(void)
 	data->textures[2] = init_img();
 	data->textures[3] = init_img();
 	init_minimap_texture(data);
+	data->map_img = init_img();
+	data->map_img->path = ft_strdup("textures_xpm/map.xpm");
 	data->screen = (t_screen *)ft_calloc(1, sizeof(t_screen));
 	if (!data->screen)
 		return (ft_printe("Error\nFunction calloc failed\n"), NULL);
@@ -93,7 +95,7 @@ t_data	*init_data(void)
 	data->pkey = init_pkey();
 	data->mlx = mlx_init();
 	data->map = NULL;
-	data->move_speed = 70;
+	data->move_speed = 25;
 	data->mouse_speed = 0.2;
 	data->mouse_x = WIDTH / 2;
 	data->status = 0;

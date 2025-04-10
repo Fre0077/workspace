@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 09:28:08 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/09 16:04:02 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/10 18:08:34 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,15 @@ int	key_press(int key, t_data *data)
 	else if (key == XK_d)
 		data->pkey->d = 1;
 	else if (key == XK_Shift_L)
-		data->move_speed = 30;
+		data->move_speed = 10;
 	if (key == XK_p)
 		if (data->mouse_speed < 0.8)
 			data->mouse_speed = data->mouse_speed * 2;
 	if (key == XK_m)
 		if (data->mouse_speed > 0.05)
 			data->mouse_speed = data->mouse_speed / 2;
+	if (key == XK_space)
+		print_map(data->map);
 	return (0);
 }
 
@@ -54,7 +56,7 @@ int	key_release(int key, t_data *data)
 	else if (key == XK_d)
 		data->pkey->d = 0;
 	else if (key == XK_Shift_L)
-		data->move_speed = 70;
+		data->move_speed = 25;
 	return (0);
 }
 

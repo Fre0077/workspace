@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/10 22:01:14 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/10 22:04:33 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define WIDTH 1440
 # define HEIGHT 900
 # define FOV 60
+# define MAP 140
 
 typedef enum sides
 {
@@ -64,6 +65,7 @@ typedef struct s_ft_img
 	int			endian;
 	int			bpp;
 	int			line_len;
+	unsigned int	*data;
 }				t_ft_img;
 
 typedef struct s_color
@@ -78,6 +80,7 @@ typedef struct s_screen
 {
 	t_img		*img;
 	char		*addr;
+	unsigned int	*data;
 	int			line_length;
 	int			endian;
 	int			bpp;
@@ -102,8 +105,10 @@ typedef struct s_ray
 typedef struct s_data
 {
 	t_ft_img	*textures[7];
+	t_ft_img	*map_img;
 	t_screen	*screen;
 	t_viktor	player;
+	t_viktor	pos;
 	t_color		*f;
 	t_color		*c;
 	t_pkey		*pkey;
@@ -134,8 +139,8 @@ double		calculate_angle(double angle, double cost, char sign);
 //===============================================================
 //dist_wall.c
 
-double		zero_case(t_data *data, t_viktor *tm, t_viktor dir, int witch);
-void		first_step(double dist[], t_viktor *tmp, t_viktor player, t_viktor dir);
+double		zero_case(t_data *data, t_viktor *tm, t_viktor dir, int witch, t_viktor *nose);
+void	first_step(double dist[], t_viktor *tmp, t_viktor player, t_viktor dir, t_viktor *nose);
 double		calculate_dist(t_data *data, double angle, double ra, t_viktor *nose);
 //===============================================================
 // exit.c
@@ -146,7 +151,7 @@ int			ft_close(t_data *data);
 //===============================================================
 // get_wall_color.c
 
-int			get_wall_color(t_data *data, int wall, t_ray ray, int y);
+int			get_wall_color(t_data *data, int wall, t_ray *ray, int y);
 //================================================================
 // init.c
 

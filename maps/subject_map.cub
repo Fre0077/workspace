@@ -1,7 +1,7 @@
 NO textures_xpm/crafting_table_front.xpm
-SO textures_xpm/crafting_table_front.xpm
-WE textures_xpm/crafting_table_front.xpm
-EA textures_xpm/crafting_table_front.xpm
+SO textures_xpm/dark_oak_log.xpm
+WE textures_xpm/emerald_ore.xpm
+EA textures_xpm/wool_colored_purple.xpm
 
 F 120,90,77
 C 42,13,25
@@ -9,8 +9,8 @@ C 42,13,25
         1111111111111111111111111
         1000000000110000000000001
         1011000001110000000000001
-        1001000000000000000000001
-11111111101100000111000000N000001
+        1001000000000000000000N01
+111111111011000001110000000000001
 100000000011000001110111111011111
 11110111111111011100000011001
 11110111111111011101010010001
