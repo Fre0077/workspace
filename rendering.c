@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 18:47:42 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/10 14:24:34 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:26:28 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ void	put_texture(t_data *data, int i, t_ray ray, double corr_angle)
 	int		color;
 	int		wall;
 
-	// if (ray.dist <= 1)
-	// 	wall = HEIGHT;
-	// else
+	if (ray.dist <= 1)
+		wall = HEIGHT;
+	else
 	wall = (HEIGHT / (ray.dist * cos(corr_angle * (M_PI / 180.0))));
 	j = -1;
 	ray.step = 1.0 * TILE_SIZE / wall;
