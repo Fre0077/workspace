@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rendering.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 18:47:42 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/10 18:44:30 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/10 22:35:09 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,11 @@ void	put_texture(t_data *data, int i, t_ray ray, double corr_angle)
 // 	}
 // }
 
-void	draw_square(t_data *data, int x, int y, int color)
+void	draw_head(t_data *data, int x, int y)
 {
-	int	i;
-	int	j;
+	int				i;
+	int				j;
+	unsigned int	color;
 
 	y = y * 10 + 20;
 	x = x * 10 + 20;
@@ -105,6 +106,27 @@ void	draw_square(t_data *data, int x, int y, int color)
 		j = -1;
 		while (++j < 10)
 		{
+			color = data->textures[4]->data[(i * 36 * data->textures[4]->line_len / 4) + j * 36];
+			data->screen->data[((y + i) * data->screen->line_length / 4) + (x + j)] = color;
+		}
+	}
+}
+
+void	draw_div12(t_data *data, int x, int y, int f)
+{
+	int				i;
+	int				j;
+	unsigned int	color;
+
+	y = y * 10 + 20;
+	x = x * 10 + 20;
+	i = -1;
+	while (++i < 10)
+	{
+		j = -1;
+		while (++j < 10)
+		{
+			color = data->textures[f]->data[(i * 12 * data->textures[f]->line_len / 4) + j * 12];
 			data->screen->data[((y + i) * data->screen->line_length / 4) + (x + j)] = color;
 		}
 	}
@@ -125,11 +147,11 @@ void	draw_map(t_data *data)
 		while (++j < 14 && data->map[i + (int)offset.y][j + (int)offset.x])
 		{
 			if (data->map[i + (int)offset.y][j + (int)offset.x] == '1')
-				draw_square(data, j, i, 0xFF0000);
+				draw_div12(data, j, i, 5);
 			else if (data->map[i + (int)offset.y][j + (int)offset.x] == '0')
-				draw_square(data, j, i, 0x00FF00);
+				draw_div12(data, j, i, 6);
 			else if (ft_strchr("NSEW", data->map[i + (int)offset.y][j + (int)offset.x]))
-				draw_square(data, j, i, 0x0000FF);
+				draw_head(data, j, i);
 		}
 	}
 }
@@ -172,14 +194,12 @@ void	calculate_img(t_data *data)
 		ray.dist = calculate_dist(data, (data->player.angle - (cost * i)),
 				ray.angle, &ray.nose);
 		ray.angle = (data->player.angle - (cost * i)) * (M_PI / 180.0);
-		// printf("angle: %f\n", ray.angle);
 		put_texture(data, 719 - i, ray, -(cost * i));
 		ray.angle = calculate_angle(data->player.angle,
 			(cost * i), '+') * (M_PI / 180.0);
 			ray.dist = calculate_dist(data, (data->player.angle + (cost * i)),
 				ray.angle, &ray.nose);
 		ray.angle = (data->player.angle + (cost * i)) * (M_PI / 180.0);
-		// printf("angle: %f\n", ray.angle);
 		put_texture(data, i + 720, ray, (cost * i));
 	}
 	minimapping(data);

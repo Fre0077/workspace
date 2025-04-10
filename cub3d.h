@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/10 22:04:33 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/10 22:13:16 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ void		check_move(t_viktor prev, t_data *data);
 
 int			safe_atoi(char *s);
 int			load_colors(t_data *data);
-int			mlx_fa_schifo(t_data *data, int	side);
+int			mlx_fa_schifo(t_ft_img *img, t_data *data);
 int			load_textures(t_data * data);
 void		find_player(t_data *data);
 int			parsing(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 18:31:09 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/10 22:06:04 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/10 22:33:30 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,11 @@ int	load_textures(t_data *data)
 		return (ft_printe("Error\nInvalid north texture\n"), 1);
 	if (mlx_fa_schifo(data->map_img, data))
 		return (ft_printe("Error\nInvalid map texture\n"), 1);
-	if (mlx_fa_schifo(data, 4))
+	if (mlx_fa_schifo(data->textures[4], data))
+		return (ft_printe("Error\nminimaptexture\n"), 1);
+	if (mlx_fa_schifo(data->textures[5], data))
+		return (ft_printe("Error\nminimaptexture\n"), 1);
+	if (mlx_fa_schifo(data->textures[6], data))
 		return (ft_printe("Error\nminimaptexture\n"), 1);
 	return (0);
 }

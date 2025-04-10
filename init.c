@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:54:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/10 22:05:18 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/10 22:45:55 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,12 @@ t_pkey	*init_pkey(void)
 
 void	init_minimap_texture(t_data *data)
 {
-	data->textures[4]->path = "head.xpm";
+	data->textures[4] = init_img();
+	data->textures[4]->path = "textures_xpm/head.xpm";
+	data->textures[5] = init_img();
+	data->textures[5]->path = "textures_xpm/furnace_top.xpm";
+	data->textures[6] = init_img();
+	data->textures[6]->path = "textures_xpm/farmland_wet.xpm";
 }
 
 t_data	*init_data(void)
