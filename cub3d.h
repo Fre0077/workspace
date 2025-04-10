@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/10 08:39:37 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:21:06 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_ft_img
 	int			endian;
 	int			bpp;
 	int			line_len;
+	unsigned int	*data;
 }				t_ft_img;
 
 typedef struct s_color
@@ -78,6 +79,7 @@ typedef struct s_screen
 {
 	t_img		*img;
 	char		*addr;
+	unsigned int	*data;
 	int			line_length;
 	int			endian;
 	int			bpp;
@@ -140,7 +142,7 @@ int			ft_close(t_data *data);
 //===============================================================
 // get_wall_color.c
 
-int			get_wall_color(t_data *data, int wall, t_ray ray, int y);
+int			get_wall_color(t_data *data, int wall, t_ray *ray, int y);
 //================================================================
 // init.c
 

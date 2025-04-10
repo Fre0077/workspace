@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 18:31:09 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/09 18:14:07 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:21:59 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,26 @@ int	load_colors(t_data *data)
 	return (0);
 }
 
+void ft_put_img_data(t_ft_img *img, int max_pixels) 
+{
+    int i;
+    unsigned int *pixel_ptr;
+    
+    if (!img || !img->img || !img->img->data)
+        return;
+        
+    printf("\nTexture %s (%dx%d) pixel data:\n", 
+			img->path, img->width, img->height);
+    
+    pixel_ptr = (unsigned int *)img->img->data;
+    for (i = 0; i < max_pixels && i < (img->width * img->height); i++) {
+        printf(" 0x%06X ", pixel_ptr[i]);
+        if ((i + 1) % TILE_SIZE == 0) 
+            printf("\n");
+    }
+    printf("\n");
+}
+
 int	mlx_fa_schifo(t_data *data, int	side)
 {
 	data->textures[side]->img = mlx_xpm_file_to_image(data->mlx,
@@ -68,8 +88,11 @@ int	mlx_fa_schifo(t_data *data, int	side)
 		&data->textures[side]->bpp,
 		&data->textures[side]->line_len,
 		&data->textures[side]->endian);
+	// ft_put_img_data(data->textures[side], TILE_SIZE * TILE_SIZE);
 	if (!data->textures[side]->img->data)
 		return (1);
+	data->textures[side]->data =
+		(unsigned int *)data->textures[side]->img->data;
 	return (0);
 }
 
