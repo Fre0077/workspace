@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 18:47:42 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/10 18:37:43 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/10 18:44:30 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ void	draw_square(t_data *data, int x, int y, int color)
 	int	i;
 	int	j;
 
-	y = y * 10 + 10;
-	x = x * 10 + 10;
+	y = y * 10 + 20;
+	x = x * 10 + 20;
 	i = -1;
 	while (++i < 10)
 	{
@@ -138,9 +138,9 @@ void	draw_map(t_data *data)
 // TODO: need to add the offset
 void	minimapping(t_data *data)
 {
-	int		i;
-	int		j;
-	int		color;
+	int				i;
+	int				j;
+	unsigned int	color;
 
 	i = -1;
 	while (++i < data->map_img->height)
@@ -149,7 +149,8 @@ void	minimapping(t_data *data)
 		while (++j < data->map_img->width)
 		{
 			color = data->map_img->data[(i * data->map_img->line_len / 4) + j];
-			data->screen->data[(i * data->screen->line_length / 4) + j] = color;
+			if (color != 0xFF000000)
+				data->screen->data[((i + 10) * data->screen->line_length / 4) + j + 10] = color;
 		}
 	}
 	draw_map(data);
