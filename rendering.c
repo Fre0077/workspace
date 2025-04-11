@@ -6,20 +6,49 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 18:47:42 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/10 22:35:09 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/11 19:20:42 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	update_player_pos(t_data *data)
+int	init_mlx(t_data *data)
 {
-	if (data->pos.x != floor(data->player.x) || data->pos.y != floor(data->player.y))
+	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "Cub3D");
+	if (!data->win)
+		return (ft_printe("Error\nFailed to create window\n"), 1);
+	mlx_mouse_hide(data->mlx, data->win);
+	mlx_hook(data->win, 17, 0, ft_close, data);
+	mlx_hook(data->win, 2, 1L << 0, key_press, data);
+	mlx_hook(data->win, 3, 1L << 1, key_release, data);
+	mlx_hook(data->win, 6, 1L << 6, mouse_move, data);
+	mlx_loop_hook(data->mlx, frame, data);
+	return (0);
+}
+
+long	get_time(void)
+{
+	struct timeval	tv;
+	long			time_in_ms;
+
+	gettimeofday(&tv, NULL);
+	time_in_ms = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
+	return (time_in_ms);
+}
+
+void	frame_counter(t_data *data)
+{
+	time_t			current_time;
+
+	current_time = get_time();
+	free(data->frames);
+	data->frames = NULL;
+	data->frames = ft_itoa(data->frame);
+	mlx_string_put(data->mlx, data->win, WIDTH - 10, 10, 0x00FF00, data->frames);
+	if (current_time >= data->frame_time + 1000)
 	{
-		data->map[(int)data->player.y][(int)data->player.x] = data->map[(int)data->pos.y][(int)data->pos.x];
-		data->map[(int)data->pos.y][(int)data->pos.x] = '0';
-		data->pos.x = floor(data->player.x);
-		data->pos.y = floor(data->player.y);
+		data->frame = 0;
+		data->frame_time = current_time;
 	}
 }
 
@@ -28,9 +57,10 @@ int	frame(void *arg)
 	t_data	*data;
 
 	data = (t_data *)arg;
+	data->frame++;
+	frame_counter(data);
 	camera_update(data);
 	move_update(data, data->player.angle);
-	mlx_mouse_hide(data->mlx, data->win);
 	if (data->screen->img)
 		mlx_destroy_image(data->mlx, data->screen->img);
 	data->screen->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
@@ -42,7 +72,7 @@ int	frame(void *arg)
 	if (!data->screen->addr)
 		return (ft_printe("Error\nFailed to get data address\n"), 1);
 	update_player_pos(data);
-	calculate_img(data);
+	calculate_img(data, (double)FOV / (double)WIDTH);
 	mlx_put_image_to_window(data->mlx, data->win, data->screen->img, 0, 0);
 	return (0);
 }
@@ -52,158 +82,45 @@ void	put_texture(t_data *data, int i, t_ray ray, double corr_angle)
 	int		j;
 	int		color;
 	int		wall;
+	int		cost;
+	double	ang[2];
 
-	wall = (HEIGHT / (ray.dist * cos(corr_angle * (M_PI / 180.0))));
+	wall = (HEIGHT / (ray.dist * cos(corr_angle * RAD)));
 	j = -1;
-	ray.step = 1.0 * TILE_SIZE / wall;
-	ray.pos = ((HEIGHT - ((HEIGHT - wall) / 2)) - HEIGHT / 2 + wall / 2)
-		* ray.step;
-	ray.wall_i = 0;
+	cost = (HEIGHT - wall) / 2;
+	ang[0] = sin(ray.angle);
+	ang[1] = cos(ray.angle);
 	while (++j < HEIGHT)
 	{
-		if (j < (HEIGHT - wall) / 2)
+		if (j < cost)
 			color = data->c->red << 16 | data->c->green << 8 | data->c->blue;
-		else if (j < (HEIGHT - ((HEIGHT - wall) / 2)))
-			color = get_wall_color(data, wall, &ray, (j - ((HEIGHT - wall) / 2)) * (TILE_SIZE - 1) / wall);
+		else if (j < (HEIGHT - cost))
+			color = get_wall_color(data, ray, (j - cost) * (TILE_SIZE - 1) / wall, ang);
 		else
 			color = data->f->red << 16 | data->f->green << 8 | data->f->blue;
 		data->screen->data[(j * data->screen->line_length / 4) + i] = color;
 	}
 }
 
-// void	crafting(t_data *data)
-// {
-// 	unsigned int	*pixel_ptr;
-// 	unsigned int	*screen;
-// 	int				i;
-// 	int				j;
-
-// 	pixel_ptr = (unsigned int *)data->textures[NORTH]->img->data;
-// 	screen = (unsigned int *)data->screen->addr;
-// 	i = -1;
-// 	while (++i < TILE_SIZE)
-// 	{
-// 		j = -1;
-// 		while (++j < TILE_SIZE)
-// 		{
-// 			screen[(i * data->screen->line_length / 4) + j] =
-// 				pixel_ptr[(i * data->textures[NORTH]->line_len / 4) + j];
-// 		}
-// 	}
-// }
-
-void	draw_head(t_data *data, int x, int y)
-{
-	int				i;
-	int				j;
-	unsigned int	color;
-
-	y = y * 10 + 20;
-	x = x * 10 + 20;
-	i = -1;
-	while (++i < 10)
-	{
-		j = -1;
-		while (++j < 10)
-		{
-			color = data->textures[4]->data[(i * 36 * data->textures[4]->line_len / 4) + j * 36];
-			data->screen->data[((y + i) * data->screen->line_length / 4) + (x + j)] = color;
-		}
-	}
-}
-
-void	draw_div12(t_data *data, int x, int y, int f)
-{
-	int				i;
-	int				j;
-	unsigned int	color;
-
-	y = y * 10 + 20;
-	x = x * 10 + 20;
-	i = -1;
-	while (++i < 10)
-	{
-		j = -1;
-		while (++j < 10)
-		{
-			color = data->textures[f]->data[(i * 12 * data->textures[f]->line_len / 4) + j * 12];
-			data->screen->data[((y + i) * data->screen->line_length / 4) + (x + j)] = color;
-		}
-	}
-}
-
-void	draw_map(t_data *data)
-{
-	int	i;
-	int	j;
-	t_viktor	offset;
-
-	offset.x = (floor(data->player.x) - 7) * ((floor(data->player.x) - 7) > 0);
-	offset.y = (floor(data->player.y) - 7) * ((floor(data->player.y) - 7) > 0);
-	i = -1;
-	while (++i < 14 && data->map[i + (int)offset.y])
-	{
-		j = -1;
-		while (++j < 14 && data->map[i + (int)offset.y][j + (int)offset.x])
-		{
-			if (data->map[i + (int)offset.y][j + (int)offset.x] == '1')
-				draw_div12(data, j, i, 5);
-			else if (data->map[i + (int)offset.y][j + (int)offset.x] == '0')
-				draw_div12(data, j, i, 6);
-			else if (ft_strchr("NSEW", data->map[i + (int)offset.y][j + (int)offset.x]))
-				draw_head(data, j, i);
-		}
-	}
-}
-
-
-// TODO: need to add the offset
-void	minimapping(t_data *data)
-{
-	int				i;
-	int				j;
-	unsigned int	color;
-
-	i = -1;
-	while (++i < data->map_img->height)
-	{
-		j = -1;
-		while (++j < data->map_img->width)
-		{
-			color = data->map_img->data[(i * data->map_img->line_len / 4) + j];
-			if (color != 0xFF000000)
-				data->screen->data[((i + 10) * data->screen->line_length / 4) + j + 10] = color;
-		}
-	}
-	draw_map(data);
-}
-
-void	calculate_img(t_data *data)
+void	calculate_img(t_data *data, double cost)
 {
 	int			i;
-	double		cost;
 	t_ray		ray;
 
 	i = -1;
-	cost = (double)FOV / (double)WIDTH;
 	data->screen->data = (unsigned int *)data->screen->addr;
 	while (++i < WIDTH / 2)
 	{
-		ray.angle = calculate_angle(data->player.angle,
-			(cost * i), '-') * (M_PI / 180.0);
-		ray.dist = calculate_dist(data, (data->player.angle - (cost * i)),
-				ray.angle, &ray.nose);
-		ray.angle = (data->player.angle - (cost * i)) * (M_PI / 180.0);
+		ray.angle = calc_angle(data->player.angle,
+			(cost * i), '-') * RAD;
+		ray.dist = calc_dist(data, (data->player.angle - (cost * i)), &ray);
+		ray.angle = (data->player.angle - (cost * i)) * RAD;
 		put_texture(data, 719 - i, ray, -(cost * i));
-		ray.angle = calculate_angle(data->player.angle,
-			(cost * i), '+') * (M_PI / 180.0);
-			ray.dist = calculate_dist(data, (data->player.angle + (cost * i)),
-				ray.angle, &ray.nose);
-		ray.angle = (data->player.angle + (cost * i)) * (M_PI / 180.0);
+		ray.angle = calc_angle(data->player.angle,
+			(cost * i), '+') * RAD;
+		ray.dist = calc_dist(data, (data->player.angle + (cost * i)), &ray);
+		ray.angle = (data->player.angle + (cost * i)) * RAD;
 		put_texture(data, i + 720, ray, (cost * i));
 	}
 	minimapping(data);
-	// exit(0);
 }
-
-

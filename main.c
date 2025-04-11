@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:23 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/09 16:03:05 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/11 16:46:34 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,10 @@ int	main(int argc, char **argv)
 	data = init_data();
 	if (read_file(argv[1], data))
 		return (1);
-	if (init_mlx(data) == 1)
-		return (ft_close(data));
 	if (parsing(data) == 1)
 		ft_close(data);
-	print_data(data);
+	if (init_mlx(data) == 1)
+		return (ft_close(data));
 	mlx_loop(data->mlx);
 	return (0);
 }

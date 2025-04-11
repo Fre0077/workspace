@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 18:31:09 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/10 22:33:30 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/11 16:39:50 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,26 +56,6 @@ int	load_colors(t_data *data)
 	return (0);
 }
 
-// void ft_put_img_data(t_ft_img *img, int max_pixels) 
-// {
-//     int i;
-//     unsigned int *pixel_ptr;
-    
-//     if (!img || !img->img || !img->img->data)
-//         return;
-        
-//     printf("\nTexture %s (%dx%d) pixel data:\n", 
-// 			img->path, img->width, img->height);
-    
-//     pixel_ptr = (unsigned int *)img->img->data;
-//     for (i = 0; i < max_pixels && i < (img->width * img->height); i++) {
-//         printf(" 0x%06X ", pixel_ptr[i]);
-//         if ((i + 1) % TILE_SIZE == 0) 
-//             printf("\n");
-//     }
-//     printf("\n");
-// }
-
 int	mlx_fa_schifo(t_ft_img *img, t_data *data)
 {
 	img->img = mlx_xpm_file_to_image(data->mlx,
@@ -88,7 +68,6 @@ int	mlx_fa_schifo(t_ft_img *img, t_data *data)
 		&img->bpp,
 		&img->line_len,
 		&img->endian);
-	// ft_put_img_data(img, TILE_SIZE * TILE_SIZE);
 	if (!img->img->data)
 		return (1);
 	img->data =
@@ -113,6 +92,8 @@ int	load_textures(t_data *data)
 	if (mlx_fa_schifo(data->textures[5], data))
 		return (ft_printe("Error\nminimaptexture\n"), 1);
 	if (mlx_fa_schifo(data->textures[6], data))
+		return (ft_printe("Error\nminimaptexture\n"), 1);
+	if (mlx_fa_schifo(data->textures[7], data))
 		return (ft_printe("Error\nminimaptexture\n"), 1);
 	return (0);
 }

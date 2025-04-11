@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_check.c                                       :+:      :+:    :+:   */
+/*   check_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:20:33 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/04 15:21:32 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/11 09:38:42 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	check_char(t_data *data)
 	{
 		j = -1;
 		while (data->map[i][++j])
-			if (!ft_strchr("01NSWE \n", data->map[i][j]))
+			if (!ft_strchr("01NSWEP \n", data->map[i][j]))
 				return (ft_printe("Error\nInvalid character in map\n"), 1);
 	}
 	return (0);

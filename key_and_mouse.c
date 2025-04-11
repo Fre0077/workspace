@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_and_mouse.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 09:28:08 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/10 18:08:34 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/11 16:42:35 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	key_press(int key, t_data *data)
 		if (data->mouse_speed > 0.05)
 			data->mouse_speed = data->mouse_speed / 2;
 	if (key == XK_space)
-		print_map(data->map);
+		open_door(data);
 	return (0);
 }
 

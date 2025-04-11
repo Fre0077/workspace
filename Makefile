@@ -11,6 +11,7 @@ get_wall_color.c \
 init.c \
 key_and_mouse.c \
 main.c \
+minimap.c \
 move_and_camera.c \
 parsing.c \
 print_all.c \

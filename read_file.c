@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:51:53 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/09 17:29:47 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/11 10:19:37 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,23 @@ int	process_line(char *line, t_data *data)
 
 int	read_map(char *line, t_data *data, int fd)
 {
+	int	i;
+	int	j;
+	
 	while (line)
 	{
 		line = ft_strtrim_free(line, "\n");
 		data->map = ft_append_line(data->map, line);
+		data->zone_map = ft_append_line(data->zone_map, ft_strdup(line));
 		line = get_next_line(fd);
+	}
+	i = -1;
+	while (data->zone_map[++i])
+	{
+		j = -1;
+		while (data->zone_map[i][++j])
+			if (ft_strchr("0NSWE", data->map[i][j]))
+				data->zone_map[i][j] = '0';
 	}
 	if (check_player(data))
 		return (1);

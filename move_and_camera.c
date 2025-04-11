@@ -3,14 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   move_and_camera.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:42:48 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/10 16:18:35 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/11 18:36:19 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	open_door(t_data *data)
+{
+	t_viktor	tmp;
+
+	tmp = calc_distp(data, data->player.angle, calc_angle(data->player.angle, 0, '+') * RAD);
+	if (data->map[(int)tmp.y][(int)tmp.x] == 'P')
+	{
+		data->map[(int)tmp.y][(int)tmp.x] = 'p';
+		data->zone_map[(int)tmp.y][(int)tmp.x] = 'p';
+	}
+	else if (data->map[(int)tmp.y][(int)tmp.x] == 'p')
+	{
+		data->map[(int)tmp.y][(int)tmp.x] = 'P';
+		data->zone_map[(int)tmp.y][(int)tmp.x] = 'P';
+	}
+}
 
 void	camera_update(t_data *data)
 {
@@ -30,21 +47,21 @@ void	move_update(t_data *data, double angle)
 
 	prev = data->player;
 	if (data->pkey->w)
-		data->player.y += sin(angle * (M_PI / 180.0)) / data->move_speed;
+		data->player.y += sin(angle * RAD) / data->move_speed;
 	if (data->pkey->w)
-		data->player.x += cos(angle * (M_PI / 180.0)) / data->move_speed;
+		data->player.x += cos(angle * RAD) / data->move_speed;
 	if (data->pkey->a)
-		data->player.y -= cos(angle * (M_PI / 180.0)) / data->move_speed;
+		data->player.y -= cos(angle * RAD) / data->move_speed;
 	if (data->pkey->a)
-		data->player.x += sin(angle * (M_PI / 180.0)) / data->move_speed;
+		data->player.x += sin(angle * RAD) / data->move_speed;
 	if (data->pkey->s)
-		data->player.y -= sin(angle * (M_PI / 180.0)) / data->move_speed;
+		data->player.y -= sin(angle * RAD) / data->move_speed;
 	if (data->pkey->s)
-		data->player.x -= cos(angle * (M_PI / 180.0)) / data->move_speed;
+		data->player.x -= cos(angle * RAD) / data->move_speed;
 	if (data->pkey->d)
-		data->player.y += cos(angle * (M_PI / 180.0)) / data->move_speed;
+		data->player.y += cos(angle * RAD) / data->move_speed;
 	if (data->pkey->d)
-		data->player.x -= sin(angle * (M_PI / 180.0)) / data->move_speed;
+		data->player.x -= sin(angle * RAD) / data->move_speed;
 	check_move(prev, data);
 }
 

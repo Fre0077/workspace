@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/10 22:13:16 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/11 19:23:03 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,24 @@
 # include <unistd.h>
 # include <math.h>
 # include <stdio.h>
+# include <time.h>
+# include <sys/time.h>
 
 # define M_PI 3.14159265358979323846
+# define RAD (double)(M_PI / 180.0)
 # define TILE_SIZE 128
 # define WIDTH 1440
 # define HEIGHT 900
 # define FOV 60
 # define MAP 140
 
-typedef enum sides
+enum sides
 {
 	EAST,
 	SOUTH,
 	WEST,
 	NORTH
-}				t_sides;
+};
 
 typedef struct s_pkey
 {
@@ -56,6 +59,22 @@ typedef struct s_viktor
 	double		angle;
 }				t_viktor;
 
+typedef struct s_ray
+{
+	t_viktor	nose;
+	double		dist;
+	double		angle;
+	char		seen_block;
+}				t_ray;
+
+typedef struct s_color
+{
+	char		*color;
+	int			red;
+	int			green;
+	int			blue;
+}
+				t_color;
 typedef struct s_ft_img
 {
 	t_img		*img;
@@ -68,14 +87,6 @@ typedef struct s_ft_img
 	unsigned int	*data;
 }				t_ft_img;
 
-typedef struct s_color
-{
-	char		*color;
-	int			red;
-	int			green;
-	int			blue;
-}				t_color;
-
 typedef struct s_screen
 {
 	t_img		*img;
@@ -86,25 +97,14 @@ typedef struct s_screen
 	int			bpp;
 }				t_screen;
 
-typedef struct s_ray
-{
-	t_viktor	nose;
-	double		dist;
-	double		angle;
-	double		step;
-	double		wall_i;
-	double		pos;
-}				t_ray;
-
-//typedef	struct s_minimap
-//{
-//	t_ft_img	*texture[3];
-	
-//}				t_minimap;
-
 typedef struct s_data
 {
-	t_ft_img	*textures[7];
+	int			frame;
+	long		time;
+	long		frame_time;
+	char		*frames;
+
+	t_ft_img	*textures[8];
 	t_ft_img	*map_img;
 	t_screen	*screen;
 	t_viktor	player;
@@ -115,6 +115,7 @@ typedef struct s_data
 	void		*mlx;
 	void		*win;
 	char		**map;
+	char		**zone_map;
 	double		move_speed;
 	double		mouse_speed;
 	int			mouse_x;
@@ -132,16 +133,20 @@ int			check_auschwitz(t_data *data);
 //dist_wall_utils.c
 
 int			hit(t_data *data, t_viktor tmp);
+int			hitp(t_data *data, t_viktor tmp);
 double		r(double angle);
 double		rad(double rad);
 double		mult_of_90(double num, char direct);
-double		calculate_angle(double angle, double cost, char sign);
+double		calc_angle(double angle, double cost, char sign);
 //===============================================================
 //dist_wall.c
 
-double		zero_case(t_data *data, t_viktor *tm, t_viktor dir, int witch, t_viktor *nose);
-void	first_step(double dist[], t_viktor *tmp, t_viktor player, t_viktor dir, t_viktor *nose);
-double		calculate_dist(t_data *data, double angle, double ra, t_viktor *nose);
+t_viktor	calc_distp(t_data *data, double angle, double ra);
+t_viktor	zero_casep(t_data *data, t_viktor *tm, t_viktor dir, int witch);
+void		first_stepp(double dist[], t_viktor *tmp, t_viktor player, t_viktor dir);
+double		zero_case(t_data *data, t_viktor dir, double angle, t_ray *ray);
+void		first_step(double dist[], t_viktor *tmp, t_viktor player, t_viktor dir);
+double		calc_dist(t_data *data, double angle, t_ray *ray);
 //===============================================================
 // exit.c
 
@@ -151,11 +156,10 @@ int			ft_close(t_data *data);
 //===============================================================
 // get_wall_color.c
 
-int			get_wall_color(t_data *data, int wall, t_ray *ray, int y);
+int			get_wall_color(t_data *data, t_ray ray, int y, double ang[2]);
 //================================================================
 // init.c
 
-int			init_mlx(t_data *data);
 t_ft_img	*init_img(void);
 t_color		*init_color(void);
 t_pkey		*init_pkey();
@@ -167,8 +171,14 @@ int			key_press(int key, t_data *data);
 int			key_release(int key, t_data *data);
 int			mouse_move(int x, int y, t_data *data);
 //===============================================================
+// minimap.c
+
+void		update_player_pos(t_data *data);
+void		minimapping(t_data *data);
+//===============================================================
 // move_and_camera.c
 
+void		open_door(t_data *data);
 void		camera_update(t_data *data);
 void		move_update(t_data *data, double angle);
 void		check_move(t_viktor prev, t_data *data);
@@ -199,9 +209,10 @@ int			read_file(char *file, t_data *data);
 //===============================================================
 //rendering.c
 
+int			init_mlx(t_data *data);
 int			frame(void *arg);
 void		put_texture(t_data *data, int i, t_ray ray, double corr_angle);
-void 		calculate_img(t_data *data);
+void		calculate_img(t_data *data, double cost);
 //===============================================================
 
 /**
