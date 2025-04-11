@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 18:47:42 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/11 19:20:42 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/11 19:30:45 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,5 +122,6 @@ void	calculate_img(t_data *data, double cost)
 		ray.angle = (data->player.angle + (cost * i)) * RAD;
 		put_texture(data, i + 720, ray, (cost * i));
 	}
+	data->seen_block = ray.seen_block;
 	minimapping(data);
 }

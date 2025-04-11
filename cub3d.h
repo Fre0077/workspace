@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/11 19:23:03 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/11 19:28:46 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ typedef struct s_data
 	void		*win;
 	char		**map;
 	char		**zone_map;
+	char		seen_block;
 	double		move_speed;
 	double		mouse_speed;
 	int			mouse_x;
