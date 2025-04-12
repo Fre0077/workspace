@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:54:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/11 16:44:26 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/12 10:34:02 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ t_pkey	*init_pkey(void)
 	t_pkey	*pkey;
 
 	pkey = malloc(sizeof(t_pkey));
+	if (!pkey)
+		return (ft_printe("Error\nFunction malloc failed\n"), NULL);
 	pkey->dex = 0;
 	pkey->six = 0;
 	pkey->w = 0;
@@ -68,6 +70,8 @@ void	init_texture(t_data *data)
 	data->textures[6]->path = "textures_xpm/hardened_clay_stained_gray.xpm";
 	data->textures[7] = init_img();
 	data->textures[7]->path = "textures_xpm/door_spruce_lower.xpm";
+	data->textures[8] = init_img();
+	data->textures[8]->path = "textures_xpm/map.xpm";
 }
 
 t_data	*init_data(void)
@@ -78,12 +82,12 @@ t_data	*init_data(void)
 	if (!data)
 		return (ft_printe("Error\nFunction calloc failed\n"), NULL);
 	init_texture(data);
-	data->map_img = init_img();
-	data->map_img->path = ft_strdup("textures_xpm/map.xpm");
 	data->screen = (t_screen *)ft_calloc(1, sizeof(t_screen));
 	if (!data->screen)
 		return (ft_printe("Error\nFunction calloc failed\n"), NULL);
 	data->player = (t_viktor){0, 0, 0};
+	data->pos = (t_viktor){0, 0, 0};
+	data->tmp = (t_viktor){0, 0, 0};
 	data->f = init_color();
 	data->c = init_color();
 	data->pkey = init_pkey();
@@ -92,7 +96,6 @@ t_data	*init_data(void)
 	data->zone_map = NULL;
 	data->move_speed = 25;
 	data->mouse_speed = 0.2;
-	data->mouse_x = WIDTH / 2;
 	data->status = 0;
 	return (data);
 }

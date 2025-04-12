@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 18:47:42 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/11 19:30:45 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/12 10:59:59 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,27 @@ int	frame(void *arg)
 	if (!data->screen->addr)
 		return (ft_printe("Error\nFailed to get data address\n"), 1);
 	update_player_pos(data);
+	data->screen->data = (unsigned int *)data->screen->addr;
 	calculate_img(data, (double)FOV / (double)WIDTH);
+	pointer(data);
 	mlx_put_image_to_window(data->mlx, data->win, data->screen->img, 0, 0);
 	return (0);
+}
+
+void	pointer(t_data *data)
+{
+	int				i;
+	int				j;
+
+	i = -17;
+	while (++i < 17)
+	{
+		j = -17;
+		while (++j < 17)
+			if ((i >= 0 && i < 2) || (j >= 0 && j < 2))
+				data->screen->data[((i + HEIGHT / 2) * data->screen->
+					line_length / 4) + (j + WIDTH / 2)] = 0x80FFFFFF;
+	}
 }
 
 void	put_texture(t_data *data, int i, t_ray ray, double corr_angle)
@@ -102,26 +120,29 @@ void	put_texture(t_data *data, int i, t_ray ray, double corr_angle)
 	}
 }
 
-void	calculate_img(t_data *data, double cost)
+void	calculate_img(t_data *data, double c)
 {
 	int			i;
 	t_ray		ray;
 
 	i = -1;
-	data->screen->data = (unsigned int *)data->screen->addr;
 	while (++i < WIDTH / 2)
 	{
+		data->tmp = data->player;
 		ray.angle = calc_angle(data->player.angle,
-			(cost * i), '-') * RAD;
-		ray.dist = calc_dist(data, (data->player.angle - (cost * i)), &ray);
-		ray.angle = (data->player.angle - (cost * i)) * RAD;
-		put_texture(data, 719 - i, ray, -(cost * i));
-		ray.angle = calc_angle(data->player.angle,
-			(cost * i), '+') * RAD;
-		ray.dist = calc_dist(data, (data->player.angle + (cost * i)), &ray);
-		ray.angle = (data->player.angle + (cost * i)) * RAD;
-		put_texture(data, i + 720, ray, (cost * i));
+			(c * i), '-') * RAD;
+		ray.dist = calc_dist(data, (data->player.angle - (c * i)),
+				&ray, &data->tmp);
+		ray.angle = (data->player.angle - (c * i)) * RAD;
+		data->seen_block = ray.seen_block;
+		put_texture(data, (WIDTH / 2) - 1 - i, ray, -(c * i));
+		data->tmp = data->player;
+		ray.angle = calc_angle(data->player.angle, (c * i), '+') * RAD;
+		ray.dist = calc_dist(data, (data->player.angle + (c * i)),
+				&ray, &data->tmp);
+		ray.angle = (data->player.angle + (c * i)) * RAD;
+		data->seen_block = ray.seen_block;
+		put_texture(data, i + (WIDTH / 2), ray, (c * i));
 	}
-	data->seen_block = ray.seen_block;
 	minimapping(data);
 }

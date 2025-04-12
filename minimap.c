@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:35:50 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/11 16:36:49 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/12 09:19:03 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,12 @@ void	minimapping(t_data *data)
 	unsigned int	color;
 
 	i = -1;
-	while (++i < data->map_img->height)
+	while (++i < data->textures[8]->height)
 	{
 		j = -1;
-		while (++j < data->map_img->width)
+		while (++j < data->textures[8]->width)
 		{
-			color = data->map_img->data[(i * data->map_img->line_len / 4) + j];
+			color = data->textures[8]->data[(i * data->textures[8]->line_len / 4) + j];
 			if (color != 0xFF000000)
 				data->screen->data[((i + 10) * data->screen->line_length / 4) + j + 10] = color;
 		}

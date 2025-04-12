@@ -1,33 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_wall_color.c                                   :+:      :+:    :+:   */
+/*   put_texture.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:38:20 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/11 19:23:32 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/12 11:02:01 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	side(t_ray ray)
+int	side(t_data *data, t_ray ray)
 {
+	int	side;
 	if (ray.nose.angle == 0)
 	{
 		if (ray.nose.y > 0)
-			return (NORTH);
+			side = NORTH;
 		else
-			return (SOUTH);
+			side = SOUTH;
 	}
 	else
 	{
 		if (ray.nose.x > 0)
-			return (WEST);
+			side = WEST;
 		else
-			return (EAST);
+			side = EAST;
 	}
+	if ((data->zone_map[(int)data->tmp.y + 1][(int)data->tmp.x] == 'p' && side
+		== SOUTH) || (data->zone_map[(int)data->tmp.y - 1][(int)data->tmp.x]
+		== 'p' && side == NORTH) || (data->zone_map[(int)data->tmp.y][(int)data
+		->tmp.x - 1] == 'p' && side == WEST) || (data->zone_map[(int)data->
+		tmp.y][(int)data->tmp.x + 1] == 'p' && side == EAST))
+		side = 7;
+	if (data->seen_block == 'P')
+		side = 7;
+	return (side);
 }
 
 int	get_wall_color(t_data *data, t_ray ray, int y, double ang[2])
@@ -43,7 +53,7 @@ int	get_wall_color(t_data *data, t_ray ray, int y, double ang[2])
 	else
 		wall_x = data->player.x + ray.dist * ang[1];
 	wall_x -= (int)wall_x;
-	tex_side = side(ray);
+	tex_side = side(data, ray);
 	txt_x = (wall_x * (TILE_SIZE - 1));
 	if ((ray.nose.angle == 1 && ray.nose.x < 0) || (ray.nose.angle == 0
 		&& ray.nose.y > 0))

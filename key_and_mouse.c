@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 09:28:08 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/11 16:42:35 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/12 09:25:00 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ int	mouse_move(int x, int y, t_data *data)
 	double	change;
 
 	(void)y;
-	change = data->mouse_speed * ((abs(x - data->mouse_x) / 5) + 1);
-	if (x > data->mouse_x)
+	change = data->mouse_speed * ((abs(x - WIDTH / 2) / 5) + 1);
+	if (x > WIDTH / 2)
 		data->player.angle += change;
-	else if (data->mouse_x > x)
+	else if (WIDTH / 2 > x)
 		data->player.angle -= change;
 	mlx_mouse_move(data->mlx, data->win, WIDTH / 2, HEIGHT / 2);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/11 19:28:46 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/12 10:58:05 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,22 +104,21 @@ typedef struct s_data
 	long		frame_time;
 	char		*frames;
 
-	t_ft_img	*textures[8];
-	t_ft_img	*map_img;
+	t_ft_img	*textures[9];
 	t_screen	*screen;
 	t_viktor	player;
 	t_viktor	pos;
+	t_viktor	tmp;
 	t_color		*f;
 	t_color		*c;
 	t_pkey		*pkey;
 	void		*mlx;
 	void		*win;
-	char		**map;
-	char		**zone_map;
 	char		seen_block;
-	double		move_speed;
+	char		**zone_map;
+	char		**map;
 	double		mouse_speed;
-	int			mouse_x;
+	double		move_speed;
 	int			status;
 }				t_data;
 
@@ -147,7 +146,7 @@ t_viktor	zero_casep(t_data *data, t_viktor *tm, t_viktor dir, int witch);
 void		first_stepp(double dist[], t_viktor *tmp, t_viktor player, t_viktor dir);
 double		zero_case(t_data *data, t_viktor dir, double angle, t_ray *ray);
 void		first_step(double dist[], t_viktor *tmp, t_viktor player, t_viktor dir);
-double		calc_dist(t_data *data, double angle, t_ray *ray);
+double		calc_dist(t_data *data, double angle, t_ray *ray, t_viktor *tm);
 //===============================================================
 // exit.c
 
@@ -155,10 +154,6 @@ void		free_img(t_ft_img *img, void *mlx);
 void		free_color(t_color *col);
 int			ft_close(t_data *data);
 //===============================================================
-// get_wall_color.c
-
-int			get_wall_color(t_data *data, t_ray ray, int y, double ang[2]);
-//================================================================
 // init.c
 
 t_ft_img	*init_img(void);
@@ -193,6 +188,10 @@ int			load_textures(t_data * data);
 void		find_player(t_data *data);
 int			parsing(t_data *data);
 //===============================================================
+// put_texture.c
+
+int			get_wall_color(t_data *data, t_ray ray, int y, double ang[2]);
+//================================================================
 // print_all.c
 
 void		print_img(t_ft_img *img);
@@ -212,6 +211,7 @@ int			read_file(char *file, t_data *data);
 
 int			init_mlx(t_data *data);
 int			frame(void *arg);
+void		pointer(t_data *data);
 void		put_texture(t_data *data, int i, t_ray ray, double corr_angle);
 void		calculate_img(t_data *data, double cost);
 //===============================================================
