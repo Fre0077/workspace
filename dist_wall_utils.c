@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 18:51:34 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/14 14:24:58 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:23:59 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,32 +20,6 @@ int	hit(t_data *data, t_viktor tmp)
 		return (0);
 	c = data->map[(int)tmp.y][(int)tmp.x];
 	if (c == '1' || c == 'P')
-		return (1);
-	else
-		return (0);
-}
-
-int	hitp(t_data *data, t_viktor tmp)
-{
-	char	c;
-
-	if (tmp.x < 0 || tmp.y < 0)
-		return (0);
-	c = data->map[(int)tmp.y][(int)tmp.x];
-	if (c == '1' || c == 'P' || c == 'p')
-		return (1);
-	else
-		return (0);
-}
-
-int	hita(t_data *data, t_viktor tmp)
-{
-	char	c;
-
-	if (tmp.x < 0 || tmp.y < 0)
-		return (0);
-	c = data->map[(int)tmp.y][(int)tmp.x];
-	if (c == 'A')
 		return (1);
 	else
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 17:18:45 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/14 11:00:50 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:25:33 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,8 @@ void	free_color(t_color *col)
 	free(col);
 }
 
-int	ft_close(t_data *data)
+void	free_data(t_data *data)
 {
-	int	status;
-	int	i;
-
-	i = 0;
-	while (i < 9)
-	{
-		if (data->textures[i])
-			free_img(data->textures[i], data->mlx, i);
-		i++;
-	}
-	if (data->screen && data->screen->img)
-		mlx_destroy_image(data->mlx, data->screen->img);
-	if (data->win)
-		mlx_destroy_window(data->mlx, data->win);
-	if (data->mlx)
-		mlx_destroy_display(data->mlx);
 	if (data->mlx)
 		free(data->mlx);
 	if (data->screen)
@@ -66,6 +50,28 @@ int	ft_close(t_data *data)
 		ft_free_mat_char(data->map);
 	if (data->zone_map)
 		ft_free_mat_char(data->zone_map);
+}
+
+int	ft_close(t_data *data)
+{
+	int	status;
+	int	i;
+
+	i = 0;
+	while (i < 9)
+	{
+		if (data->textures[i])
+			free_img(data->textures[i], data->mlx, i);
+		i++;
+	}
+	if (data->hand)
+		free_img(data->hand, data->mlx, 8);
+	if (data->screen && data->screen->img)
+		mlx_destroy_image(data->mlx, data->screen->img);
+	if (data->win)
+		mlx_destroy_window(data->mlx, data->win);
+	if (data->mlx)
+		mlx_destroy_display(data->mlx);
 	status = data->status;
 	free(data);
 	exit(status);

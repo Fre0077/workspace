@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:54:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/14 15:08:33 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:40:11 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ t_pkey	*init_pkey(void)
 		return (ft_printe("Error\nFunction malloc failed\n"), NULL);
 	pkey->dex = 0;
 	pkey->six = 0;
+	pkey->f3 = 0;
 	pkey->w = 0;
 	pkey->a = 0;
 	pkey->s = 0;
@@ -84,6 +85,7 @@ t_data	*init_data(void)
 	if (!data)
 		return (ft_printe("Error\nFunction calloc failed\n"), NULL);
 	init_texture(data);
+	data->frames = ft_strdup("");
 	data->screen = (t_screen *)ft_calloc(1, sizeof(t_screen));
 	if (!data->screen)
 		return (ft_printe("Error\nFunction calloc failed\n"), NULL);

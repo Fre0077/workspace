@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:51:53 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/11 10:19:37 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:34:14 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	read_map(char *line, t_data *data, int fd)
 {
 	int	i;
 	int	j;
-	
+
 	while (line)
 	{
 		line = ft_strtrim_free(line, "\n");

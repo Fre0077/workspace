@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_and_camera.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:42:48 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/11 18:36:19 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:31:36 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	open_door(t_data *data)
 {
 	t_viktor	tmp;
 
-	tmp = calc_distp(data, data->player.angle, calc_angle(data->player.angle, 0, '+') * RAD);
+	tmp = calc_distp(data, data->player.angle,
+			calc_angle(data->player.angle, 0, '+') * RAD);
 	if (data->map[(int)tmp.y][(int)tmp.x] == 'P')
 	{
 		data->map[(int)tmp.y][(int)tmp.x] = 'p';

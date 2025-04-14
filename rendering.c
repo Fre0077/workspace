@@ -6,51 +6,11 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 18:47:42 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/14 15:13:40 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:44:17 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-int	init_mlx(t_data *data)
-{
-	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "Cub3D");
-	if (!data->win)
-		return (ft_printe("Error\nFailed to create window\n"), 1);
-	// mlx_mouse_hide(data->mlx, data->win);
-	mlx_hook(data->win, 17, 0, ft_close, data);
-	mlx_hook(data->win, 2, 1L << 0, key_press, data);
-	mlx_hook(data->win, 3, 1L << 1, key_release, data);
-	mlx_hook(data->win, 6, 1L << 6, mouse_move, data);
-	mlx_loop_hook(data->mlx, frame, data);
-	return (0);
-}
-
-long	get_time(void)
-{
-	struct timeval	tv;
-	long			time_in_ms;
-
-	gettimeofday(&tv, NULL);
-	time_in_ms = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
-	return (time_in_ms);
-}
-
-void	frame_counter(t_data *data)
-{
-	time_t			current_time;
-
-	current_time = get_time();
-	free(data->frames);
-	data->frames = NULL;
-	data->frames = ft_itoa(data->frame);
-	mlx_string_put(data->mlx, data->win, WIDTH - 10, 10, 0x00FF00, data->frames);
-	if (current_time >= data->frame_time + 1000)
-	{
-		data->frame = 0;
-		data->frame_time = current_time;
-	}
-}
 
 int	frame(void *arg)
 {
@@ -89,8 +49,9 @@ void	pointer(t_data *data)
 		j = -17;
 		while (++j < 17)
 			if ((i >= 0 && i < 2) || (j >= 0 && j < 2))
-				data->screen->data[((i + HEIGHT / 2) * data->screen->
-					line_length / 4) + (j + WIDTH / 2)] = 0x80FFFFFF;
+				data->screen->data[((i + HEIGHT / 2)
+						* data->screen->line_length / 4)
+					+ (j + WIDTH / 2)] = 0x80FFFFFF;
 	}
 }
 
@@ -112,7 +73,8 @@ void	put_texture(t_data *data, int i, t_ray ray, double corr_angle)
 		if (j < cost)
 			color = data->c->red << 16 | data->c->green << 8 | data->c->blue;
 		else if (j < (HEIGHT - cost))
-			color = get_wall_color(data, ray, (j - cost) * (TILE_SIZE - 1) / wall, ang);
+			color = get_wall_color(data, ray,
+					(j - cost) * (TILE_SIZE - 1) / wall, ang);
 		else
 			color = data->f->red << 16 | data->f->green << 8 | data->f->blue;
 		data->screen->data[(j * data->screen->line_length / 4) + i] = color;
@@ -124,8 +86,16 @@ void	handing(t_data *data)
 	int				i;
 	int				j;
 	unsigned int	color;
+	int				off[2];
 
 	i = -1;
+	off[0] = 0;
+	off[1] = 0;
+	if (data->pkey->w || data->pkey->a || data->pkey->s || data->pkey->d)
+	{
+		off[0] = 20 * fabs(cos(data->time / 90));
+		off[1] = 20 * sin(data->time / (90 - (20 * (data->move_speed == 10))));
+	}
 	while (++i < data->hand->height)
 	{
 		j = -1;
@@ -133,8 +103,9 @@ void	handing(t_data *data)
 		{
 			color = data->hand->data[(i * data->hand->line_len / 4) + j];
 			if (color != 0xFF000000)
-				data->screen->data[((i + HEIGHT - 256) * data->screen->
-					line_length / 4) + (j + WIDTH / 2 + 300)] = color;
+				data->screen->data
+				[((i + HEIGHT - 256 + off[0]) * data->screen->line_length
+						/ 4) + (j + WIDTH / 2 + 300 + off[1])] = color;
 		}
 	}
 }
@@ -149,7 +120,7 @@ void	calculate_img(t_data *data, double c)
 	{
 		data->tmp = data->player;
 		ray.angle = calc_angle(data->player.angle,
-			(c * i), '-') * RAD;
+				(c * i), '-') * RAD;
 		ray.dist = calc_dist(data, (data->player.angle - (c * i)),
 				&ray, &data->tmp);
 		ray.angle = (data->player.angle - (c * i)) * RAD;

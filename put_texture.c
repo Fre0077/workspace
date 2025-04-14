@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:38:20 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/14 14:52:52 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:34:04 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	side(t_data *data, t_ray ray)
 {
 	int	side;
+
 	if (ray.nose.angle == 0)
 	{
 		if (ray.nose.y > 0)
@@ -37,11 +38,6 @@ int	side(t_data *data, t_ray ray)
 		side = 7;
 	if (data->seen_block == 'P')
 		side = 7;
-	if (data->seen_block == 'A')
-	{
-		side = 8;
-		printf("A\n");
-	}
 	return (side);
 }
 
@@ -61,7 +57,7 @@ int	get_wall_color(t_data *data, t_ray ray, int y, double ang[2])
 	tex_side = side(data, ray);
 	txt_x = (wall_x * (TILE_SIZE - 1));
 	if ((ray.nose.angle == 1 && ray.nose.x < 0) || (ray.nose.angle == 0
-		&& ray.nose.y > 0))
+			&& ray.nose.y > 0))
 		txt_x = TILE_SIZE - txt_x - 1;
 	pixel_index = (y * data->textures[tex_side]->line_len / 4) + txt_x;
 	color = data->textures[tex_side]->data[pixel_index];

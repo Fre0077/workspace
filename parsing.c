@@ -6,30 +6,11 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 18:31:09 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/14 15:09:27 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:32:50 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-// - 42 - 6 = -48 = - '0'
-int	safe_atoi(char *s)
-{
-	int	i;
-	int	n;
-
-	if (ft_strlen_int(s) > 3 || !s)
-		return (-1);
-	i = -1;
-	while (s[++i])
-		if (!ft_isdigit(s[i]))
-			return (-1);
-	n = ft_atoi(s);
-	if (n > 255)
-		return (-1);
-	return (n);
-}
-//pere per c******a
 
 int	load_colors(t_data *data)
 {
@@ -59,19 +40,19 @@ int	load_colors(t_data *data)
 int	mlx_fa_schifo(t_ft_img *img, t_data *data)
 {
 	img->img = mlx_xpm_file_to_image(data->mlx,
-		img->path,
+			img->path,
 			&img->width, &img->height);
 	if (!img->img)
 		return (1);
 	img->img->data = mlx_get_data_addr(
-		img->img,
-		&img->bpp,
-		&img->line_len,
-		&img->endian);
+			img->img,
+			&img->bpp,
+			&img->line_len,
+			&img->endian);
 	if (!img->img->data)
 		return (1);
-	img->data =
-		(unsigned int *)img->img->data;
+	img->data
+		= (unsigned int *)img->img->data;
 	return (0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_and_mouse.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 09:28:08 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/12 09:25:00 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:40:11 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,15 @@ int	key_press(int key, t_data *data)
 			data->mouse_speed = data->mouse_speed / 2;
 	if (key == XK_space)
 		open_door(data);
+	return (key_press_2(key, data));
+}
+
+int	key_press_2(int key, t_data *data)
+{
+	if (key == XK_F3 && !data->pkey->f3)
+		data->pkey->f3 = 1;
+	else if (key == XK_F3 && data->pkey->f3)
+		data->pkey->f3 = 0;
 	return (0);
 }
 
@@ -60,16 +69,25 @@ int	key_release(int key, t_data *data)
 	return (0);
 }
 
+int	mouse_click(int button, int x, int y, t_data *data)
+{
+	(void)x;
+	(void)y;
+	if (button == 3)
+		open_door(data);
+	return (0);
+}
+
 int	mouse_move(int x, int y, t_data *data)
 {
 	double	change;
 
-	(void)y;
 	change = data->mouse_speed * ((abs(x - WIDTH / 2) / 5) + 1);
 	if (x > WIDTH / 2)
 		data->player.angle += change;
 	else if (WIDTH / 2 > x)
 		data->player.angle -= change;
-	mlx_mouse_move(data->mlx, data->win, WIDTH / 2, HEIGHT / 2);
+	if (x != WIDTH / 2 || y != HEIGHT / 2)
+		mlx_mouse_move(data->mlx, data->win, WIDTH / 2, HEIGHT / 2);
 	return (0);
 }

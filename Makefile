@@ -6,6 +6,7 @@ SRCS = \
 check_file.c \
 dist_wall_utils.c \
 dist_wall.c \
+dist_wallp.c \
 exit.c \
 init.c \
 key_and_mouse.c \
@@ -16,7 +17,8 @@ parsing.c \
 print_all.c \
 put_texture.c \
 read_file.c \
-rendering.c
+rendering.c \
+utils.c
 
 CFLAGS = -Wall -Wextra -Werror -g -O3
 MINIFLAGS = -lX11 -lXext -lm

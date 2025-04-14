@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/14 15:08:11 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:47:12 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@
 # include <sys/time.h>
 
 # define M_PI 3.14159265358979323846
-# define RAD (double)(M_PI / 180.0)
+# define RAD 0.017453293 // (M_PI / 180)
 # define TILE_SIZE 128
 # define WIDTH 1440
 # define HEIGHT 900
-# define FOV 60
+# define FOV 66
 # define MAP 140
-# define C (double)FOV / (double)WIDTH
+# define C 0.045833333 // (FOV / WIDTH)
 
-enum sides
+enum e_sides
 {
 	EAST,
 	SOUTH,
@@ -44,9 +44,9 @@ enum sides
 
 typedef struct s_pkey
 {
-	int			shift;
 	int			dex;
 	int			six;
+	int			f3;
 	int			w;
 	int			a;
 	int			s;
@@ -60,19 +60,12 @@ typedef struct s_viktor
 	double		angle;
 }				t_viktor;
 
-// typedef struct s_dl
-// {
-// 	double		val;
-// 	struct s_dl	*next;
-// }			t_dl;
-
 typedef struct s_ray
 {
 	t_viktor	nose;
 	double		dist;
 	double		angle;
 	char		seen_block;
-	// t_dl		*list;
 }				t_ray;
 
 typedef struct s_color
@@ -81,28 +74,28 @@ typedef struct s_color
 	int			red;
 	int			green;
 	int			blue;
-}
-				t_color;
+}				t_color;
+
 typedef struct s_ft_img
 {
-	t_img		*img;
-	char		*path;
-	int			width;
-	int			height;
-	int			endian;
-	int			bpp;
-	int			line_len;
+	t_img			*img;
+	char			*path;
+	int				width;
+	int				height;
+	int				endian;
+	int				bpp;
+	int				line_len;
 	unsigned int	*data;
 }				t_ft_img;
 
 typedef struct s_screen
 {
-	t_img		*img;
-	char		*addr;
+	t_img			*img;
+	char			*addr;
 	unsigned int	*data;
-	int			line_length;
-	int			endian;
-	int			bpp;
+	int				line_length;
+	int				endian;
+	int				bpp;
 }				t_screen;
 
 typedef struct s_data
@@ -143,7 +136,6 @@ int			check_auschwitz(t_data *data);
 //dist_wall_utils.c
 
 int			hit(t_data *data, t_viktor tmp);
-int			hitp(t_data *data, t_viktor tmp);
 double		r(double angle);
 double		rad(double rad);
 double		mult_of_90(double num, char direct);
@@ -151,35 +143,48 @@ double		calc_angle(double angle, double cost, char sign);
 //===============================================================
 //dist_wall.c
 
+double		zero_case(t_data *data, t_viktor dir, double angle, t_ray *ray);
+void		first_step(double dist[], t_viktor *tmp, t_viktor player,
+				t_viktor dir);
+double		calc_dist(t_data *data, double angle, t_ray *ray, t_viktor *tm);
+//===============================================================
+//dist_wallp.c
+
 t_viktor	calc_distp(t_data *data, double angle, double ra);
 t_viktor	zero_casep(t_data *data, t_viktor *tm, t_viktor dir, int witch);
-void		first_stepp(double dist[], t_viktor *tmp, t_viktor player, t_viktor dir);
-double		zero_case(t_data *data, t_viktor dir, double angle, t_ray *ray);
-void		first_step(double dist[], t_viktor *tmp, t_viktor player, t_viktor dir);
-double		calc_dist(t_data *data, double angle, t_ray *ray, t_viktor *tm);
+void		first_stepp(double dist[], t_viktor *tmp, t_viktor player,
+				t_viktor dir);
+int			hitp(t_data *data, t_viktor tmp);
 //===============================================================
 // exit.c
 
 void		free_img(t_ft_img *img, void *mlx, int i);
 void		free_color(t_color *col);
+void		free_data(t_data *data);
 int			ft_close(t_data *data);
 //===============================================================
 // init.c
 
 t_ft_img	*init_img(void);
 t_color		*init_color(void);
-t_pkey		*init_pkey();
+t_pkey		*init_pkey(void);
+void		init_texture(t_data *data);
 t_data		*init_data(void);
 //===============================================================
 // key_and_mouse.c
 
 int			key_press(int key, t_data *data);
+int			key_press_2(int key, t_data *data);
 int			key_release(int key, t_data *data);
+int			mouse_click(int button, int x, int y, t_data *data);
 int			mouse_move(int x, int y, t_data *data);
 //===============================================================
 // minimap.c
 
 void		update_player_pos(t_data *data);
+void		draw_head(t_data *data, int x, int y);
+void		draw_div12(t_data *data, int x, int y, int f);
+void		draw_map(t_data *data);
 void		minimapping(t_data *data);
 //===============================================================
 // move_and_camera.c
@@ -191,17 +196,12 @@ void		check_move(t_viktor prev, t_data *data);
 //===============================================================
 // parsing.c
 
-int			safe_atoi(char *s);
 int			load_colors(t_data *data);
 int			mlx_fa_schifo(t_ft_img *img, t_data *data);
-int			load_textures(t_data * data);
+int			load_textures(t_data *data);
 void		find_player(t_data *data);
 int			parsing(t_data *data);
 //===============================================================
-// put_texture.c
-
-int			get_wall_color(t_data *data, t_ray ray, int y, double ang[2]);
-//================================================================
 // print_all.c
 
 void		print_img(t_ft_img *img);
@@ -209,6 +209,11 @@ void		print_color(t_color *col);
 void		print_map(char **mat);
 void		print_data(t_data *data);
 //===============================================================
+// put_texture.c
+
+int			side(t_data *data, t_ray ray);
+int			get_wall_color(t_data *data, t_ray ray, int y, double ang[2]);
+//================================================================
 // read_file.c
 
 int			allocate_texture_path(char *path, t_ft_img *img);
@@ -224,6 +229,14 @@ int			frame(void *arg);
 void		pointer(t_data *data);
 void		put_texture(t_data *data, int i, t_ray ray, double corr_angle);
 void		calculate_img(t_data *data, double cost);
+//===============================================================
+//utils.c
+
+int			init_mlx(t_data *data);
+long		get_time(void);
+void		print_f3(t_data *data);
+void		frame_counter(t_data *data);
+int			safe_atoi(char *s);
 //===============================================================
 
 /**
@@ -254,7 +267,8 @@ int			allocate_color(char *color, t_color *col);
  * @brief controlla riga per riga fino ad arrivare alla mappa
  * @param line la riga da controllare
  * @param data struct data generale
- * @return 0 se non ci sono errori, 1 in caso di errore, 2 se si e' raggiunta la mappa
+ * @return 0 se non ci sono errori, 1 in caso di errore, 2 se si e' 
+ * raggiunta la mappa
  */
 int			process_line(char *line, t_data *data);
 /**
