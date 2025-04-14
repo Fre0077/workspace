@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rendering.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 18:47:42 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/12 10:59:59 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/14 14:49:53 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	init_mlx(t_data *data)
 	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "Cub3D");
 	if (!data->win)
 		return (ft_printe("Error\nFailed to create window\n"), 1);
-	mlx_mouse_hide(data->mlx, data->win);
+	// mlx_mouse_hide(data->mlx, data->win);
 	mlx_hook(data->win, 17, 0, ft_close, data);
 	mlx_hook(data->win, 2, 1L << 0, key_press, data);
 	mlx_hook(data->win, 3, 1L << 1, key_release, data);
@@ -120,6 +120,11 @@ void	put_texture(t_data *data, int i, t_ray ray, double corr_angle)
 	}
 }
 
+// void	pickaxing(t_data *data)
+// {
+	
+// }
+
 void	calculate_img(t_data *data, double c)
 {
 	int			i;
@@ -145,4 +150,5 @@ void	calculate_img(t_data *data, double c)
 		put_texture(data, i + (WIDTH / 2), ray, (c * i));
 	}
 	minimapping(data);
+	// pickaxing(data);
 }

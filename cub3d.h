@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/12 10:58:05 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/14 14:50:51 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # define HEIGHT 900
 # define FOV 60
 # define MAP 140
+# define C (double)FOV / (double)WIDTH
 
 enum sides
 {
@@ -59,12 +60,19 @@ typedef struct s_viktor
 	double		angle;
 }				t_viktor;
 
+// typedef struct s_dl
+// {
+// 	double		val;
+// 	struct s_dl	*next;
+// }			t_dl;
+
 typedef struct s_ray
 {
 	t_viktor	nose;
 	double		dist;
 	double		angle;
 	char		seen_block;
+	// t_dl		*list;
 }				t_ray;
 
 typedef struct s_color
@@ -112,6 +120,7 @@ typedef struct s_data
 	t_color		*f;
 	t_color		*c;
 	t_pkey		*pkey;
+	t_ray		ray;
 	void		*mlx;
 	void		*win;
 	char		seen_block;
@@ -150,7 +159,7 @@ double		calc_dist(t_data *data, double angle, t_ray *ray, t_viktor *tm);
 //===============================================================
 // exit.c
 
-void		free_img(t_ft_img *img, void *mlx);
+void		free_img(t_ft_img *img, void *mlx, int i);
 void		free_color(t_color *col);
 int			ft_close(t_data *data);
 //===============================================================

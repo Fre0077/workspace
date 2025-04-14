@@ -1,2 +1,9 @@
 minecraft_textures
 minilibx-linux
+anim_gif
+*.o
+*/*.o
+*/*/*.o
+*.a
+*/*.a
+*/*/*.a

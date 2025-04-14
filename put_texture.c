@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   put_texture.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:38:20 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/12 11:02:01 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/14 14:52:52 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@ int	side(t_data *data, t_ray ray)
 		side = 7;
 	if (data->seen_block == 'P')
 		side = 7;
+	if (data->seen_block == 'A')
+	{
+		side = 8;
+		printf("A\n");
+	}
 	return (side);
 }
 

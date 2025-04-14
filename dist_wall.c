@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dist_wall.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 11:21:12 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/12 10:58:58 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/14 10:51:58 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_viktor	zero_casep(t_data *data, t_viktor *tm, t_viktor dir, int witch)
 	dist[0] = 0;
 	dist[1] = 0;
 	dist[2] = 0;
-	while (!hit(data, *tm))
+	while (!hitp(data, *tm))
 	{
 		if (witch % 2 == 0)
 		{
