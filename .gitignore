@@ -8,3 +8,4 @@ anim_gif
 */*.a
 */*/*.a
 cub3d
+.gitignore

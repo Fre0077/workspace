@@ -74,7 +74,7 @@ void	init_texture(t_data *data)
 	data->textures[8] = init_img();
 	data->textures[8]->path = "textures_xpm/map.xpm";
 	data->hand = init_img();
-	data->hand->path = "anim/hand.xpm";
+	data->hand->path = "textures_xpm/hand.xpm";
 }
 
 t_data	*init_data(void)

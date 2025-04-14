@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:20:33 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/14 14:51:59 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/14 18:24:46 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	check_player(t_data *data)
 
 	i = 0;
 	player_check = 0;
-	while (data->map[i])
+	while (data->map && data->map[i])
 	{
 		if (ft_strchr(data->map[i], 'N') || ft_strchr(data->map[i], 'S')
 			|| ft_strchr(data->map[i], 'E') || ft_strchr(data->map[i], 'W'))
@@ -53,7 +53,7 @@ int	check_char(t_data *data)
 	int	j;
 
 	i = -1;
-	while (data->map[++i])
+	while (data->map && data->map[++i])
 	{
 		j = -1;
 		while (data->map[i][++j])
@@ -69,11 +69,15 @@ int	check_auschwitz(t_data *data)
 	int	j;
 
 	i = -1;
-	while (data->map[++i])
+	while (data->map && data->map[++i])
 	{
 		j = -1;
-		while (data->map[i][++j])
+		while (data->map && data->map[i][++j])
 		{
+			if ((i - 1 < 0 || data->map[i + 1] == NULL
+				|| j - 1 < 0 || data->map[i][j + 1] == '\0')
+				&& ft_strchr("0NSWE", data->map[i][j]))
+				return (ft_printe("Error\nInvalid map\n"), 1);
 			if (ft_strchr("0NSWE", data->map[i][j]))
 			{
 				if (strchr(" \0", data->map[i][j - 1]) != NULL
@@ -84,5 +88,18 @@ int	check_auschwitz(t_data *data)
 			}
 		}
 	}
+	return (0);
+}
+
+int map_checks(t_data *data)
+{
+	if (!data->map)
+		return (ft_printe("Error\nMap not found\n"), 1);
+	if (check_player(data))
+		return (1);
+	if (check_char(data))
+		return (1);
+	if (check_auschwitz(data))
+		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 18:31:09 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/14 17:32:50 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/14 18:02:54 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ int	load_textures(t_data *data)
 	if (mlx_fa_schifo(data->textures[8], data))
 		return (ft_printe("Error\nInvalid map texture\n"), 1);
 	if (mlx_fa_schifo(data->textures[4], data))
-		return (ft_printe("Error\nminimaptexture\n"), 1);
+		return (ft_printe("Error\nInvalid minimap texture\n"), 1);
 	if (mlx_fa_schifo(data->textures[5], data))
-		return (ft_printe("Error\nminimaptexture\n"), 1);
+		return (ft_printe("Error\nInvalid minimap texture\n"), 1);
 	if (mlx_fa_schifo(data->textures[6], data))
-		return (ft_printe("Error\nminimaptexture\n"), 1);
+		return (ft_printe("Error\nInvalid minimap texture\n"), 1);
 	if (mlx_fa_schifo(data->textures[7], data))
-		return (ft_printe("Error\nminimaptexture\n"), 1);
+		return (ft_printe("Error\nInvalid minimap texture\n"), 1);
 	if (mlx_fa_schifo(data->hand, data))
 		return (ft_printe("Error\nInvalid hand texture\n"), 1);
 	return (0);
@@ -120,9 +120,9 @@ int	parsing(t_data *data)
 	if (!data->map)
 		return (ft_printe("Error\nMissing map\n"), 1);
 	if (load_colors(data))
-		return (ft_printe("Error\nInvalid color\n"), 1);
+		return (1);
 	if (load_textures(data))
-		return (ft_printe("Error\nInvalid texture\n"), 1);
+		return (1);
 	find_player(data);
 	data->pos.x = floor(data->player.x);
 	data->pos.y = floor(data->player.y);

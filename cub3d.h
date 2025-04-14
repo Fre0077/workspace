@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/14 17:47:12 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/14 18:19:26 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ int			check_file(char *file);
 int			check_player(t_data *data);
 int			check_char(t_data *data);
 int			check_auschwitz(t_data *data);
+int			map_checks(t_data *data);
 //===============================================================
 //dist_wall_utils.c
 

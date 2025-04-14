@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:51:53 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/14 17:34:14 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/14 18:19:04 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,14 @@ int	read_map(char *line, t_data *data, int fd)
 		line = get_next_line(fd);
 	}
 	i = -1;
-	while (data->zone_map[++i])
+	while (data->zone_map && data->zone_map[++i])
 	{
 		j = -1;
 		while (data->zone_map[i][++j])
-			if (ft_strchr("0NSWE", data->map[i][j]))
+			if (ft_strchr("NSWE", data->map[i][j]))
 				data->zone_map[i][j] = '0';
 	}
-	if (check_player(data))
-		return (1);
-	if (check_char(data))
-		return (1);
-	if (check_auschwitz(data))
+	if (map_checks(data))
 		return (1);
 	return (0);
 }
