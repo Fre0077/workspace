@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:17:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/14 14:50:51 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/14 15:08:11 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ typedef struct s_data
 	char		*frames;
 
 	t_ft_img	*textures[9];
+	t_ft_img	*hand;
 	t_screen	*screen;
 	t_viktor	player;
 	t_viktor	pos;

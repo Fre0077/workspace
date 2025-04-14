@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:54:08 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/12 10:34:02 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/04/14 15:08:33 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ void	init_texture(t_data *data)
 	data->textures[7]->path = "textures_xpm/door_spruce_lower.xpm";
 	data->textures[8] = init_img();
 	data->textures[8]->path = "textures_xpm/map.xpm";
+	data->hand = init_img();
+	data->hand->path = "anim/hand.xpm";
 }
 
 t_data	*init_data(void)

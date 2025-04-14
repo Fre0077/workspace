@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 18:31:09 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/14 14:51:09 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/14 15:09:27 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ int	load_textures(t_data *data)
 		return (ft_printe("Error\nminimaptexture\n"), 1);
 	if (mlx_fa_schifo(data->textures[7], data))
 		return (ft_printe("Error\nminimaptexture\n"), 1);
+	if (mlx_fa_schifo(data->hand, data))
+		return (ft_printe("Error\nInvalid hand texture\n"), 1);
 	return (0);
 }
 

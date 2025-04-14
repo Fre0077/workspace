@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 18:47:42 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/14 14:49:53 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/14 15:13:40 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int	frame(void *arg)
 	update_player_pos(data);
 	data->screen->data = (unsigned int *)data->screen->addr;
 	calculate_img(data, (double)FOV / (double)WIDTH);
-	pointer(data);
 	mlx_put_image_to_window(data->mlx, data->win, data->screen->img, 0, 0);
 	return (0);
 }
@@ -120,10 +119,25 @@ void	put_texture(t_data *data, int i, t_ray ray, double corr_angle)
 	}
 }
 
-// void	pickaxing(t_data *data)
-// {
-	
-// }
+void	handing(t_data *data)
+{
+	int				i;
+	int				j;
+	unsigned int	color;
+
+	i = -1;
+	while (++i < data->hand->height)
+	{
+		j = -1;
+		while (++j < data->hand->width)
+		{
+			color = data->hand->data[(i * data->hand->line_len / 4) + j];
+			if (color != 0xFF000000)
+				data->screen->data[((i + HEIGHT - 256) * data->screen->
+					line_length / 4) + (j + WIDTH / 2 + 300)] = color;
+		}
+	}
+}
 
 void	calculate_img(t_data *data, double c)
 {
@@ -150,5 +164,6 @@ void	calculate_img(t_data *data, double c)
 		put_texture(data, i + (WIDTH / 2), ray, (c * i));
 	}
 	minimapping(data);
-	// pickaxing(data);
+	handing(data);
+	pointer(data);
 }
