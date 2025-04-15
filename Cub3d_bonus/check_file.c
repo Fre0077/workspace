@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:20:33 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/14 18:24:46 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/15 11:24:04 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	check_auschwitz(t_data *data)
 		while (data->map && data->map[i][++j])
 		{
 			if ((i - 1 < 0 || data->map[i + 1] == NULL
-				|| j - 1 < 0 || data->map[i][j + 1] == '\0')
+					|| j - 1 < 0 || data->map[i][j + 1] == '\0')
 				&& ft_strchr("0NSWE", data->map[i][j]))
 				return (ft_printe("Error\nInvalid map\n"), 1);
 			if (ft_strchr("0NSWE", data->map[i][j]))
@@ -91,7 +91,7 @@ int	check_auschwitz(t_data *data)
 	return (0);
 }
 
-int map_checks(t_data *data)
+int	map_checks(t_data *data)
 {
 	if (!data->map)
 		return (ft_printe("Error\nMap not found\n"), 1);
