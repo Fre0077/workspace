@@ -2,10 +2,21 @@ NO textures_xpm/crafting_table_front.xpm
 SO textures_xpm/spruce_planks.xpm
 WE textures_xpm/stone_bricks.xpm
 EA textures_xpm/furnace_top.xpm
+EA textures_xpm/furnace_top.xpm
 
 F 20,20,20
 C 200,200,200
 
-111111111111111111111
-1000000000000000000E1
-111111111111111111111
+11111
+10001
+10S01
+10001
+10001
+10001
+11001
+10001
+10001
+10001
+10001
+10001
+11111

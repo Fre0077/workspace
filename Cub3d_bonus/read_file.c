@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:51:53 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/14 18:19:04 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/15 11:07:33 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	allocate_texture_path(char *path, t_ft_img *img)
 {
 	if (img->path)
-		return (ft_printe("Error\nDouble texture given\n"), 1);
+		free(img->path);
 	img->path = ft_strtrim(path, " \n");
 	if (!img->path)
 		return (ft_printe("Error\nFunction strtrim failed\n"), 1);
@@ -25,7 +25,7 @@ int	allocate_texture_path(char *path, t_ft_img *img)
 int	allocate_color(char *color, t_color *col)
 {
 	if (col->color)
-		return (ft_printe("Error\nDouble color given\n"), 1);
+		free(col->color);
 	col->color = ft_strtrim(color, " \n");
 	if (!col->color)
 		return (ft_printe("Error\nFunction strtrim failed\n"), 1);

@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:35:50 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/04/14 17:31:14 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/15 11:04:18 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ void	draw_map(t_data *data)
 	while (++i < 14 && data->map[i + (int)offset.y])
 	{
 		j = -1;
-		while (++j < 14 && data->map[i + (int)offset.y][j + (int)offset.x])
+		while (++j < 14 && j + (int)offset.x < ft_strlen_int(data->map
+				[i + (int)offset.y]))
 		{
 			if (data->map[i + (int)offset.y][j + (int)offset.x] == '1')
 				draw_div12(data, j, i, 5);

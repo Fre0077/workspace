@@ -1,7 +1,7 @@
-NO textures/test/north.xpm
-SO textures/test/south.xpm
-WE textures/test/west.xpm
-EA textures/test/east.xpm
+NO textures_xpm/crafting_table_front.xpm
+SO textures_xpm/spruce_planks.xpm
+WE textures_xpm/stone_bricks.xpm
+EA textures_xpm/furnace_top.xpm
 
 F 20,20,20
 C 200,200,200

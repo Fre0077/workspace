@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:38:20 by alborghi          #+#    #+#             */
-/*   Updated: 2025/04/14 17:34:04 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/04/15 10:40:42 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ int	side(t_data *data, t_ray ray)
 		else
 			side = EAST;
 	}
-	if ((data->zone_map[(int)data->tmp.y + 1][(int)data->tmp.x] == 'p' && side
-		== SOUTH) || (data->zone_map[(int)data->tmp.y - 1][(int)data->tmp.x]
-		== 'p' && side == NORTH) || (data->zone_map[(int)data->tmp.y][(int)data
-		->tmp.x - 1] == 'p' && side == WEST) || (data->zone_map[(int)data->
-		tmp.y][(int)data->tmp.x + 1] == 'p' && side == EAST))
-		side = 7;
-	if (data->seen_block == 'P')
+	if (data->seen_block == 'P' || ((side == SOUTH && data->zone_map
+				[(int)data->tmp.y + 1][(int)data->tmp.x] == 'p') || (side
+			== NORTH && data->zone_map[(int)data->tmp.y - 1]
+			[(int)data->tmp.x] == 'p') || (side == WEST && data->zone_map
+			[(int)data->tmp.y][(int)data->tmp.x - 1] == 'p')
+			|| (side == EAST && data->zone_map
+		[(int)data->tmp.y][(int)data->tmp.x + 1] == 'p')))
 		side = 7;
 	return (side);
 }
