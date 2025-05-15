@@ -1,40 +1,20 @@
-NAME = cub3d
+NAME=webserv
 
 SRCS = \
-dist_wall.c \
-exit.c \
-init_mlx.c \
-init.c \
-main.c \
-parsing.c \
-print_all.c \
-read_check.c \
-read_file.c
+srcs/main.cpp
 
-CFLAGS = -Wall -Wextra -Werror -g -O3
-MINIFLAGS = -lX11 -lXext -lm
-
-LIBFT = my_libft/libft.a
-
-MLX = minilibx-linux/libmlx.a
+CPPFLAGS = -Wall -Wextra -Werror -std=c++98 -g
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(MLX) $(SRCS)
-	gcc $(CFLAGS) -o $(NAME) $(SRCS) $(LIBFT) $(MLX) $(MINIFLAGS)
-
-$(LIBFT):
-	make -C my_libft
-
-$(MLX):
-	make -C minilibx-linux
+$(NAME): $(SRCS)
+	c++ $(CPPFLAGS) -o $(NAME) $(SRCS)
 
 clean:
-	make -C my_libft clean
-	make -C minilibx-linux clean
 
-fclean: clean
+fclean:
 	rm -f $(NAME)
-	make -C my_libft fclean
 
 re: fclean all
+
+.PHONY: all clean fclean re
