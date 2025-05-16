@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   extern.hpp                                         :+:      :+:    :+:   */
+/*   Extern.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 12:02:39 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/16 15:17:49 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/16 19:18:59 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # include <dirent.h>       // opendir, readdir, closedir
 # include <vector>			// std::vector
 
-void removeChar(std::string *str, char ch);
+void	removeChar(std::string *str, char ch);
+int		stringToInt(const std::string& str);
 
 #endif

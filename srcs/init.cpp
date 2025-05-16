@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 07:57:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/16 11:46:35 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/16 19:19:15 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/webserv.hpp"
 
-int	init_server_socket(int *server_fd)
+int	init_server_socket(int *server_fd, Config config)
 {
 	// 1. Create a socket
 	*server_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -35,7 +35,7 @@ int	init_server_socket(int *server_fd)
 	struct sockaddr_in address;
 	address.sin_family = AF_INET;
 	address.sin_addr.s_addr = INADDR_ANY; // Accept connections on any interface
-	address.sin_port = htons(8080);       // Port from config (hardcoded for now)
+	address.sin_port = htons(stringToInt(config.getPort()));       // Port from config (hardcoded for now)
 		
 	if (bind(*server_fd, (struct sockaddr *)&address, sizeof(address)) < 0)
 	{

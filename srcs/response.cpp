@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:01:30 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/16 17:29:56 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/16 19:19:42 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ std::string	server_response(std::string request, Config *config)
 	std::cout << GREEN"Metodo: " << method << std::endl;
 	std::cout << "Path: " << path << std::endl;
 	std::cout << "Versione: " << version << std::endl;
-	std::cout << RED"--"END << config->searchPath(path) << std::endl;
+	std::cout << RED "--" END << config->searchPath(path) << std::endl;
 	std::string find_path = config->searchPath(path);
 	if (path == "/favicon.ico")
 		return "HTTP/1.1 204 No Content\r\n\r\n";

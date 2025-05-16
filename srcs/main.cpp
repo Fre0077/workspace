@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/16 17:26:03 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/16 19:32:04 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,16 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	
+	Config config(argv[1]);
+	std::cout << config << std::endl;
+	
 	int server_fd;
-	if (init_server_socket(&server_fd) != 0)
+	if (init_server_socket(&server_fd, config) != 0)
 	{
 		return 1;
 	}
 
-	std::cout << "Server listening on port 8080 (127.0.0.1:8080)" << std::endl;
+	std::cout << "Server listening on port " << config.getPort() << std::endl;
 
 	pollfd server_pollfd;
 	server_pollfd.fd = server_fd;
@@ -79,8 +82,6 @@ int main(int argc, char **argv)
 	pollfds.push_back(server_pollfd);
 
 	// 5. Accept and handle connections
-	Config config(argv[1]);
-	std::cout << config << std::endl;
 	while (1) {
 		// Use select or poll to wait for incoming connections
 		for (size_t i = 0; i < pollfds.size(); ++i)
