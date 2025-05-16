@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:14 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/16 15:42:42 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/16 15:42:59 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,8 @@ std::string Config::searchPath(std::string location)
 	{
 		if (line.find("location") == line.find_first_not_of(" \t"))
 		{
-			//std::size_t pos = line.find(location.c_str());
-			if (line.find(location.c_str()) != std::string::npos)
+			std::size_t pos = line.find(location.c_str());
+			if (pos != std::string::npos && line[pos + location.length()] == ' ')
 			{
 				while (std::getline(file, line))
 				{

@@ -6,60 +6,41 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:01:30 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/16 15:33:36 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:29:56 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/webserv.hpp"
 
-std::string	home_response()
-{
-	char buffer[4096];
-	memset(buffer, 0, sizeof(buffer));
-	std::string home_html;
-	int home_html_fd = open("srcs/server/home.html", O_RDONLY);
-	if (home_html_fd < 0) {
-		std::cerr << "Error opening home.html: " << strerror(errno) << std::endl;
-		return NULL;
-	}
-	ssize_t bytes_read = read(home_html_fd, buffer, sizeof(buffer) - 1);
-	if (bytes_read < 0) {
-		std::cerr << "Error reading home.html: " << strerror(errno) << std::endl;
-		close(home_html_fd);
-		return NULL;
-	}
-	buffer[bytes_read] = '\0';
-	home_html = buffer;
-	std::ostringstream cont_length;
-	cont_length << home_html.length();
-	close(home_html_fd);
-	// Send a simple response
-	std::string response = 
-		"HTTP/1.1 200 OK\r\n"
-		"Content-Type: text/html\r\n"
-		"Content-Length: " + cont_length.str() + "\r\n"
-		"Connection: keep-alive\r\n"
-		"\r\n"
-		"" + home_html + "";
-		// "<html><body><h1>Hello from WebServ!</h1><p>Your request was received.</p></body></html>";
-	return response;
-}
-
-std::string	html_response(std::string path)
+std::string	html_response(std::string path, int status)
 {
 	char buffer[4096];
 	memset(buffer, 0, sizeof(buffer));
 	std::string hello_html;
 	int home_html_fd = open((path.erase(0, 2)).c_str(), O_RDONLY);
 	if (home_html_fd < 0) {
-		std::cerr << "Error opening hello.html: " << strerror(errno) << std::endl;
-		return NULL;
+		std::cerr << "Error opening " << path << ": " << strerror(errno) << std::endl;
+		std::string error_resp = 
+		"HTTP/1.1 500 OK\r\n"
+		"Content-Type: text/html\r\n"
+		"Content-Length: 60\r\n"
+		"Connection: keep-alive\r\n"
+		"\r\n"
+		"<html><body><h1>500 Internal Server Error</h1></body></html>";
+		return error_resp;
 	}
 	ssize_t bytes_read = read(home_html_fd, buffer, sizeof(buffer) - 1);
 	if (bytes_read < 0) {
-		std::cerr << "Error reading hello.html: " << strerror(errno) << std::endl;
+		std::cerr << "Error reading  " << path << ": " << strerror(errno) << std::endl;
 		close(home_html_fd);
-		return NULL;
+		std::string error_resp = 
+		"HTTP/1.1 500 OK\r\n"
+		"Content-Type: text/html\r\n"
+		"Content-Length: 60\r\n"
+		"Connection: keep-alive\r\n"
+		"\r\n"
+		"<html><body><h1>500 Internal Server Error</h1></body></html>";
+		return error_resp;
 	}
 	buffer[bytes_read] = '\0';
 	hello_html = buffer;
@@ -67,8 +48,10 @@ std::string	html_response(std::string path)
 	cont_length << hello_html.length();
 	close(home_html_fd);
 	// Send a simple response
+	std::stringstream s_code;
+	s_code << status;
 	std::string response = 
-		"HTTP/1.1 200 OK\r\n"
+		"HTTP/1.1 " + s_code.str() + " OK\r\n"
 		"Content-Type: text/html\r\n"
 		"Content-Length: " + cont_length.str() + "\r\n"
 		"Connection: keep-alive\r\n"
@@ -88,20 +71,11 @@ std::string	server_response(std::string request, Config *config)
 	std::cout << "Path: " << path << std::endl;
 	std::cout << "Versione: " << version << std::endl;
 	std::cout << RED"--"END << config->searchPath(path) << std::endl;
+	std::string find_path = config->searchPath(path);
 	if (path == "/favicon.ico")
 		return "HTTP/1.1 204 No Content\r\n\r\n";
-	else if (path == "/hello")
-		return html_response(config->searchPath(path));
-	else if (path == "/home")
-		return html_response(config->searchPath(path));
-	else if (path == "/")
-		return html_response(config->searchPath(path));
-	else if (path == "/styles.css")
-		return "HTTP/1.1 200 OK\r\n" \
-			"Content-Type: text/css\r\n"\
-			"Content-Length: 0\r\n"\
-			"Connection: keep-alive\r\n"\
-			"\r\n";
+	else if (find_path != "")
+		return html_response(find_path, 200);
 	else
-		return "HTTP/1.1 404 Not Found\r\n\r\n";
+		return html_response(config->getRoot() + "/" + config->getError_page(), 404);
 }

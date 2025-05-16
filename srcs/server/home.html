@@ -15,5 +15,11 @@
 
 	<!-- Button semplice per andare alla pagina hello -->
 	<button onclick="window.location.href='/hello'">Go to Hello World</button>
+
+	<!-- Button to upload a file -->
+	<form action="/upload" method="post" enctype="multipart/form-data">
+		<input type="file" name="file" />
+		<button>Upload</button>
+	</form>
 </body>
 </html>

@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/16 15:13:48 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:26:03 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,12 +124,20 @@ int main(int argc, char **argv)
 				else
 				{
 					// Handle client connection
-					char buffer[4096];
+					char buffer[9000];
 					memset(buffer, 0, sizeof(buffer));
 					ssize_t bytes_read = recv(pollfds[i].fd, buffer, sizeof(buffer) - 1, 0);
 					std::cout << "bytes_read: " << bytes_read << std::endl;
 					if (bytes_read > 0)
 					{
+						if (bytes_read == sizeof(buffer) - 1)
+						{
+							std::cerr << "Buffer overflow" << std::endl;
+							close(pollfds[i].fd);
+							pollfds.erase(pollfds.begin() + i);
+							i--;
+							return 1;
+						}
 						std::cout << "Received data from client: " << buffer << std::endl;
 						// Process the request and send a response
 						std::string response = server_response(buffer, &config);
