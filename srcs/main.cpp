@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/16 10:30:54 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/16 15:13:48 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,25 @@ int new_connection(int server_fd)
 		return 0;
 	}
 
-	//// Read request
-	//char buffer[4096];
-	//memset(buffer, 0, sizeof(buffer));
-	//ssize_t bytes_read = recv(client_fd, buffer, sizeof(buffer) - 1, 0);
-	//// std::cout << "bytes_read: " << bytes_read << std::endl;
+	// // Read request
+	// char buffer[4096];
+	// memset(buffer, 0, sizeof(buffer));
+	// ssize_t bytes_read = recv(client_fd, buffer, sizeof(buffer) - 1, 0);
+	// // std::cout << "bytes_read: " << bytes_read << std::endl;
 	
-	//if (bytes_read > 0) {
-	//	std::cout << "Received request:" << std::endl;
-	//	std::cout << buffer << std::endl;
+	// if (bytes_read > 0) {
+	// 	std::cout << "Received request:" << std::endl;
+	// 	std::cout << buffer << std::endl;
 		
-	//	std::string response = home_response();
-	//	if (response.empty()) {
-	//		std::cerr << "Error creating response" << std::endl;
-	//		close(client_fd);
-	//		return 0;
-	//	}
+	// 	std::string response = home_response();
+	// 	if (response.empty()) {
+	// 		std::cerr << "Error creating response" << std::endl;
+	// 		close(client_fd);
+	// 		return 0;
+	// 	}
 
-	//	send(client_fd, response.c_str(), response.length(), 0);
-	//}
+	// 	send(client_fd, response.c_str(), response.length(), 0);
+	// }
 	return client_fd;
 }
 
@@ -64,12 +64,12 @@ int main(int argc, char **argv)
 	}
 	
 	int server_fd;
-	if (init_socket(&server_fd) != 0)
+	if (init_server_socket(&server_fd) != 0)
 	{
 		return 1;
 	}
 
-	std::cout << "Server listening on port 8080" << std::endl;
+	std::cout << "Server listening on port 8080 (127.0.0.1:8080)" << std::endl;
 
 	pollfd server_pollfd;
 	server_pollfd.fd = server_fd;
@@ -79,6 +79,8 @@ int main(int argc, char **argv)
 	pollfds.push_back(server_pollfd);
 
 	// 5. Accept and handle connections
+	Config config(argv[1]);
+	std::cout << config << std::endl;
 	while (1) {
 		// Use select or poll to wait for incoming connections
 		for (size_t i = 0; i < pollfds.size(); ++i)
@@ -130,7 +132,7 @@ int main(int argc, char **argv)
 					{
 						std::cout << "Received data from client: " << buffer << std::endl;
 						// Process the request and send a response
-						std::string response = server_response(buffer);
+						std::string response = server_response(buffer, &config);
 						send(pollfds[i].fd, response.c_str(), response.length(), 0);
 					}
 					else if (bytes_read == 0)

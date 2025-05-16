@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:01:30 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/16 08:19:12 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/16 15:33:36 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ std::string	home_response()
 	return response;
 }
 
-std::string	hello_response()
+std::string	html_response(std::string path)
 {
 	char buffer[4096];
 	memset(buffer, 0, sizeof(buffer));
 	std::string hello_html;
-	int home_html_fd = open("srcs/server/hello.html", O_RDONLY);
+	int home_html_fd = open((path.erase(0, 2)).c_str(), O_RDONLY);
 	if (home_html_fd < 0) {
 		std::cerr << "Error opening hello.html: " << strerror(errno) << std::endl;
 		return NULL;
@@ -78,19 +78,30 @@ std::string	hello_response()
 	return response;
 }
 
-std::string	server_response(std::string request)
+std::string	server_response(std::string request, Config *config)
 {
 	std::istringstream iss(request);
 	std::string method, path, version;
 	iss >> method >> path >> version;
 
-	std::cout << "Metodo: " << method << std::endl;
+	std::cout << GREEN"Metodo: " << method << std::endl;
 	std::cout << "Path: " << path << std::endl;
 	std::cout << "Versione: " << version << std::endl;
+	std::cout << RED"--"END << config->searchPath(path) << std::endl;
 	if (path == "/favicon.ico")
 		return "HTTP/1.1 204 No Content\r\n\r\n";
 	else if (path == "/hello")
-		return hello_response();
+		return html_response(config->searchPath(path));
+	else if (path == "/home")
+		return html_response(config->searchPath(path));
+	else if (path == "/")
+		return html_response(config->searchPath(path));
+	else if (path == "/styles.css")
+		return "HTTP/1.1 200 OK\r\n" \
+			"Content-Type: text/css\r\n"\
+			"Content-Length: 0\r\n"\
+			"Connection: keep-alive\r\n"\
+			"\r\n";
 	else
-		return home_response();
+		return "HTTP/1.1 404 Not Found\r\n\r\n";
 }

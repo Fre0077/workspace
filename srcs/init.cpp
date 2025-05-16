@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 07:57:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/16 07:57:52 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/16 11:46:35 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/webserv.hpp"
 
-int	init_socket(int *server_fd)
+int	init_server_socket(int *server_fd)
 {
 	// 1. Create a socket
 	*server_fd = socket(AF_INET, SOCK_STREAM, 0);

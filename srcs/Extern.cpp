@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   webserv.hpp                                        :+:      :+:    :+:   */
+/*   Extern.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/15 16:39:26 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/16 15:19:33 by alborghi         ###   ########.fr       */
+/*   Created: 2025/05/16 15:17:36 by alborghi          #+#    #+#             */
+/*   Updated: 2025/05/16 15:22:51 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WEBSERV_HPP
-# define WEBSERV_HPP
+#include "../headers/Extern.hpp"
 
-# include "Extern.hpp"
-# include "Config.hpp"
-# include "colours.hpp"
-
-int	init_server_socket(int *server_fd);
-std::string server_response(std::string request, Config *config);
-
-
-#endif
+void removeChar(std::string *str, char ch)
+{
+    for (std::string::iterator it = str->begin(); it != str->end(); it++)
+	{
+        if (*it == ch)
+		{
+			it = str->erase(it);
+			it--;
+		}
+    }
+}

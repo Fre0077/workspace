@@ -1,14 +1,22 @@
 server {
     port 8080;
     server_name localhost;
-
-    root ./srcs/server;
-    index home.html;
-
     error_page 404 404.html;
+    index home.html;
+    root ./srcs/server;
+
+    location / {
+        root ./srcs/server;
+        index home.html;
+    }
 
     location /hello {
         root ./srcs/server;
         index hello.html;
+    }
+
+    location /home {
+        root ./srcs/server;
+        index home.html;
     }
 }

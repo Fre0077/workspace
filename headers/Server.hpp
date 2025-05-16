@@ -1,24 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   webserv.hpp                                        :+:      :+:    :+:   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/15 16:39:26 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/16 15:19:33 by alborghi         ###   ########.fr       */
+/*   Created: 2025/05/16 12:01:15 by alborghi          #+#    #+#             */
+/*   Updated: 2025/05/16 12:43:23 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WEBSERV_HPP
-# define WEBSERV_HPP
+#ifndef SERVER_HPP
+# define SERVER_HPP
 
-# include "Extern.hpp"
-# include "Config.hpp"
 # include "colours.hpp"
+# include "extern.hpp"
+# include "Config.hpp"
 
-int	init_server_socket(int *server_fd);
-std::string server_response(std::string request, Config *config);
+typedef struct s_red
+{
+	std::string path;
+	std::string file;
+}	t_red;
 
+class Server
+{
+	private:
+		Config	config;
+		std::vector<t_red> redirects;
+	public:
+		Server();
+		~Server();
+};
 
 #endif
