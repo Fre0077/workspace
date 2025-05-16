@@ -1,11 +1,16 @@
 NAME=webserv
 
+HEADERS = \
+headers/webserv.hpp
+
 SRCS = \
-srcs/main.cpp
+srcs/main.cpp \
+srcs/response.cpp \
+srcs/init.cpp
 
 CPPFLAGS = -Wall -Wextra -Werror -std=c++98 -g
 
-all: $(NAME)
+all: $(NAME) $(HEADERS)
 
 $(NAME): $(SRCS)
 	c++ $(CPPFLAGS) -o $(NAME) $(SRCS)

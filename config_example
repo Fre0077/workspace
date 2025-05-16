@@ -1,58 +1,14 @@
-# Global settings (optional)
-client_max_body_size 10M;  # Max upload size (e.g., 10MB)
-
-# Default server (catches all unmatched host:port requests)
 server {
-    listen 8080;
-    server_name default_server;
+    port 8080;
+    server_name localhost;
 
-    root /var/www/html;
-    index index.html;
-    autoindex off;  # Disable directory listing
+    root ./srcs/server;
+    index home.html;
 
-    # Default error pages
-    error_page 404 /errors/404.html;
-    error_page 500 /errors/500.html;
+    error_page 404 404.html;
 
-    # Route: Serve static files
-    location /static {
-        root /var/www;
-        autoindex on;  # Enable directory listing
-        allowed_methods GET;
-    }
-
-    # Route: Redirect /old to /new
-    location /old {
-        redirect /new 301;
-        allowed_methods GET;
-    }
-
-    # Route: Handle CGI (PHP)
-    location /cgi {
-        root /var/www/cgi-bin;
-        cgi_extension .php /usr/bin/php-cgi;
-        allowed_methods GET POST;
-    }
-
-    # Route: File uploads
-    location /upload {
-        root /var/www/uploads;
-        upload_store /var/www/uploads/tmp;
-        allowed_methods POST;
-    }
-}
-
-# Server for a specific host (e.g., example.com)
-server {
-    listen 8080;
-    server_name example.com;
-
-    root /var/www/example;
-    index index.php index.html;
-
-    # Route: PHP CGI
-    location / {
-        cgi_extension .php /usr/bin/php-cgi;
-        allowed_methods GET POST;
+    location /hello {
+        root ./srcs/server;
+        index hello.html;
     }
 }
