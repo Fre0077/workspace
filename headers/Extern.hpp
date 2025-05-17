@@ -6,33 +6,34 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 12:02:39 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/16 19:18:59 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/16 20:03:39 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXTERN_HPP
 # define EXTERN_HPP
 
-# include <iostream>			// C++ I/O (cout, cerr)
+# include <iostream>
 # include <fstream>
-# include <string>			// C++ string
-# include <cstring>			// C string
+# include <string>
+# include <cstring>
 # include <sstream>
-# include <cerrno>			// errno
-# include <unistd.h>       // execve, pipe, dup, dup2, fork, close, read, write, chdir, access
-# include <sys/types.h>    // Required for many system calls
-# include <sys/socket.h>   // socket, accept, listen, send, recv, bind, connect, setsockopt, getsockname, socketpair
-# include <netdb.h>        // getaddrinfo, freeaddrinfo, gai_strerror, getprotobyname
-# include <arpa/inet.h>    // htons, htonl, ntohs, ntohl
-# include <sys/select.h>   // select
-# include <poll.h>         // poll
-# include <sys/epoll.h>    // epoll (Linux only)
-# include <fcntl.h>        // fcntl, open
-# include <sys/wait.h>     // waitpid
-# include <signal.h>       // kill, signal
-# include <sys/stat.h>     // stat
-# include <dirent.h>       // opendir, readdir, closedir
-# include <vector>			// std::vector
+# include <cerrno>
+# include <unistd.h>
+# include <sys/types.h>
+# include <sys/socket.h>
+# include <netdb.h>
+# include <arpa/inet.h>
+# include <sys/select.h>
+# include <poll.h>
+# include <sys/epoll.h>
+# include <fcntl.h>
+# include <sys/wait.h>
+# include <signal.h>
+# include <sys/stat.h>
+# include <dirent.h>
+# include <vector>
+# include <map>
 
 void	removeChar(std::string *str, char ch);
 int		stringToInt(const std::string& str);

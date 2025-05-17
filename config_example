@@ -1,5 +1,5 @@
 server {
-    port 4242;
+    port 8080;
     server_name localhost;
     error_page 404 404.html;
     index home.html;

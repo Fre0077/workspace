@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:17 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/16 15:19:13 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/16 20:15:12 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ class Config
 {
 private:
 	std::string	server_name;
-	std::string	error_page;
+	std::map<int, std::string> error_pages;
+	std::string	file_name;
 	std::string index;
 	std::string root;
 	std::string port;
-	std::string	file_name;
 	
 	Config();
 public:
@@ -34,7 +34,7 @@ public:
 	~Config();
 	std::string searchPath(std::string location);
 	std::string getServer_name() const;
-	std::string getError_page() const;
+	std::map<int, std::string> getError_page() const;
 	std::string getIndex() const;
 	std::string getRoot() const;
 	std::string getPort() const;

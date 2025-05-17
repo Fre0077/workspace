@@ -6,17 +6,22 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:01:30 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/16 19:19:42 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/16 20:18:01 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/webserv.hpp"
 
+//std::string	html_error(int err)
+//{
+	
+//}
+
 std::string	html_response(std::string path, int status)
 {
 	char buffer[4096];
 	memset(buffer, 0, sizeof(buffer));
-	std::string hello_html;
+	std::string _html;
 	int home_html_fd = open((path.erase(0, 2)).c_str(), O_RDONLY);
 	if (home_html_fd < 0) {
 		std::cerr << "Error opening " << path << ": " << strerror(errno) << std::endl;
@@ -43,11 +48,10 @@ std::string	html_response(std::string path, int status)
 		return error_resp;
 	}
 	buffer[bytes_read] = '\0';
-	hello_html = buffer;
+	_html = buffer;
 	std::ostringstream cont_length;
-	cont_length << hello_html.length();
+	cont_length << _html.length();
 	close(home_html_fd);
-	// Send a simple response
 	std::stringstream s_code;
 	s_code << status;
 	std::string response = 
@@ -56,8 +60,7 @@ std::string	html_response(std::string path, int status)
 		"Content-Length: " + cont_length.str() + "\r\n"
 		"Connection: keep-alive\r\n"
 		"\r\n"
-		"" + hello_html + "";
-		// "<html><body><h1>Hello from WebServ!</h1><p>Your request was received.</p></body></html>";
+		"" + _html + "";
 	return response;
 }
 
@@ -65,6 +68,7 @@ std::string	server_response(std::string request, Config *config)
 {
 	std::istringstream iss(request);
 	std::string method, path, version;
+	std::map<int, std::string>erro_pages = config->getError_page();
 	iss >> method >> path >> version;
 
 	std::cout << GREEN"Metodo: " << method << std::endl;
@@ -77,5 +81,5 @@ std::string	server_response(std::string request, Config *config)
 	else if (find_path != "")
 		return html_response(find_path, 200);
 	else
-		return html_response(config->getRoot() + "/" + config->getError_page(), 404);
+		return html_response(config->getRoot() + "/" + erro_pages[404], 404);
 }

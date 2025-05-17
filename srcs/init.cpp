@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 07:57:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/16 19:19:15 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/16 20:24:30 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	init_server_socket(int *server_fd, Config config)
 	{
 		std::cerr << "Error binding socket: " << strerror(errno) << std::endl;
 		close(*server_fd);
-		return 1;
+		return 1; 	
 	}
 
 	// 4. Listen for connections

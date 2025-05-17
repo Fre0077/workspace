@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:14 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/16 15:42:59 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/16 20:16:35 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,10 @@
 //==============================================================================
 //COSTRUCTOR/ESTRUCTOR==========================================================
 //==============================================================================
-Config::Config()
-{
-	this->server_name = "";
-	this->error_page = "";
-	this->file_name = "";
-	this->index = "";
-	this->port = "";
-	this->root = "";
-}
-
 Config::Config(std::string name)
 {
 	this->file_name = name;
-	std::string temp;
+	std::string temp, temp2;
 	int graph = 0;
 	std::ifstream file(name.c_str());
 	std::string line;
@@ -56,9 +46,10 @@ Config::Config(std::string name)
 		{
 			std::istringstream iss(line);
 			std::string method, path, version;
-			iss >> temp >> temp >> temp;
+			iss >> temp >> temp2 >> temp;
 			removeChar(&temp, ';');
-			this->error_page = temp;
+			if (temp2 == "404")
+				this->error_pages[404] = temp;
 		}
 		else if (line.find("index") == line.find_first_not_of(" \t"))
 		{
@@ -90,7 +81,7 @@ Config::Config(std::string name)
 Config::Config(Config const& copy)
 {
 	this->server_name = copy.server_name;
-	this->error_page = copy.error_page;
+	this->error_pages = copy.error_pages;
 	this->index = copy.index;
 	this->port = copy.port;
 	this->root = copy.root;
@@ -112,7 +103,6 @@ std::ostream& operator<<(std::ostream& out, Config const& rhs)
 	out << "###CONFIG FILE DATA###" << std::endl;
 	out << "file name: " << rhs.getFile_name() << std::endl;
 	out << "server name: " << rhs.getServer_name() << std::endl;
-	out << "error page: " << rhs.getError_page() << std::endl;
 	out << "index: " << rhs.getIndex() << std::endl;
 	out << "port: " << rhs.getPort() << std::endl;
 	out << "root: " << rhs.getRoot() << std::endl;
@@ -153,9 +143,9 @@ std::string Config::getServer_name() const
 	return this->server_name;
 }
 
-std::string Config::getError_page() const
+std::map<int, std::string> Config::getError_page() const
 {
-	return this->error_page;
+	return this->error_pages;
 }
 
 std::string Config::getIndex() const
