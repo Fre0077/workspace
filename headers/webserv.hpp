@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:39:26 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/16 19:16:56 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/17 15:06:05 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@
 
 int	init_server_socket(int *server_fd, Config config);
 std::string server_response(std::string request, Config *config);
-
+std::string	upload(std::string request, Config *config);
 
 #endif

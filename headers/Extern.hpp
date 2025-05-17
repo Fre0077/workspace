@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Extern.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 12:02:39 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/16 20:03:39 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/17 18:37:12 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # include <map>
 
 void	removeChar(std::string *str, char ch);
+size_t	stringToSizet(const std::string& str);
 int		stringToInt(const std::string& str);
 
 #endif

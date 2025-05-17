@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 12:01:15 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/16 12:43:23 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/17 18:30:58 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define SERVER_HPP
 
 # include "colours.hpp"
-# include "extern.hpp"
+# include "Extern.hpp"
 # include "Config.hpp"
 
 typedef struct s_red

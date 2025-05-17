@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 07:57:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/16 20:24:30 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/17 17:13:07 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,8 @@ int	init_server_socket(int *server_fd, Config config)
 	// 3. Bind to address and port
 	struct sockaddr_in address;
 	address.sin_family = AF_INET;
-	address.sin_addr.s_addr = INADDR_ANY; // Accept connections on any interface
-	address.sin_port = htons(stringToInt(config.getPort()));       // Port from config (hardcoded for now)
-		
+	address.sin_addr.s_addr = INADDR_ANY;
+	address.sin_port = htons(stringToInt(config.getPort()));
 	if (bind(*server_fd, (struct sockaddr *)&address, sizeof(address)) < 0)
 	{
 		std::cerr << "Error binding socket: " << strerror(errno) << std::endl;

@@ -1,0 +1,205 @@
+###CONFIG FILE DATA###
+file name: config_example
+server name: ./srcs/server
+index: home.html
+port: 8080
+root: ./srcs/server
+
+Server listening on port 8080
+=========================waiting for poll=============================
+i: 0
+pollfds[i].fd: 3
+pollfds[i].events: 1
+pollfds[i].revents: 1
+NEW CONNECTION
+=========================waiting for poll=============================
+i: 0
+pollfds[i].fd: 3
+pollfds[i].events: 1
+pollfds[i].revents: 0
+i: 1
+pollfds[i].fd: 4
+pollfds[i].events: 1
+pollfds[i].revents: 1
+bytes_read: 689
+Received data from client:
+GET / HTTP/1.1
+Host: 127.0.0.2:8080
+Connection: keep-alive
+Cache-Control: max-age=0
+sec-ch-ua: "Not(A:Brand";v="99", "Brave";v="133", "Chromium";v="133"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "Linux"
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8
+Sec-GPC: 1
+Accept-Language: en-US,en;q=0.9
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Referer: http://127.0.0.2:8080/upload
+Accept-Encoding: gzip, deflate, br, zstd
+
+
+Metodo: GET
+Path: /
+Versione: HTTP/1.1
+--./srcs/server/home.html
+=========================waiting for poll=============================
+i: 0
+pollfds[i].fd: 3
+pollfds[i].events: 1
+pollfds[i].revents: 0
+i: 1
+pollfds[i].fd: 4
+pollfds[i].events: 1
+pollfds[i].revents: 1
+bytes_read: 582
+Received data from client:
+GET /favicon.ico HTTP/1.1
+Host: 127.0.0.2:8080
+Connection: keep-alive
+sec-ch-ua-platform: "Linux"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36
+sec-ch-ua: "Not(A:Brand";v="99", "Brave";v="133", "Chromium";v="133"
+sec-ch-ua-mobile: ?0
+Accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8
+Sec-GPC: 1
+Accept-Language: en-US,en;q=0.9
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Dest: image
+Referer: http://127.0.0.2:8080/
+Accept-Encoding: gzip, deflate, br, zstd
+
+
+Metodo: GET
+Path: /favicon.ico
+Versione: HTTP/1.1
+--
+=========================waiting for poll=============================
+i: 0
+pollfds[i].fd: 3
+pollfds[i].events: 1
+pollfds[i].revents: 0
+i: 1
+pollfds[i].fd: 4
+pollfds[i].events: 1
+pollfds[i].revents: 1
+bytes_read: 0
+Client disconnected
+i: 1
+pollfds[i].fd: 4
+pollfds[i].events: 1
+pollfds[i].revents: 1
+bytes_read: -1
+Errore nella lettura: Bad file descriptor
+=========================waiting for poll=============================
+i: 0
+pollfds[i].fd: 3
+pollfds[i].events: 1
+pollfds[i].revents: 1
+NEW CONNECTION
+=========================waiting for poll=============================
+i: 0
+pollfds[i].fd: 3
+pollfds[i].events: 1
+pollfds[i].revents: 0
+i: 1
+pollfds[i].fd: 4
+pollfds[i].events: 1
+pollfds[i].revents: 1
+bytes_read: 1025
+Received data from client:
+POST /upload HTTP/1.1
+Host: 127.0.0.2:8080
+Connection: keep-alive
+Content-Length: 199
+Cache-Control: max-age=0
+sec-ch-ua: "Not(A:Brand";v="99", "Brave";v="133", "Chromium";v="133"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "Linux"
+Origin: http://127.0.0.2:8080
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryMzrWjRciui9bvkuK
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8
+Sec-GPC: 1
+Accept-Language: en-US,en;q=0.9
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Referer: http://127.0.0.2:8080/
+Accept-Encoding: gzip, deflate, br, zstd
+
+------WebKitFormBoundaryMzrWjRciui9bvkuK
+Content-Disposition: form-data; name="file"; filename="hello.txt"
+Content-Type: text/plain
+
+hello worlds!!!
+
+------WebKitFormBoundaryMzrWjRciui9bvkuK--
+
+Metodo: POST
+Path: /upload
+Versione: HTTP/1.1
+--./srcs/server/home.html
+=========================waiting for poll=============================
+i: 0
+pollfds[i].fd: 3
+pollfds[i].events: 1
+pollfds[i].revents: 0
+i: 1
+pollfds[i].fd: 4
+pollfds[i].events: 1
+pollfds[i].revents: 1
+legth: 202
+bytes_read: 201
+Received data from client:
+GET /favicon.ico HTTP/1.1
+Host: 127.0.0.2:8080
+Connection: keep-alive
+sec-ch-ua-platform: "Linux"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0
+=========================waiting for poll=============================
+i: 0
+pollfds[i].fd: 3
+pollfds[i].events: 1
+pollfds[i].revents: 0
+i: 1
+pollfds[i].fd: 4
+pollfds[i].events: 1
+pollfds[i].revents: 1
+legth: 202
+bytes_read: 201
+Received data from client:
+ Safari/537.36
+sec-ch-ua: "Not(A:Brand";v="99", "Brave";v="133", "Chromium";v="133"
+sec-ch-ua-mobile: ?0
+Accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8
+Sec-GPC: 1
+Accept-
+=========================waiting for poll=============================
+i: 0
+pollfds[i].fd: 3
+pollfds[i].events: 1
+pollfds[i].revents: 0
+i: 1
+pollfds[i].fd: 4
+pollfds[i].events: 1
+pollfds[i].revents: 1
+legth: 202
+bytes_read: 186
+Received data from client:
+Language: en-US,en;q=0.9
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Dest: image
+Referer: http://127.0.0.2:8080/upload
+Accept-Encoding: gzip, deflate, br, zstd
+
+
+=========================waiting for poll=============================

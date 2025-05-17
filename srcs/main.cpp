@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/16 19:32:04 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/17 20:38:50 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int new_connection(int server_fd)
 {
 	// Accept a connection
+	std::cout << CYAN "NEW CONNECTION" END << std::endl;
 	struct sockaddr_in client_address;
 	socklen_t client_addr_len = sizeof(client_address);
 	int client_fd = accept(server_fd, (struct sockaddr *)&client_address, &client_addr_len);
@@ -23,7 +24,6 @@ int new_connection(int server_fd)
 		std::cerr << "Error accepting connection: " << strerror(errno) << std::endl;
 		return 0;
 	}
-	
 	int optval = 1;
 	setsockopt(client_fd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
 	if (fcntl(client_fd, F_SETFL, O_NONBLOCK) == -1)
@@ -32,27 +32,52 @@ int new_connection(int server_fd)
 		close(client_fd);
 		return 0;
 	}
-
-	// // Read request
-	// char buffer[4096];
-	// memset(buffer, 0, sizeof(buffer));
-	// ssize_t bytes_read = recv(client_fd, buffer, sizeof(buffer) - 1, 0);
-	// // std::cout << "bytes_read: " << bytes_read << std::endl;
-	
-	// if (bytes_read > 0) {
-	// 	std::cout << "Received request:" << std::endl;
-	// 	std::cout << buffer << std::endl;
-		
-	// 	std::string response = home_response();
-	// 	if (response.empty()) {
-	// 		std::cerr << "Error creating response" << std::endl;
-	// 		close(client_fd);
-	// 		return 0;
-	// 	}
-
-	// 	send(client_fd, response.c_str(), response.length(), 0);
-	// }
 	return client_fd;
+}
+
+int client_request(std::vector<pollfd> pollfds, Config *config, size_t *i)
+{
+	std::string request;
+	char temp_buffer[8192];
+	int	bytes, bytes_read = 0;
+
+	while (request.find("\r\n\r\n") == std::string::npos)
+	{
+		bytes = recv(pollfds[*i].fd, temp_buffer, 8192 - 1, 0);
+		bytes_read += bytes;
+		if (bytes <= 0)
+			break;
+		request.append(temp_buffer, bytes);
+	}
+	config->setLength(request);
+	config->setBoundary(request);
+	config->checkConfig();
+	while ((bytes = recv(pollfds[*i].fd, temp_buffer, 8192 - 1, 0)) > 0)
+	{
+		bytes_read += bytes;
+		request.append(temp_buffer, bytes);
+		if (request.size() >= config->getLength())
+			break;
+	}
+	std::cout << MAGENTA "bytes_read: " << bytes_read << std::endl;
+	std::cout << "Received data from client:\n" END << request << std::endl;
+	if (bytes_read > 0)
+	{
+		std::string response = server_response(request, config);
+		send(pollfds[*i].fd, response.c_str(), response.length(), 0);
+	}
+	else if (bytes_read == 0)
+	{
+		std::cout << "Client disconnected" << std::endl;
+		close(pollfds[*i].fd);
+		pollfds.erase(pollfds.begin() + *i);
+		*i -= 1;
+	}
+	else if (bytes_read == -1)
+	{
+		std::cerr << "Errore nella lettura: " << strerror(errno) << std::endl;
+	}
+	return 0;
 }
 
 int main(int argc, char **argv)
@@ -62,16 +87,13 @@ int main(int argc, char **argv)
 		std::cerr << "Usage: " << argv[0] << " <config file>" << std::endl;
 		return 1;
 	}
-	
 	Config config(argv[1]);
 	std::cout << config << std::endl;
-	
 	int server_fd;
 	if (init_server_socket(&server_fd, config) != 0)
 	{
 		return 1;
 	}
-
 	std::cout << "Server listening on port " << config.getPort() << std::endl;
 
 	pollfd server_pollfd;
@@ -84,79 +106,104 @@ int main(int argc, char **argv)
 	// 5. Accept and handle connections
 	while (1) {
 		// Use select or poll to wait for incoming connections
-		for (size_t i = 0; i < pollfds.size(); ++i)
-		{
-			std::cout << "---------------------------------------------------------------------" << std::endl;
-			std::cout << "i: " << i << std::endl;
-			std::cout << "pollfds[i].fd: " << pollfds[i].fd << std::endl;
-			std::cout << "pollfds[i].events: " << pollfds[i].events << std::endl;
-			std::cout << "pollfds[i].revents: " << pollfds[i].revents << std::endl;
-		}
-		std::cout << "=========================waiting for poll=============================" << std::endl;
+		std::cout << YELLOW "=========================waiting for poll=============================" END << std::endl;
 		int ret = poll(pollfds.data(), pollfds.size(), -1);
-		if (ret < 0) {
+		if (ret < 0)
+		{
 			std::cerr << "Error in poll: " << strerror(errno) << std::endl;
 			break;
 		}
-		std::cout << "=============================new poll=================================" << std::endl;
+		
+		//ciclo per la lettura della request e per degli errori del poll()
 		size_t size = pollfds.size();
 		for (size_t i = 0; i < size; ++i)
 		{
-			std::cout << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
 			std::cout << "i: " << i << std::endl;
 			std::cout << "pollfds[i].fd: " << pollfds[i].fd << std::endl;
 			std::cout << "pollfds[i].events: " << pollfds[i].events << std::endl;
 			std::cout << "pollfds[i].revents: " << pollfds[i].revents << std::endl;
+			if (pollfds[i].revents & POLLERR) //errore del poll
+			{
+				std::cerr << "Errore sul socket: " << pollfds[i].fd << std::endl;
+				close(pollfds[i].fd);
+				pollfds[i].fd = -1;
+				pollfds.erase(pollfds.begin() + i);
+				i--;
+				size = pollfds.size();
+				continue;
+			}
+			if (pollfds[i].revents & POLLHUP) //errore del poll
+			{
+				std::cout << "Connessione chiusa dal client: " << pollfds[i].fd << std::endl;
+				close(pollfds[i].fd);
+				pollfds.erase(pollfds.begin() + i);
+				i--;
+				size = pollfds.size();
+				continue;
+			}
 			if (pollfds[i].revents & POLLIN)
 			{
-				if (pollfds[i].fd == server_fd)
+				if (pollfds[i].fd == server_fd) //connessione di un nuovo client
 				{
-					std::cout << "New connection" << std::endl;
 					int fd = new_connection(server_fd);
 					if (fd > 0)
 					{
 						pollfd client_pollfd;
 						client_pollfd.fd = fd;
 						client_pollfd.events = POLLIN;
-						// client_pollfd.revents = 0;
 						pollfds.push_back(client_pollfd);
 					}
 				}
 				else
-				{
-					// Handle client connection
-					char buffer[9000];
-					memset(buffer, 0, sizeof(buffer));
-					ssize_t bytes_read = recv(pollfds[i].fd, buffer, sizeof(buffer) - 1, 0);
-					std::cout << "bytes_read: " << bytes_read << std::endl;
-					if (bytes_read > 0)
-					{
-						if (bytes_read == sizeof(buffer) - 1)
-						{
-							std::cerr << "Buffer overflow" << std::endl;
-							close(pollfds[i].fd);
-							pollfds.erase(pollfds.begin() + i);
-							i--;
-							return 1;
-						}
-						std::cout << "Received data from client: " << buffer << std::endl;
-						// Process the request and send a response
-						std::string response = server_response(buffer, &config);
-						send(pollfds[i].fd, response.c_str(), response.length(), 0);
-					}
-					else if (bytes_read == 0)
-					{
-						std::cout << "Client disconnected" << std::endl;
-						close(pollfds[i].fd);
-						pollfds.erase(pollfds.begin() + i);
-						i--;
-					}
-				}
+					if (client_request(pollfds, &config, &i)) //richiesta da un client già connesso
+						return 1;
 			}
 			pollfds[i].revents = 0;
 		}
 	}
-
 	close(server_fd);
 	return 0;
 }
+
+
+//else if (config.pushNeed())
+//{
+//	config.changePushNeed();
+//	std::cout << RED "legth: " END << config.getLength() << std::endl;
+//	char buffer[config.getLength()];
+//	memset(buffer, 0, sizeof(buffer));
+//	ssize_t bytes_read;
+//	bytes_read = recv(pollfds[i].fd, buffer, sizeof(buffer) - 1, 0);
+//	std::cout << MAGENTA "bytes_read: " END << bytes_read << std::endl;
+//	std::cout << MAGENTA "Received data from client:\n" END << buffer << std::endl;
+//	if (request.find(config.getBoundary() + "--") == std::string::npos)
+//	{
+//		request.append(buffer, config.getLength());
+//		config.changePushNeed();
+//		continue;
+//	}
+//	if (bytes_read > 0)
+//	{
+//		if (bytes_read == config.getLength() - 1)
+//		{
+//			std::cerr << "Buffer overflow" << std::endl;
+//			close(pollfds[i].fd);
+//			pollfds.erase(pollfds.begin() + i);
+//			i--;
+//			return 1;
+//		}
+//		std::string response = upload(buffer, &config);
+//		send(pollfds[i].fd, response.c_str(), response.length(), 0);
+//	}
+//	else if (bytes_read == 0)
+//	{
+//		std::cout << "Client disconnected" << std::endl;
+//		close(pollfds[i].fd);
+//		pollfds.erase(pollfds.begin() + i);
+//		i--;
+//	}
+//	else if (bytes_read == -1)
+//	{
+//		std::cerr << "Errore nella lettura: " << strerror(errno) << std::endl;
+//	}
+//}

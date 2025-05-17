@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   colours.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 1970/01/01 01:00:00 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/16 12:14:13 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:18:36 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,5 @@
 # define BG_BRIGHT_CYAN "\033[106m"
 # define BG_BRIGHT_WHITE "\033[107m"
 # define BG_END "\033[49m"
-//printf(RED "Questo testo sarà rosso" END "\n");
 
 #endif
