@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/17 20:38:50 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/18 09:59:41 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,25 +39,30 @@ int client_request(std::vector<pollfd> pollfds, Config *config, size_t *i)
 {
 	std::string request;
 	char temp_buffer[8192];
-	int	bytes, bytes_read = 0;
+	int	bytes = 1, bytes_read = 0;
+	size_t body_len;
 
 	while (request.find("\r\n\r\n") == std::string::npos)
 	{
-		bytes = recv(pollfds[*i].fd, temp_buffer, 8192 - 1, 0);
-		bytes_read += bytes;
+		bytes = recv(pollfds[*i].fd, temp_buffer, 8192, 0);
 		if (bytes <= 0)
 			break;
-		request.append(temp_buffer, bytes);
-	}
-	config->setLength(request);
-	config->setBoundary(request);
-	config->checkConfig();
-	while ((bytes = recv(pollfds[*i].fd, temp_buffer, 8192 - 1, 0)) > 0)
-	{
 		bytes_read += bytes;
 		request.append(temp_buffer, bytes);
-		if (request.size() >= config->getLength())
-			break;
+	}
+	config->setRequestType(request);
+	config->setBoundary(request);
+	config->setLength(request);
+	config->checkConfig();
+	body_len = request.size() - request.find("\r\n\r\n") + 4;
+	while (body_len < config->getLength() && config->getMethod() == "POST")
+	{
+		bytes = recv(pollfds[*i].fd, temp_buffer, 8192, 0);
+		if (bytes <= 0)
+			continue;
+		bytes_read += bytes;
+		body_len += bytes;
+		request.append(temp_buffer, bytes);
 	}
 	std::cout << MAGENTA "bytes_read: " << bytes_read << std::endl;
 	std::cout << "Received data from client:\n" END << request << std::endl;

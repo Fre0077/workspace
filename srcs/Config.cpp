@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:14 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/17 20:35:48 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/18 09:51:13 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,6 +244,13 @@ int	Config::pushNeed()
 	return this->push_need;
 }
 
+void	Config::setRequestType(std::string name)
+{
+	std::istringstream iss(name);
+	std::string method, path;
+	iss >> this->method >> this->path;
+}
+
 void	Config::setBoundary(std::string name)
 {
 	size_t first = name.find("Content-Type:");
@@ -277,12 +284,22 @@ void	Config::setLength(std::string name)
 	this->length = stringToInt(temp);
 }
 
+std::string	Config::getBoundary()
+{
+	return this->boundary;
+}
+
+std::string	Config::getMethod()
+{
+	return this->method;
+}
+
+std::string	Config::getPath()
+{
+	return this->path;
+}
+
 size_t	Config::getLength()
 {
 	return (this->length + 3);
-}
-
-std::string	Config::getBoundary()
-{
-	return boundary;
 }

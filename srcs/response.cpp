@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:01:30 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/17 19:05:01 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/18 09:53:37 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,7 @@ std::string	html_upload(int err, Config *config)
 
 std::string	server_response(std::string request, Config *config)
 {
-	std::istringstream iss(request);
-	std::string method, path;
-	iss >> method >> path;
+	std::string method = config->getMethod(), path = config->getPath();
 	std::string find_path = config->searchPathI(path);
 
 	std::cout << GREEN"Metodo: " << method << std::endl;
