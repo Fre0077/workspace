@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/18 09:59:41 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/18 10:03:43 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,46 +169,3 @@ int main(int argc, char **argv)
 	close(server_fd);
 	return 0;
 }
-
-
-//else if (config.pushNeed())
-//{
-//	config.changePushNeed();
-//	std::cout << RED "legth: " END << config.getLength() << std::endl;
-//	char buffer[config.getLength()];
-//	memset(buffer, 0, sizeof(buffer));
-//	ssize_t bytes_read;
-//	bytes_read = recv(pollfds[i].fd, buffer, sizeof(buffer) - 1, 0);
-//	std::cout << MAGENTA "bytes_read: " END << bytes_read << std::endl;
-//	std::cout << MAGENTA "Received data from client:\n" END << buffer << std::endl;
-//	if (request.find(config.getBoundary() + "--") == std::string::npos)
-//	{
-//		request.append(buffer, config.getLength());
-//		config.changePushNeed();
-//		continue;
-//	}
-//	if (bytes_read > 0)
-//	{
-//		if (bytes_read == config.getLength() - 1)
-//		{
-//			std::cerr << "Buffer overflow" << std::endl;
-//			close(pollfds[i].fd);
-//			pollfds.erase(pollfds.begin() + i);
-//			i--;
-//			return 1;
-//		}
-//		std::string response = upload(buffer, &config);
-//		send(pollfds[i].fd, response.c_str(), response.length(), 0);
-//	}
-//	else if (bytes_read == 0)
-//	{
-//		std::cout << "Client disconnected" << std::endl;
-//		close(pollfds[i].fd);
-//		pollfds.erase(pollfds.begin() + i);
-//		i--;
-//	}
-//	else if (bytes_read == -1)
-//	{
-//		std::cerr << "Errore nella lettura: " << strerror(errno) << std::endl;
-//	}
-//}

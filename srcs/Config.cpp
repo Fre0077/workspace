@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:14 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/18 09:51:13 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/18 11:45:52 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,6 @@ Config::Config(std::string name)
 	error_pages[404] = "";
 	error_pages[405] = "";
 	error_pages[501] = "";
-	this->boundary = "";
-	this->push_need = 0;
-	this->length = 0;
 	while (std::getline(file, line))
 	{
 		if (line.find("{") != std::string::npos)
@@ -130,19 +127,6 @@ std::ostream& operator<<(std::ostream& out, Config const& rhs)
 //==============================================================================
 //METHOD========================================================================
 //==============================================================================
-void	Config::checkConfig()
-{
-	std::cout << PURPLE MAGENTA "###CONFIG FILE DATA###" << std::endl;
-	std::cout << "file name: " << this->getFile_name() << std::endl;
-	std::cout << "server name: " << this->getServer_name() << std::endl;
-	std::cout << "index: " << this->getIndex() << std::endl;
-	std::cout << "port: " << this->getPort() << std::endl;
-	std::cout << "root: " << this->getRoot() << std::endl;
-	std::cout << "boundary: " << this->getBoundary() << std::endl;
-	std::cout << "length: " << this->getLength()<< std::endl;
-	std::cout << "#####################" END << std::endl;
-}
-
 std::string Config::searchPathI(std::string location)
 {
 	std::string temp, temp2, name = this->file_name;
@@ -229,77 +213,4 @@ std::string Config::getRoot() const
 std::string Config::getPort() const
 {
 	return this->port;
-}
-
-void	Config::changePushNeed()
-{
-	if (this->push_need == 0)
-	this->push_need = 1;
-	else
-	this->push_need = 0;
-}
-
-int	Config::pushNeed()
-{
-	return this->push_need;
-}
-
-void	Config::setRequestType(std::string name)
-{
-	std::istringstream iss(name);
-	std::string method, path;
-	iss >> this->method >> this->path;
-}
-
-void	Config::setBoundary(std::string name)
-{
-	size_t first = name.find("Content-Type:");
-	if (first == std::string::npos)
-	{
-		this->boundary = "";
-		return ;
-	}
-	std::string temp;
-	
-	while (name[first - 1] != '\n')
-		first = name.find("Content-Type:");
-	temp = name.substr(first);
-	first = temp.find("boundary=") + 9;
-	size_t second = temp.find("\r\n");
-	this->boundary = temp.substr(first, second - first);
-}
-
-void	Config::setLength(std::string name)
-{
-	std::string line, temp;
-	size_t pos = name.find("Content-Length:");
-	if (pos == std::string::npos)
-	{
-		this->length = 0;
-		return ;
-	}
-	line = name.substr(pos);
-	std::istringstream iss(line);
-	iss >> temp >> temp;
-	this->length = stringToInt(temp);
-}
-
-std::string	Config::getBoundary()
-{
-	return this->boundary;
-}
-
-std::string	Config::getMethod()
-{
-	return this->method;
-}
-
-std::string	Config::getPath()
-{
-	return this->path;
-}
-
-size_t	Config::getLength()
-{
-	return (this->length + 3);
 }

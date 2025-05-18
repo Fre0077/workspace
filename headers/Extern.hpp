@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 12:02:39 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/17 18:37:12 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/18 11:43:39 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@
 # include <dirent.h>
 # include <vector>
 # include <map>
+
+# define TRUE 1
+# define FALSE 0
 
 void	removeChar(std::string *str, char ch);
 size_t	stringToSizet(const std::string& str);
