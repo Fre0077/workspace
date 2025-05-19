@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/19 09:12:43 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/19 12:44:59 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,16 @@ int new_connection(int server_fd)
 	return client_fd;
 }
 
-int close_socket(std::vector<pollfd> pollfds, size_t *i)
+int close_socket(std::vector<pollfd> *pollfds, size_t *i)
 {
-	std::cout << RED "Client disconnected" END << std::endl;
-	close(pollfds[*i].fd);
-	pollfds.erase(pollfds.begin() + *i);
+	std::cerr << RED "Client disconnected" END << std::endl;
+	close((*pollfds)[*i].fd);
+	(*pollfds).erase((*pollfds).begin() + *i);
 	*i -= 1;
 	return 0;
 }
 
-int client_request(std::vector<pollfd> pollfds, Request *request, Config *config, size_t *i)
+int client_request(std::vector<pollfd> *pollfds, Request *request, Config *config, size_t *i)
 {
 	char temp_buffer[8192];
 	int	bytes_read = 0;
@@ -51,7 +51,7 @@ int client_request(std::vector<pollfd> pollfds, Request *request, Config *config
 	//lettura dell'header
 	if (request->checkHead())
 	{
-		bytes_read = recv(pollfds[*i].fd, temp_buffer, 8192, 0);
+		bytes_read = recv((*pollfds)[*i].fd, temp_buffer, 8192, 0);
 		if (bytes_read == 0)
 			close_socket(pollfds, i);
 		if (bytes_read < 0)
@@ -66,13 +66,11 @@ int client_request(std::vector<pollfd> pollfds, Request *request, Config *config
 		request->setLength();
 	}
 	std::cout << *request << std::endl;
-	std::cout << request->getRequest() << std::endl;
 	memset(temp_buffer, 0, sizeof(temp_buffer));
 	//lettura del body se ce n'è bisogno
 	if (request->checkBody())
 	{
-		std::cout << RED " " << temp_buffer << " " END << std::endl;
-		bytes_read = recv(pollfds[*i].fd, temp_buffer, 8192, 0);
+		bytes_read = recv((*pollfds)[*i].fd, temp_buffer, 8192, 0);
 		if (bytes_read == 0)
 			close_socket(pollfds, i);
 		if (bytes_read < 0)
@@ -81,12 +79,13 @@ int client_request(std::vector<pollfd> pollfds, Request *request, Config *config
 		if (request->checkBody())
 			return 0;
 	}
+	std::cout << request->getRequest() << std::endl;
 	//controllo il ritorno del recv
 	if (bytes_read > 0)
 	{
 		//ritorno una risposta al sito
 		std::string response = server_response(request, config);
-		send(pollfds[*i].fd, response.c_str(), response.length(), 0);
+		send((*pollfds)[*i].fd, response.c_str(), response.length(), 0);
 	}
 	else if (bytes_read == 0)
 		close_socket(pollfds, i);
@@ -142,22 +141,15 @@ int main(int argc, char **argv)
 			std::cout << "pollfds[i].fd: " << pollfds[i].fd << std::endl;
 			std::cout << "pollfds[i].events: " << pollfds[i].events << std::endl;
 			std::cout << "pollfds[i].revents: " << pollfds[i].revents << std::endl;
-			if (pollfds[i].revents & POLLERR) //errore del poll, errore generico
+			if (pollfds[i].revents & POLLERR || pollfds[i].revents == 32) //errore del poll, errore generico
 			{
-				std::cerr << "Errore sul socket: " << pollfds[i].fd << std::endl;
-				close(pollfds[i].fd);
-				pollfds[i].fd = -1;
-				pollfds.erase(pollfds.begin() + i);
-				i--;
+				close_socket(&pollfds, &i);
 				size = pollfds.size();
 				continue;
 			}
 			if (pollfds[i].revents & POLLHUP) //errore del poll, chiusura delle connessione
 			{
-				std::cout << "Connessione chiusa dal client: " << pollfds[i].fd << std::endl;
-				close(pollfds[i].fd);
-				pollfds.erase(pollfds.begin() + i);
-				i--;
+				close_socket(&pollfds, &i);
 				size = pollfds.size();
 				continue;
 			}
@@ -177,7 +169,7 @@ int main(int argc, char **argv)
 					}
 				}
 				else
-					if (client_request(pollfds, &requests[i - 1], &config, &i)) //richiesta da un client già connesso
+					if (client_request(&pollfds, &requests[i - 1], &config, &i)) //richiesta da un client già connesso
 						return 1;
 			}
 			pollfds[i].revents = 0;
