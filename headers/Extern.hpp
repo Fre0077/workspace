@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Extern.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 12:02:39 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/18 15:14:03 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/19 18:51:39 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,14 @@
 # include <vector>
 # include <map>
 
+// bool
 # define TRUE 1
 # define FALSE 0
+
+// config methods
+# define GET 1
+# define POST 2
+# define DELETE 4
 
 void	removeChar(std::string *str, char ch);
 size_t	stringToSizet(const std::string& str);
