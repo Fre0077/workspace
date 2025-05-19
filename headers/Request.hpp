@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:34:33 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/19 08:42:02 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/19 14:42:43 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 class Request
 {
 private:
+	std::string delete_file;
 	std::string boundary;
 	std::string request;
 	std::string method;
@@ -42,6 +43,7 @@ public:
 	void		setHeadLength();
 	void		setBoundary();
 	void		setLength();
+	std::string	getDeleteFile() const;
 	std::string	getBoundary() const;
 	std::string	getRequest() const;
 	std::string	getMethod() const;

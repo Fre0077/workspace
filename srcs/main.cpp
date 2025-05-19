@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/19 12:44:59 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/19 16:46:01 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,12 @@ int main(int argc, char **argv)
 		std::cerr << "Usage: " << argv[0] << " <config file>" << std::endl;
 		return 1;
 	}
+	std::string file_name = argv[1];
+	if (file_name.find(".config") == std::string::npos)
+	{
+		std::cerr << "wrong config_file extention" << std::endl;
+		return 1;
+	}
 	//dichiarazione per la configurazioe e la reqeust
 	Config					config(argv[1]);
 	std::vector<Request>	requests;
@@ -112,9 +118,7 @@ int main(int argc, char **argv)
 	//inizializzazione del soicket per il server
 	int server_fd;
 	if (init_server_socket(&server_fd, config) != 0)
-	{
 		return 1;
-	}
 	std::cout << "Server listening on port " << config.getPort() << std::endl;
 	//creare l'array per le struct del poll e aggiunto l'fd del server (0)
 	pollfd server_pollfd;

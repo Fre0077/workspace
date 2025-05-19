@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:01:30 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/18 14:55:20 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:27:50 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,7 @@ std::string	server_response(Request *request, Config *config)
 	std::cout << GREEN "--" << find_path << "--" END << std::endl;
 	if (path == "/favicon.ico")
 		return "HTTP/1.1 204 No Content\r\n\r\n";
-	else if (method == "POST" && path == "/upload")
-		return html_response(find_path, 200, config);
-	else if (method != "GET")
+	else if (method != "GET" && method != "DELETE" && method != "POST")
 		return html_error(501, config);
 	else if (find_path == "")
 		return html_error(404, config);

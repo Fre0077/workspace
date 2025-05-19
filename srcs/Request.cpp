@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:35:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/19 10:39:43 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:15:16 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 //==============================================================================
 Request::Request()
 {
+	delete_file = "";
 	boundary = "";
 	request = "";
 	method = "";
@@ -51,6 +52,7 @@ Request&	Request::operator=(Request const &copy)
 std::ostream& operator<<(std::ostream& out, Request const& rhs)
 {
 	out << PURPLE MAGENTA "###REQUEST FILE DATA###" << std::endl;
+	out << "delete file: " << rhs.getDeleteFile() << std::endl;
 	out << "boundary: " << rhs.getBoundary() << std::endl;
 	out << "method: " << rhs.getMethod() << std::endl;
 	out << "path: " << rhs.getPath() << std::endl;
@@ -101,8 +103,12 @@ void	Request::setRequest(std::string newPart, int len)
 void	Request::setRequestType()
 {
 	std::istringstream iss(request);
-	std::string method, path;
 	iss >> this->method >> this->path;
+	if (this->method == "DELETE")
+	{
+		this->delete_file = this->path;
+		this->path = "/delete";
+	}
 }
 
 void	Request::setHeadLength()
@@ -123,7 +129,13 @@ void	Request::setBoundary()
 	while (request[first - 1] != '\n')
 		first = request.find("Content-Type:");
 	temp = request.substr(first);
-	first = temp.find("boundary=") + 9;
+	first = temp.find("boundary=");
+	if (first == std::string::npos)
+	{
+		this->boundary = "";
+		return ;
+	}
+	first += 9;
 	size_t second = temp.find("\r\n");
 	this->boundary = temp.substr(first, second - first);
 }
@@ -141,6 +153,11 @@ void	Request::setLength()
 	std::istringstream iss(line);
 	iss >> temp >> temp;
 	this->length = stringToInt(temp);
+}
+
+std::string	Request::getDeleteFile() const
+{
+	return this->delete_file;
 }
 
 std::string	Request::getBoundary() const
