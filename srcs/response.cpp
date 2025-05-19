@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:01:30 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/19 15:27:50 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/20 00:50:34 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,18 @@ std::string	html_error(int err, Config *config)
 std::string	server_response(Request *request, Config *config)
 {
 	std::string method = request->getMethod(), path = request->getPath();
-	std::string find_path = config->searchPathI(path);
-
-	std::cout << GREEN "--" << find_path << "--" END << std::endl;
+	
+	std::cout << GREEN "----------" << config->checkPath(path) <<"---------" END << std::endl;
 	if (path == "/favicon.ico")
 		return "HTTP/1.1 204 No Content\r\n\r\n";
+	else if (config->getMax_body_len() <= request->getBodyLength())
+		return html_error(413, config);
+	else if (config->checkPath(path))
+		return html_error(404, config);
+	else if (!(request->getMethodNum() & config->getLocationMethod(path)))
+		return html_error(405, config);
 	else if (method != "GET" && method != "DELETE" && method != "POST")
 		return html_error(501, config);
-	else if (find_path == "")
-		return html_error(404, config);
 	else
-		return html_response(find_path, 200, config);
+		return html_response(config->getLocationIndex(path), 200, config);
 }

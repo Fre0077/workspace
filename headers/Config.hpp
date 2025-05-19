@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:17 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/19 18:56:01 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/19 23:37:36 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ class Config
 		std::string	file_name;
 		std::string root;
 		std::string port;
-		int			max_body_len;
+		size_t		max_body_len;
 		int			method;
 
 	public:
@@ -43,8 +43,7 @@ class Config
 		~Config();
 		Config& operator=(Config const &copy);
 
-		std::string searchPathI(std::string location);
-		std::string searchPathR(std::string location);
+		int			checkPath(std::string path);
 		t_location	getLocation(std::string location);
 		int			getLocationMethod(std::string location);
 		std::string getLocationRoot(std::string location);
@@ -55,8 +54,8 @@ class Config
 		std::string getFile_name() const;
 		std::string getRoot() const;
 		std::string getPort() const;
-		int getMax_body_len() const;
-		int getMethod() const;
+		size_t 		getMax_body_len() const;
+		int 		getMethod() const;
 };
 
 std::ostream& operator<<(std::ostream& out, Config const& rhs);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:14 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/19 19:11:32 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/19 22:43:29 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,14 @@ Config::Config(std::string name)
 	d_error_pages[403] = "HTTP/1.1 403 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>403 Forbidden</h1></body></html>";
 	d_error_pages[404] = "HTTP/1.1 404 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>404 File Not Found</h1></body></html>";
 	d_error_pages[405] = "HTTP/1.1 405 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>405 Method Not Allowed</h1></body></html>";
+	d_error_pages[413] = "HTTP/1.1 413 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>413 Payload Too Large</h1></body></html>";
 	d_error_pages[500] = "HTTP/1.1 500 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>500 Internal Server Error</h1></body></html>";
 	d_error_pages[501] = "HTTP/1.1 501 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>501 Not Implemented</h1></body></html>";
 	error_pages[400] = "";
 	error_pages[403] = "";
 	error_pages[404] = "";
 	error_pages[405] = "";
+	error_pages[413] = "";
 	error_pages[501] = "";
 	while (std::getline(file, line))
 	{
@@ -86,10 +88,6 @@ Config::Config(std::string name)
 						this->locations[temp].method += 4;
 				}
 			}
-			std::cout << "location: " << temp << std::endl;
-			std::cout << "root: " << this->locations[temp].root << std::endl;
-			std::cout << "index: " << this->locations[temp].index << std::endl;
-			std::cout << "method: " << this->locations[temp].method << std::endl;
 		}
 		if (graph != 1)
 			continue;
@@ -111,8 +109,10 @@ Config::Config(std::string name)
 				this->error_pages[403] = temp;
 			else if (temp2 == "404")
 				this->error_pages[404] = temp;
-			else if (temp2 == "405 ")
+			else if (temp2 == "405")
 				this->error_pages[405] = temp;
+			else if (temp2 == "413")
+				this->error_pages[413] = temp;
 			else if (temp2 == "501")
 				this->error_pages[501] = temp;
 		}
@@ -184,57 +184,11 @@ std::ostream& operator<<(std::ostream& out, Config const& rhs)
 //==============================================================================
 //METHOD========================================================================
 //==============================================================================
-std::string Config::searchPathI(std::string location)
+int	Config::checkPath(std::string path)
 {
-	std::string temp, temp2, name = this->file_name;
-	std::ifstream file(name.c_str());
-	std::string line;
-	while (std::getline(file, line))
-	{
-		if (line.find("location") == line.find_first_not_of(" \t"))
-		{
-			std::size_t pos = line.find(location.c_str());
-			if (pos != std::string::npos && line[pos + location.length()] == ' ')
-			{
-				while (std::getline(file, line))
-				{
-					std::istringstream iss(line);
-					std::string method, path, version;
-					iss >> temp >> temp2;
-					removeChar(&temp2, ';');
-					if (temp == "index")
-						return (this->root + "/" + temp2);
-				}
-			}
-		}
-	}
-	return "";
-}
-std::string Config::searchPathR(std::string location)
-{
-	std::string temp, temp2, name = this->file_name;
-	std::ifstream file(name.c_str());
-	std::string line;
-	while (std::getline(file, line))
-	{
-		if (line.find("location") == line.find_first_not_of(" \t"))
-		{
-			std::size_t pos = line.find(location.c_str());
-			if (pos != std::string::npos && line[pos + location.length()] == ' ')
-			{
-				while (std::getline(file, line))
-				{
-					std::istringstream iss(line);
-					std::string method, path, version;
-					iss >> temp >> temp2;
-					removeChar(&temp2, ';');
-					if (temp == "root")
-						return temp2;
-				}
-			}
-		}
-	}
-	return "";
+	if (this->locations.find(path) == this->locations.end())
+		return 1;
+	return 0;
 }
 
 t_location Config::getLocation(std::string location)
@@ -289,7 +243,7 @@ std::string Config::getPort() const
 	return this->port;
 }
 
-int Config::getMax_body_len() const
+size_t Config::getMax_body_len() const
 {
 	return this->max_body_len;
 }

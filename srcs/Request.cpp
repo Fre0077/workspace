@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:35:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/19 15:15:16 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/19 23:33:14 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ Request::Request()
 	method = "";
 	path = "";
 	head_length = 0;
+	body_length = 0;
 	length = 0;
 	head_need = TRUE;
 	body_need = FALSE;
@@ -45,7 +46,18 @@ Request::~Request() {}
 Request&	Request::operator=(Request const &copy)
 {
 	if (this != &copy)
-		*this = copy;
+	{
+		this->boundary = copy.boundary;
+		this->request = copy.request;
+		this->method = copy.method;
+		this->path = copy.path;
+		this->length = copy.length;
+		this->head_length = copy.head_length;
+		this->body_length = copy.body_length;
+		this->head_need = copy.head_need;
+		this->body_need = copy.body_need;
+		this->delete_file = copy.delete_file;
+	}
 	return *this;
 }
 
@@ -57,6 +69,8 @@ std::ostream& operator<<(std::ostream& out, Request const& rhs)
 	out << "method: " << rhs.getMethod() << std::endl;
 	out << "path: " << rhs.getPath() << std::endl;
 	out << "length: " << rhs.getLength() << std::endl;
+	out << "head length: " << rhs.getHeadLength() << std::endl;
+	out << "body length: " << rhs.getBodyLength() << std::endl;
 	out << "#####################" END << std::endl;
 	return out;
 }
@@ -113,7 +127,13 @@ void	Request::setRequestType()
 
 void	Request::setHeadLength()
 {
-	this->head_length = request.find("\r\n\r\n") + 4;
+	if (request.find("\r\n\r\n") != std::string::npos)
+		this->head_length = request.find("\r\n\r\n") + 4;
+}
+
+void	Request::setBodyLength()
+{
+	this->body_length = request.size() - head_length;
 }
 
 void	Request::setBoundary()
@@ -180,6 +200,11 @@ std::string	Request::getPath() const
 	return this->path;
 }
 
+size_t	Request::getBodyLength() const
+{
+	return (this->body_length);
+}
+
 size_t	Request::getHeadLength() const
 {
 	return (this->head_length);
@@ -188,4 +213,15 @@ size_t	Request::getHeadLength() const
 size_t	Request::getLength() const
 {
 	return this->length;
+}
+
+int	Request::getMethodNum() const
+{
+	if (this->method == "GET")
+		return 1;
+	if (this->method == "POST")
+		return 2;
+	if (this->method == "DELETE")
+		return 4;
+	return 0;
 }
