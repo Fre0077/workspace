@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:35:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/18 12:04:28 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/19 10:39:43 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ Request::Request()
 	request = "";
 	method = "";
 	path = "";
+	head_length = 0;
 	length = 0;
+	head_need = TRUE;
+	body_need = FALSE;
 }
 
 Request::Request(Request const& copy)
@@ -30,7 +33,11 @@ Request::Request(Request const& copy)
 	this->method = copy.method;
 	this->path = copy.path;
 	this->length = copy.length;
+	this->head_need = copy.head_need;
+	this->body_need = copy.body_need;
 }
+
+Request::~Request() {}
 //==============================================================================
 //OPERATOR======================================================================
 //==============================================================================
@@ -54,21 +61,58 @@ std::ostream& operator<<(std::ostream& out, Request const& rhs)
 //==============================================================================
 //METHOD========================================================================
 //==============================================================================
-void	Request::setRequest(std::string newPart)
+int	Request::checkHead()
 {
-	request.append(newPart);
+	if (request.find("\r\n\r\n") == std::string::npos)
+		this->head_need = TRUE;
+	else
+		this->head_need = FALSE;
+	return this->head_need;
 }
 
-void	Request::setRequestType(std::string name)
+int	Request::checkBody()
 {
-	std::istringstream iss(name);
+	if (this->method != "POST")
+		return FALSE;
+	if (request.size() - head_length < length)
+		this->body_need = TRUE;
+	else
+		this->body_need = FALSE;
+	return this->body_need;
+}
+
+void	Request::clearRequest()
+{
+	boundary.clear();
+	request.clear();
+	method.clear();
+	path.clear();
+	head_length = 0;
+	length = 0;
+	head_need = TRUE;
+	body_need = FALSE;
+}
+
+void	Request::setRequest(std::string newPart, int len)
+{
+	request.append(newPart.c_str(), len);
+}
+
+void	Request::setRequestType()
+{
+	std::istringstream iss(request);
 	std::string method, path;
 	iss >> this->method >> this->path;
 }
 
-void	Request::setBoundary(std::string name)
+void	Request::setHeadLength()
 {
-	size_t first = name.find("Content-Type:");
+	this->head_length = request.find("\r\n\r\n") + 4;
+}
+
+void	Request::setBoundary()
+{
+	size_t first = request.find("Content-Type:");
 	if (first == std::string::npos)
 	{
 		this->boundary = "";
@@ -76,24 +120,24 @@ void	Request::setBoundary(std::string name)
 	}
 	std::string temp;
 	
-	while (name[first - 1] != '\n')
-		first = name.find("Content-Type:");
-	temp = name.substr(first);
+	while (request[first - 1] != '\n')
+		first = request.find("Content-Type:");
+	temp = request.substr(first);
 	first = temp.find("boundary=") + 9;
 	size_t second = temp.find("\r\n");
 	this->boundary = temp.substr(first, second - first);
 }
 
-void	Request::setLength(std::string name)
+void	Request::setLength()
 {
 	std::string line, temp;
-	size_t pos = name.find("Content-Length:");
+	size_t pos = request.find("Content-Length:");
 	if (pos == std::string::npos)
 	{
 		this->length = 0;
 		return ;
 	}
-	line = name.substr(pos);
+	line = request.substr(pos);
 	std::istringstream iss(line);
 	iss >> temp >> temp;
 	this->length = stringToInt(temp);
@@ -119,7 +163,12 @@ std::string	Request::getPath() const
 	return this->path;
 }
 
+size_t	Request::getHeadLength() const
+{
+	return (this->head_length);
+}
+
 size_t	Request::getLength() const
 {
-	return (this->length + 3);
+	return this->length;
 }

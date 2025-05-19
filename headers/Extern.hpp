@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 12:02:39 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/18 11:43:39 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:14:03 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define EXTERN_HPP
 
 # include <iostream>
+# include <cstdlib>
 # include <fstream>
 # include <string>
 # include <cstring>

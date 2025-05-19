@@ -4,7 +4,7 @@ HEADERS = \
 headers/colours.hpp \
 headers/Config.hpp \
 headers/Extern.hpp \
-headers/Server.hpp \
+headers/Request.hpp \
 headers/webserv.hpp
 
 SRCS = \
@@ -12,6 +12,7 @@ srcs/Config.cpp \
 srcs/Extern.cpp \
 srcs/init.cpp \
 srcs/main.cpp \
+srcs/Request.cpp \
 srcs/response.cpp
 
 CPPFLAGS = -Wall -Wextra -Werror -std=c++98 -g

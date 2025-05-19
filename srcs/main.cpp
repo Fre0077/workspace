@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/18 10:03:43 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/19 09:12:43 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int new_connection(int server_fd)
 {
-	// Accept a connection
 	std::cout << CYAN "NEW CONNECTION" END << std::endl;
 	struct sockaddr_in client_address;
 	socklen_t client_addr_len = sizeof(client_address);
@@ -35,82 +34,99 @@ int new_connection(int server_fd)
 	return client_fd;
 }
 
-int client_request(std::vector<pollfd> pollfds, Config *config, size_t *i)
+int close_socket(std::vector<pollfd> pollfds, size_t *i)
 {
-	std::string request;
-	char temp_buffer[8192];
-	int	bytes = 1, bytes_read = 0;
-	size_t body_len;
+	std::cout << RED "Client disconnected" END << std::endl;
+	close(pollfds[*i].fd);
+	pollfds.erase(pollfds.begin() + *i);
+	*i -= 1;
+	return 0;
+}
 
-	while (request.find("\r\n\r\n") == std::string::npos)
+int client_request(std::vector<pollfd> pollfds, Request *request, Config *config, size_t *i)
+{
+	char temp_buffer[8192];
+	int	bytes_read = 0;
+
+	//lettura dell'header
+	if (request->checkHead())
 	{
-		bytes = recv(pollfds[*i].fd, temp_buffer, 8192, 0);
-		if (bytes <= 0)
-			break;
-		bytes_read += bytes;
-		request.append(temp_buffer, bytes);
+		bytes_read = recv(pollfds[*i].fd, temp_buffer, 8192, 0);
+		if (bytes_read == 0)
+			close_socket(pollfds, i);
+		if (bytes_read < 0)
+			return 0;
+		request->setRequest(temp_buffer, bytes_read);
+		if (request->checkHead())
+			return 0;
+		//acquisizioni dati dall'header
+		request->setRequestType();
+		request->setHeadLength();
+		request->setBoundary();
+		request->setLength();
 	}
-	config->setRequestType(request);
-	config->setBoundary(request);
-	config->setLength(request);
-	config->checkConfig();
-	body_len = request.size() - request.find("\r\n\r\n") + 4;
-	while (body_len < config->getLength() && config->getMethod() == "POST")
+	std::cout << *request << std::endl;
+	std::cout << request->getRequest() << std::endl;
+	memset(temp_buffer, 0, sizeof(temp_buffer));
+	//lettura del body se ce n'è bisogno
+	if (request->checkBody())
 	{
-		bytes = recv(pollfds[*i].fd, temp_buffer, 8192, 0);
-		if (bytes <= 0)
-			continue;
-		bytes_read += bytes;
-		body_len += bytes;
-		request.append(temp_buffer, bytes);
+		std::cout << RED " " << temp_buffer << " " END << std::endl;
+		bytes_read = recv(pollfds[*i].fd, temp_buffer, 8192, 0);
+		if (bytes_read == 0)
+			close_socket(pollfds, i);
+		if (bytes_read < 0)
+			return 0;
+		request->setRequest(temp_buffer, bytes_read);
+		if (request->checkBody())
+			return 0;
 	}
-	std::cout << MAGENTA "bytes_read: " << bytes_read << std::endl;
-	std::cout << "Received data from client:\n" END << request << std::endl;
+	//controllo il ritorno del recv
 	if (bytes_read > 0)
 	{
+		//ritorno una risposta al sito
 		std::string response = server_response(request, config);
 		send(pollfds[*i].fd, response.c_str(), response.length(), 0);
 	}
 	else if (bytes_read == 0)
-	{
-		std::cout << "Client disconnected" << std::endl;
-		close(pollfds[*i].fd);
-		pollfds.erase(pollfds.begin() + *i);
-		*i -= 1;
-	}
+		close_socket(pollfds, i);
 	else if (bytes_read == -1)
 	{
-		std::cerr << "Errore nella lettura: " << strerror(errno) << std::endl;
+		std::cerr << RED "Errore nella lettura: " END << strerror(errno) << std::endl;
 	}
+	request->clearRequest();
 	return 0;
 }
 
 int main(int argc, char **argv)
 {
+	//controllo degli argomenti
 	if (argc != 2)
 	{
 		std::cerr << "Usage: " << argv[0] << " <config file>" << std::endl;
 		return 1;
 	}
-	Config config(argv[1]);
+	//dichiarazione per la configurazioe e la reqeust
+	Config					config(argv[1]);
+	std::vector<Request>	requests;
 	std::cout << config << std::endl;
+	//inizializzazione del soicket per il server
 	int server_fd;
 	if (init_server_socket(&server_fd, config) != 0)
 	{
 		return 1;
 	}
 	std::cout << "Server listening on port " << config.getPort() << std::endl;
-
+	//creare l'array per le struct del poll e aggiunto l'fd del server (0)
 	pollfd server_pollfd;
 	server_pollfd.fd = server_fd;
 	server_pollfd.events = POLLIN;
 	server_pollfd.revents = 0;
 	std::vector<pollfd> pollfds;
 	pollfds.push_back(server_pollfd);
-
-	// 5. Accept and handle connections
+	//loop per la gestione delle richieste
 	while (1) {
-		// Use select or poll to wait for incoming connections
+		//check del poll per verificare lo stato delle request
 		std::cout << YELLOW "=========================waiting for poll=============================" END << std::endl;
 		int ret = poll(pollfds.data(), pollfds.size(), -1);
 		if (ret < 0)
@@ -118,8 +134,7 @@ int main(int argc, char **argv)
 			std::cerr << "Error in poll: " << strerror(errno) << std::endl;
 			break;
 		}
-		
-		//ciclo per la lettura della request e per degli errori del poll()
+		//ciclo per la lettura della request dei singoli client
 		size_t size = pollfds.size();
 		for (size_t i = 0; i < size; ++i)
 		{
@@ -127,7 +142,7 @@ int main(int argc, char **argv)
 			std::cout << "pollfds[i].fd: " << pollfds[i].fd << std::endl;
 			std::cout << "pollfds[i].events: " << pollfds[i].events << std::endl;
 			std::cout << "pollfds[i].revents: " << pollfds[i].revents << std::endl;
-			if (pollfds[i].revents & POLLERR) //errore del poll
+			if (pollfds[i].revents & POLLERR) //errore del poll, errore generico
 			{
 				std::cerr << "Errore sul socket: " << pollfds[i].fd << std::endl;
 				close(pollfds[i].fd);
@@ -137,7 +152,7 @@ int main(int argc, char **argv)
 				size = pollfds.size();
 				continue;
 			}
-			if (pollfds[i].revents & POLLHUP) //errore del poll
+			if (pollfds[i].revents & POLLHUP) //errore del poll, chiusura delle connessione
 			{
 				std::cout << "Connessione chiusa dal client: " << pollfds[i].fd << std::endl;
 				close(pollfds[i].fd);
@@ -146,7 +161,7 @@ int main(int argc, char **argv)
 				size = pollfds.size();
 				continue;
 			}
-			if (pollfds[i].revents & POLLIN)
+			if (pollfds[i].revents & POLLIN) //la request viene letta e gestita
 			{
 				if (pollfds[i].fd == server_fd) //connessione di un nuovo client
 				{
@@ -157,10 +172,12 @@ int main(int argc, char **argv)
 						client_pollfd.fd = fd;
 						client_pollfd.events = POLLIN;
 						pollfds.push_back(client_pollfd);
+						Request request;
+						requests.push_back(request);
 					}
 				}
 				else
-					if (client_request(pollfds, &config, &i)) //richiesta da un client già connesso
+					if (client_request(pollfds, &requests[i - 1], &config, &i)) //richiesta da un client già connesso
 						return 1;
 			}
 			pollfds[i].revents = 0;
