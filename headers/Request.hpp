@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:34:33 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/19 18:38:16 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/19 23:30:48 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ class Request
 		std::string method;
 		std::string path;
 		size_t		head_length;
+		size_t		body_length;
 		size_t		length;
 		int			head_need;
 		int			body_need;
@@ -41,6 +42,7 @@ class Request
 		void		setRequest(std::string newPart, int len);
 		void		setRequestType();
 		void		setHeadLength();
+		void		setBodyLength();
 		void		setBoundary();
 		void		setLength();
 		std::string	getDeleteFile() const;
@@ -49,7 +51,9 @@ class Request
 		std::string	getMethod() const;
 		std::string	getPath() const;
 		size_t		getHeadLength() const;
+		size_t		getBodyLength() const;
 		size_t		getLength() const;
+		int			getMethodNum() const;
 };
 
 std::ostream& operator<<(std::ostream& out, Request const& rhs);

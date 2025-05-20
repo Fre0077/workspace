@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/20 10:26:00 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/20 10:43:32 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ int client_request(std::vector<pollfd> *pollfds, Request *request, Config *confi
 		request->setBoundary();
 		request->setLength();
 	}
-	std::cout << *request << std::endl;
 	memset(temp_buffer, 0, sizeof(temp_buffer));
 	//lettura del body se ce n'è bisogno
 	if (request->checkBody())
@@ -103,6 +102,8 @@ int client_request(std::vector<pollfd> *pollfds, Request *request, Config *confi
 		if (request->checkBody())
 			return 0;
 	}
+	request->setBodyLength();
+	std::cout << *request << std::endl;
 	std::cout << request->getRequest() << std::endl;
 	//controllo il ritorno del recv
 	if (bytes_read > 0)
@@ -169,7 +170,7 @@ int main(int argc, char **argv)
 			std::cout << "pollfds[i].fd: " << pollfds[i].fd << std::endl;
 			std::cout << "pollfds[i].events: " << pollfds[i].events << std::endl;
 			std::cout << "pollfds[i].revents: " << pollfds[i].revents << std::endl;
-			if (pollfds[i].revents & POLLERR || pollfds[i].revents == 32) //errore del poll, errore generico
+			if (pollfds[i].revents & POLLERR) //errore del poll, errore generico
 			{
 				close_socket(&pollfds, &i);
 				size = pollfds.size();
