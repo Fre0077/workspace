@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Saluto Personalizzato</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 40px;
+		}
+		input, button {
+			margin: 8px 0;
+			padding: 6px;
+		}
+	</style>
+</head>
+<body>
+	<h2>Scrivi il tuo messaggio</h2>
+
+	<label for="name">Nome:</label><br>
+	<input type="text" id="name" placeholder="Inserisci il tuo nome"><br>
+
+	<label for="message">Messaggio:</label><br>
+	<input type="text" id="message" placeholder="Scrivi qualcosa"><br>
+
+	<button onclick="mostraMessaggio()">Invia</button>
+	
+	<a href="/">Back to Home</a>
+
+	<h3>Risultato:</h3>
+	<p id="output"></p>
+
+	<script>
+		function mostraMessaggio() {
+			const nome = document.getElementById("name").value.trim();
+			const messaggio = document.getElementById("message").value.trim();
+			const output = document.getElementById("output");
+
+			if (!nome || !messaggio) {
+				output.textContent = "Per favore, compila entrambi i campi.";
+				output.style.color = "red";
+				return;
+			}
+
+			output.textContent = `${nome} dice: "${messaggio}"`;
+			output.style.color = "green";
+		}
+	</script>
+</body>
+</html>
