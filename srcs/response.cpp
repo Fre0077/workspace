@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:01:30 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/20 12:33:07 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:13:33 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,34 @@ std::string html_image(const std::string& path, int status, Config *config)
 	return response;
 }
 
+std::string	html_video(const std::string& path, int status, Config *config)
+{
+	std::ifstream file(path.c_str(), std::ios::binary);
+	if (!file.is_open())
+	{
+		file.close();
+		std::cerr << "Error opening " << path << ": " << strerror(errno) << std::endl;
+		return config->getDError_page(500);
+	}
+
+	std::ostringstream ss;
+	ss << file.rdbuf();
+	std::string file_data = ss.str();
+
+	std::stringstream s_code;
+	s_code << status;
+	std::ostringstream headers;
+	headers << "HTTP/1.1 " + s_code.str() + " OK\r\n";
+	headers << "Content-Type: video/mp4\r\n";
+	headers << "Content-Length: " << file_data.size() << "\r\n";
+	headers << "Connection: close\r\n";
+	headers << "\r\n";
+
+	std::string response = headers.str() + file_data;
+	file.close();
+	return response;
+}
+
 std::string	html_error(int err, Config *config)
 {
 	if (config->getError_page(err) == "")
@@ -98,12 +126,14 @@ std::string	server_response(Request *request, Config *config)
 		return html_error(413, config);
 	else if (path.find(".jpg") != std::string::npos)
 		return html_image(config->getRoot() + path, 200, config);
+	else if (path.find(".mp4") != std::string::npos)
+		return html_video(config->getRoot() + path, 200, config);
+	else if (!(request->getMethodNum() & config->getLocationMethod(path)) && config->getLocationMethod(path) != 0)
+		return html_error(405, config);
 	else if (config->checkPath(path))
 		return html_error(404, config);
 	else if (method != "GET" && method != "DELETE" && method != "POST")
 		return html_error(501, config);
-	else if (!(request->getMethodNum() & config->getLocationMethod(path)))
-		return html_error(405, config);
 	else
 		return html_response(config->getLocationIndex(path), 200, config, "text/html", "keep-alive");
 }

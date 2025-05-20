@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:17 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/20 11:42:01 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:23:34 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ class Config
 		std::string getPort() const;
 		size_t 		getMax_body_len() const;
 		int 		getMethod() const;
+		void		clearConf();
 };
 
 std::ostream& operator<<(std::ostream& out, Config const& rhs);

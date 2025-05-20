@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:14 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/20 11:41:57 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:09:38 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,11 @@ Config::Config(std::string name)
 						this->locations[temp].method += 4;
 				}
 			}
+			std::cout << "location: " << temp << std::endl;
+			std::cout << "root: " << this->locations[temp].root << std::endl;
+			std::cout << "index: " << this->locations[temp].index << std::endl;
+			std::cout << "method: " << this->locations[temp].method << std::endl;
+			std::cout << "=========================" << std::endl;
 		}
 		if (graph != 1)
 			continue;
@@ -159,7 +164,17 @@ Config::Config(Config const& copy)
 	this->root = copy.root;
 }
 
-Config::~Config() {}
+Config::~Config()
+{
+	this->locations.clear();
+	this->d_error_pages.clear();
+	this->error_pages.clear();
+	this->server_name.clear();
+	this->file_name.clear();
+	this->root.clear();
+	this->port.clear();
+	std::cout << RED "Config destructor called" END << std::endl;
+}
 //==============================================================================
 //OPERATOR======================================================================
 //==============================================================================
@@ -179,7 +194,6 @@ std::ostream& operator<<(std::ostream& out, Config const& rhs)
 	out << "method: " << rhs.getMethod() << std::endl;
 	out << "port: " << rhs.getPort() << std::endl;
 	out << "root: " << rhs.getRoot() << std::endl;
-	out << "#####################" END << std::endl;
 	return out;
 }
 //==============================================================================
@@ -206,7 +220,7 @@ std::string Config::getLocationRoot(std::string location)
 {
 	if (this->locations[location].root == "")
 		return this->root;
-	return this->root;
+	return this->locations[location].root;
 }
 
 std::string Config::getLocationIndex(std::string location)
@@ -252,4 +266,16 @@ size_t Config::getMax_body_len() const
 int Config::getMethod() const
 {
 	return this->method;
+}
+
+void Config::clearConf()
+{
+	this->locations.clear();
+	this->d_error_pages.clear();
+	this->error_pages.clear();
+	this->server_name.clear();
+	this->file_name.clear();
+	this->root.clear();
+	this->port.clear();
+	std::cout << RED "Config clearConf called" END << std::endl;
 }

@@ -30,3 +30,17 @@ fclean:
 re: fclean all
 
 .PHONY: all clean fclean re
+
+VAL_FLAGS = \
+--leak-check=full \
+--show-leak-kinds=all \
+--track-origins=yes \
+
+# --log-file=val.log
+
+val: $(NAME) $(HEADERS)
+	clear
+	@echo "Recompiling webserv..."
+	make re
+	@echo "Running webserv with valgrind..."
+	valgrind $(VAL_FLAGS) ./webserv config_example.config

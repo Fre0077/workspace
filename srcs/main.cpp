@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/20 11:47:14 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:38:21 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ int close_socket(std::vector<pollfd> *pollfds, std::vector<Request> *requests, s
 	std::cerr << RED "Client disconnected" END << std::endl;
 	close((*pollfds)[*i].fd);
 	(*pollfds).erase((*pollfds).begin() + *i);
-	requests->erase(requests->begin() + (*i - 1));
+	(void)requests;
+	// requests->erase(requests->begin() + (*i - 1));
 	*i -= 1;
 	return 0;
 }
@@ -137,6 +138,7 @@ int main(int argc, char **argv)
 		std::cerr << "wrong config_file extention" << std::endl;
 		return 1;
 	}
+	init_signals();
 	//dichiarazione per la configurazioe e la reqeust
 	Config					config(argv[1]);
 	std::vector<Request>	requests;
@@ -210,8 +212,9 @@ int main(int argc, char **argv)
 	{
 		close(pollfds[i].fd);
 	}
-	requests.clear();
+	// requests.clear();
 	pollfds.clear();
+	// config.clearConf();
 	std::cout << GREEN "Server closed" END << std::endl;
 	std::cout << YELLOW "=========================Server closed=============================" END << std::endl;
 	return 0;
