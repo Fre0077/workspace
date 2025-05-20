@@ -6,11 +6,35 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/19 18:49:34 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/20 10:26:00 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/webserv.hpp"
+
+static bool& getShutdown()
+{
+	static bool Shutdown = false;
+	return Shutdown;
+}
+
+void	close_server(int sig)
+{
+	std::cout << RED "Server shutting down..." END << std::endl;
+	if (sig == SIGINT)
+	{
+		std::cout << "SIGINT received" << std::endl;
+		getShutdown() = true;
+	}
+	else if (sig == SIGQUIT)
+		std::cout << "SIGQUIT received" << std::endl;
+}
+
+void	init_signals()
+{
+	signal(SIGINT, close_server);
+	signal(SIGQUIT, SIG_IGN);
+}
 
 int new_connection(int server_fd)
 {
@@ -128,7 +152,7 @@ int main(int argc, char **argv)
 	std::vector<pollfd> pollfds;
 	pollfds.push_back(server_pollfd);
 	//loop per la gestione delle richieste
-	while (1) {
+	while (!getShutdown()) {
 		//check del poll per verificare lo stato delle request
 		std::cout << YELLOW "=========================waiting for poll=============================" END << std::endl;
 		int ret = poll(pollfds.data(), pollfds.size(), -1);
@@ -180,5 +204,13 @@ int main(int argc, char **argv)
 		}
 	}
 	close(server_fd);
+	for (size_t i = 0; i < pollfds.size(); ++i)
+	{
+		close(pollfds[i].fd);
+	}
+	requests.clear();
+	pollfds.clear();
+	std::cout << GREEN "Server closed" END << std::endl;
+	std::cout << YELLOW "=========================Server closed=============================" END << std::endl;
 	return 0;
 }
