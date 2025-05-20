@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 07:57:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/19 16:42:25 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:31:16 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,3 +59,8 @@ int	init_server_socket(int *server_fd, Config config)
 	}
 	return 0;
 }
+
+//std::vector<Config>	createConfig(std::string file_name)
+//{
+	
+//}

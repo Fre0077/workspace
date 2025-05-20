@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/20 14:38:21 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:37:07 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ int main(int argc, char **argv)
 	}
 	init_signals();
 	//dichiarazione per la configurazioe e la reqeust
-	Config					config(argv[1]);
+	Config					config(argv[1], 1);
 	std::vector<Request>	requests;
 	std::cout << config << std::endl;
 	//inizializzazione del soicket per il server
