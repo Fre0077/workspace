@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:01:30 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/20 10:23:59 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/20 12:33:07 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,34 @@
 
 std::string	html_response(std::string path, int status, Config *config, std::string content_type, std::string connection)
 {
-	char buffer[8192000];
-	memset(buffer, 0, sizeof(buffer));
-	std::string _html;
-	int home_html_fd = open((path.erase(0, 2)).c_str(), O_RDONLY);
-	if (home_html_fd < 0) {
+	std::ifstream file(path.c_str(), std::ios::binary | std::ios::ate);
+	if (!file.is_open()) {
 		std::cerr << "Error opening " << path << ": " << strerror(errno) << std::endl;
 		return config->getDError_page(500);
 	}
-	ssize_t bytes_read = read(home_html_fd, buffer, sizeof(buffer) - 1);
-	if (bytes_read < 0) {
-		std::cerr << "Error reading  " << path << ": " << strerror(errno) << std::endl;
-		close(home_html_fd);
+
+	std::streamsize size = file.tellg();
+	file.seekg(0, std::ios::beg);
+
+	std::string _html(size, '\0');
+	if (!file.read(&_html[0], size)) {
+		std::cerr << "Error reading " << path << ": " << strerror(errno) << std::endl;
 		return config->getDError_page(500);
 	}
-	buffer[bytes_read] = '\0';
-	_html = buffer;
+
 	std::ostringstream cont_length;
-	cont_length << _html.length();
-	close(home_html_fd);
+	cont_length << size;
+
 	std::stringstream s_code;
 	s_code << status;
+	
 	std::string response = 
 		"HTTP/1.1 " + s_code.str() + " OK\r\n"
 		"Content-Type: " + content_type + "\r\n"
 		"Content-Length: " + cont_length.str() + "\r\n"
 		"Connection: " + connection + "\r\n"
-		"\r\n"
-		"" + _html + "";
+		"\r\n" + _html;
+	
 	return response;
 }
 
@@ -52,6 +52,7 @@ std::string html_image(const std::string& path, int status, Config *config)
 	std::cout << RED "----------" << path <<"---------" END << std::endl;
 	if (!file.is_open())
 	{
+		file.close();
 		std::cerr << "Error opening " << path << ": " << strerror(errno) << std::endl;
 		return config->getDError_page(500);
 	}
@@ -73,6 +74,7 @@ std::string html_image(const std::string& path, int status, Config *config)
 
 	// Unisci header + contenuto binario dell'immagine
 	std::string response = headers.str() + file_data;
+	file.close();
 	return response;
 }
 

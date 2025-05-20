@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/20 10:43:32 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/20 11:47:14 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,17 @@ int new_connection(int server_fd)
 	return client_fd;
 }
 
-int close_socket(std::vector<pollfd> *pollfds, size_t *i)
+int close_socket(std::vector<pollfd> *pollfds, std::vector<Request> *requests, size_t *i)
 {
 	std::cerr << RED "Client disconnected" END << std::endl;
 	close((*pollfds)[*i].fd);
 	(*pollfds).erase((*pollfds).begin() + *i);
+	requests->erase(requests->begin() + (*i - 1));
 	*i -= 1;
 	return 0;
 }
 
-int client_request(std::vector<pollfd> *pollfds, Request *request, Config *config, size_t *i)
+int client_request(std::vector<pollfd> *pollfds, Request *request, Config *config, size_t *i, std::vector<Request> *requests)
 {
 	char temp_buffer[8192];
 	int	bytes_read = 0;
@@ -77,7 +78,7 @@ int client_request(std::vector<pollfd> *pollfds, Request *request, Config *confi
 	{
 		bytes_read = recv((*pollfds)[*i].fd, temp_buffer, 8192, 0);
 		if (bytes_read == 0)
-			close_socket(pollfds, i);
+			close_socket(pollfds, requests, i);
 		if (bytes_read < 0)
 			return 0;
 		request->setRequest(temp_buffer, bytes_read);
@@ -95,7 +96,7 @@ int client_request(std::vector<pollfd> *pollfds, Request *request, Config *confi
 	{
 		bytes_read = recv((*pollfds)[*i].fd, temp_buffer, 8192, 0);
 		if (bytes_read == 0)
-			close_socket(pollfds, i);
+			close_socket(pollfds, requests, i);
 		if (bytes_read < 0)
 			return 0;
 		request->setRequest(temp_buffer, bytes_read);
@@ -113,7 +114,7 @@ int client_request(std::vector<pollfd> *pollfds, Request *request, Config *confi
 		send((*pollfds)[*i].fd, response.c_str(), response.length(), 0);
 	}
 	else if (bytes_read == 0)
-		close_socket(pollfds, i);
+		close_socket(pollfds, requests, i);
 	else if (bytes_read == -1)
 	{
 		std::cerr << RED "Errore nella lettura: " END << strerror(errno) << std::endl;
@@ -172,13 +173,13 @@ int main(int argc, char **argv)
 			std::cout << "pollfds[i].revents: " << pollfds[i].revents << std::endl;
 			if (pollfds[i].revents & POLLERR) //errore del poll, errore generico
 			{
-				close_socket(&pollfds, &i);
+				close_socket(&pollfds, &requests, &i);
 				size = pollfds.size();
 				continue;
 			}
 			if (pollfds[i].revents & POLLHUP) //errore del poll, chiusura delle connessione
 			{
-				close_socket(&pollfds, &i);
+				close_socket(&pollfds, &requests, &i);
 				size = pollfds.size();
 				continue;
 			}
@@ -198,7 +199,7 @@ int main(int argc, char **argv)
 					}
 				}
 				else
-					if (client_request(&pollfds, &requests[i - 1], &config, &i)) //richiesta da un client già connesso
+					if (client_request(&pollfds, &requests[i - 1], &config, &i, &requests)) //richiesta da un client già connesso
 						return 1;
 			}
 			pollfds[i].revents = 0;

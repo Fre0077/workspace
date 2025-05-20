@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:14 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/19 22:43:29 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/20 11:41:57 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ Config::Config(std::string name)
 			std::cout << "method: " << this->method << std::endl;
 		}
 	}
+	file.close();
 }
 
 Config::Config(Config const& copy)

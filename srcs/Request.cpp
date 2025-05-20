@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:35:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/19 23:33:14 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/20 11:55:45 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,9 @@ void	Request::clearRequest()
 	body_need = FALSE;
 }
 
-void	Request::setRequest(std::string newPart, int len)
+void	Request::setRequest(const char* newPart, int len)
 {
-	request.append(newPart.c_str(), len);
+	request.append(newPart, len);
 }
 
 void	Request::setRequestType()

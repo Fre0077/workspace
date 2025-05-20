@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:34:33 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/19 23:30:48 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/20 11:55:55 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ class Request
 		int			checkHead();
 		int			checkBody();
 		void		clearRequest();
-		void		setRequest(std::string newPart, int len);
+		void		setRequest(const char* newPart, int len);
 		void		setRequestType();
 		void		setHeadLength();
 		void		setBodyLength();
