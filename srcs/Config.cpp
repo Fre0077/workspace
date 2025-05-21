@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:14 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/21 16:03:44 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/21 20:41:42 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,8 @@ t_location Config::getLocation(std::string location)
 
 int Config::getLocationMethod(std::string location)
 {
+	if (this->checkPath(location))
+		return -1;
 	return this->locations[location].method;
 }
 

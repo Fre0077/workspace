@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/21 16:04:46 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/21 18:43:55 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,8 +225,8 @@ int main(int argc, char **argv)
 		std::cerr << RED "Server shutting down..." END << std::endl;
 		std::cerr << "Exception caught: " << e.what() << std::endl;
 	}
-	for	(int i = 0; i < n_server; i++)
-		close(pollfds[i].fd);
+	for	(int i = 1; i <= n_server; i++)
+		delete configs[i];
 	for (size_t i = 0; i < pollfds.size(); ++i)
 		close(pollfds[i].fd);
 	// requests.clear();

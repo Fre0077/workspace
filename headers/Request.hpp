@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:34:33 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/20 17:31:17 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/21 19:55:36 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ class Request
 
 		int			checkHead();
 		int			checkBody();
+		int			checkPathFile();
 		void		clearRequest();
 		void		setRequest(const char* newPart, int len);
 		void		setRequestType();
