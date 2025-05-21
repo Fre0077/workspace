@@ -1,0 +1,28 @@
+==1132269== Memcheck, a memory error detector
+==1132269== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1132269== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==1132269== Command: ./webserv config_example.config
+==1132269== Parent PID: 1121365
+==1132269== 
+==1132269== 
+==1132269== FILE DESCRIPTORS: 7 open (3 std) at exit.
+==1132269== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
+==1132269==    <inherited from parent>
+==1132269== 
+==1132269== Open file descriptor 38: /dev/ptmx
+==1132269==    <inherited from parent>
+==1132269== 
+==1132269== Open file descriptor 37: /home/alborghi/.config/Code/logs/20250521T095749/ptyhost.log
+==1132269==    <inherited from parent>
+==1132269== 
+==1132269== Open file descriptor 3: /sgoinfre/alborghi/miei_file/42_core/milestone_5/webserv/val.log
+==1132269==    <inherited from parent>
+==1132269== 
+==1132269== 
+==1132269== HEAP SUMMARY:
+==1132269==     in use at exit: 0 bytes in 0 blocks
+==1132269==   total heap usage: 81 allocs, 81 frees, 86,987 bytes allocated
+==1132269== 
+==1132269== All heap blocks were freed -- no leaks are possible
+==1132269== 
+==1132269== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/21 10:03:22 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/21 10:20:03 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,25 @@ static bool& getShutdown()
 	return Shutdown;
 }
 
+// void	close_server(int sig)
+// {
+// 	std::cout << RED "Server shutting down..." END << std::endl;
+// 	if (sig == SIGINT)
+// 	{
+// 		std::cout << "SIGINT received" << std::endl;
+// 		getShutdown() = true;
+// 	}
+// 	else if (sig == SIGQUIT)
+// 		std::cout << "SIGQUIT received" << std::endl;
+// }
+
 void	close_server(int sig)
 {
 	std::cout << RED "Server shutting down..." END << std::endl;
 	if (sig == SIGINT)
 	{
 		std::cout << "SIGINT received" << std::endl;
-		getShutdown() = true;
+		throw std::runtime_error("SIGINT received");
 	}
 	else if (sig == SIGQUIT)
 		std::cout << "SIGQUIT received" << std::endl;
@@ -156,56 +168,64 @@ int main(int argc, char **argv)
 	std::vector<pollfd> pollfds;
 	pollfds.push_back(server_pollfd);
 	//loop per la gestione delle richieste
-	while (!getShutdown()) {
-		//check del poll per verificare lo stato delle request
-		std::cout << YELLOW "=========================waiting for poll=============================" END << std::endl;
-		int ret = poll(pollfds.data(), pollfds.size(), -1);
-		if (ret < 0)
-		{
-			std::cerr << "Error in poll: " << strerror(errno) << std::endl;
-			break;
-		}
-		//ciclo per la lettura della request dei singoli client
-		size_t size = pollfds.size();
-		for (size_t i = 0; i < size; ++i)
-		{
-			std::cout << "i: " << i << std::endl;
-			std::cout << "pollfds[i].fd: " << pollfds[i].fd << std::endl;
-			std::cout << "pollfds[i].events: " << pollfds[i].events << std::endl;
-			std::cout << "pollfds[i].revents: " << pollfds[i].revents << std::endl;
-			if (pollfds[i].revents & POLLERR) //errore del poll, errore generico
+	try
+	{
+		while (!getShutdown()) {
+			//check del poll per verificare lo stato delle request
+			std::cout << YELLOW "=========================waiting for poll=============================" END << std::endl;
+			int ret = poll(pollfds.data(), pollfds.size(), -1);
+			if (ret < 0)
 			{
-				close_socket(&pollfds, &requests, &i);
-				size = pollfds.size();
-				continue;
+				std::cerr << "Error in poll: " << strerror(errno) << std::endl;
+				break;
 			}
-			if (pollfds[i].revents & POLLHUP) //errore del poll, chiusura delle connessione
+			//ciclo per la lettura della request dei singoli client
+			size_t size = pollfds.size();
+			for (size_t i = 0; i < size; ++i)
 			{
-				close_socket(&pollfds, &requests, &i);
-				size = pollfds.size();
-				continue;
-			}
-			if (pollfds[i].revents & POLLIN) //la request viene letta e gestita
-			{
-				if (pollfds[i].fd == server_fd) //connessione di un nuovo client
+				std::cout << "i: " << i << std::endl;
+				std::cout << "pollfds[i].fd: " << pollfds[i].fd << std::endl;
+				std::cout << "pollfds[i].events: " << pollfds[i].events << std::endl;
+				std::cout << "pollfds[i].revents: " << pollfds[i].revents << std::endl;
+				if (pollfds[i].revents & POLLERR) //errore del poll, errore generico
 				{
-					int fd = new_connection(server_fd);
-					if (fd > 0)
-					{
-						pollfd client_pollfd;
-						client_pollfd.fd = fd;
-						client_pollfd.events = POLLIN;
-						pollfds.push_back(client_pollfd);
-						Request request;
-						requests.push_back(request);
-					}
+					close_socket(&pollfds, &requests, &i);
+					size = pollfds.size();
+					continue;
 				}
-				else
-					if (client_request(&pollfds, &requests[i - 1], &config, &i, &requests)) //richiesta da un client già connesso
-						return 1;
+				if (pollfds[i].revents & POLLHUP) //errore del poll, chiusura delle connessione
+				{
+					close_socket(&pollfds, &requests, &i);
+					size = pollfds.size();
+					continue;
+				}
+				if (pollfds[i].revents & POLLIN) //la request viene letta e gestita
+				{
+					if (pollfds[i].fd == server_fd) //connessione di un nuovo client
+					{
+						int fd = new_connection(server_fd);
+						if (fd > 0)
+						{
+							pollfd client_pollfd;
+							client_pollfd.fd = fd;
+							client_pollfd.events = POLLIN;
+							pollfds.push_back(client_pollfd);
+							Request request;
+							requests.push_back(request);
+						}
+					}
+					else
+						if (client_request(&pollfds, &requests[i - 1], &config, &i, &requests)) //richiesta da un client già connesso
+							return 1;
+				}
+				pollfds[i].revents = 0;
 			}
-			pollfds[i].revents = 0;
 		}
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << RED "Server shutting down..." END << std::endl;
+		std::cerr << "Exception caught: " << e.what() << std::endl;
 	}
 	close(server_fd);
 	for (size_t i = 0; i < pollfds.size(); ++i)
