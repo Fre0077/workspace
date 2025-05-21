@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:14 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/20 15:09:38 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:40:46 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,20 @@
 //==============================================================================
 //COSTRUCTOR/ESTRUCTOR==========================================================
 //==============================================================================
-Config::Config(std::string name)
+Config::Config() {}
+
+Config::Config(std::string name, int n)
 {
 	std::ifstream file(name.c_str());
 	std::string temp, temp2;
 	std::string line;
-	this->max_body_len = 0;
+	this->max_body_len = 8192;
 	this->port = "4243";
 	this->server_name = "";
 	this->root = "";
+	this->index = "";
 	this->method = 0;
-	int graph = 0;
+	int graph = 0, pre_graph = 0;
 	
 	this->file_name = name;
 	d_error_pages[400] = "HTTP/1.1 400 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>400 Bad request Bad Request</h1></body></html>";
@@ -42,11 +45,15 @@ Config::Config(std::string name)
 	error_pages[501] = "";
 	while (std::getline(file, line))
 	{
-		if (line.find("{") != std::string::npos)
-			graph++;
+		//std::cout << graph << "    " << pre_graph  << "    " << n << std::endl;
 		if (line.find("}") != std::string::npos)
 			graph--;
-		if (line == "" || line == "\t")
+		if (line.find("{") != std::string::npos)
+			graph++;
+		if (graph != pre_graph && (graph == 0 || pre_graph == 0))
+			n--;
+		pre_graph = graph;
+		if (line == "" || line == "\t" || n != 0)
 			continue;
 		if (line.find("location") == line.find_first_not_of(" \t"))
 		{
@@ -88,11 +95,11 @@ Config::Config(std::string name)
 						this->locations[temp].method += 4;
 				}
 			}
-			std::cout << "location: " << temp << std::endl;
-			std::cout << "root: " << this->locations[temp].root << std::endl;
-			std::cout << "index: " << this->locations[temp].index << std::endl;
-			std::cout << "method: " << this->locations[temp].method << std::endl;
-			std::cout << "=========================" << std::endl;
+			//std::cout << "location: " << temp << std::endl;
+			//std::cout << "root: " << this->locations[temp].root << std::endl;
+			//std::cout << "index: " << this->locations[temp].index << std::endl;
+			//std::cout << "method: " << this->locations[temp].method << std::endl;
+			//std::cout << "=========================" << std::endl;
 		}
 		if (graph != 1)
 			continue;
@@ -128,6 +135,13 @@ Config::Config(std::string name)
 			removeChar(&temp, ';');
 			this->port = temp;
 		}
+		else if (line.find("index") == line.find_first_not_of(" \t"))
+		{
+			std::istringstream iss(line);
+			iss >> temp >> temp;
+			removeChar(&temp, ';');
+			this->index = temp;
+		}
 		else if (line.find("root") == line.find_first_not_of(" \t"))
 		{
 			std::istringstream iss(line);
@@ -150,7 +164,6 @@ Config::Config(std::string name)
 				this->method += 2;
 			if (line.find("DELETE") != std::string::npos)
 				this->method += 4;
-			std::cout << "method: " << this->method << std::endl;
 		}
 	}
 	file.close();
@@ -192,6 +205,7 @@ std::ostream& operator<<(std::ostream& out, Config const& rhs)
 	out << "server name: " << rhs.getServer_name() << std::endl;
 	out << "file name: " << rhs.getFile_name() << std::endl;
 	out << "method: " << rhs.getMethod() << std::endl;
+	out << "index: " << rhs.getIndex() << std::endl;
 	out << "port: " << rhs.getPort() << std::endl;
 	out << "root: " << rhs.getRoot() << std::endl;
 	return out;
@@ -246,6 +260,11 @@ std::string Config::getServer_name() const
 std::string Config::getFile_name() const
 {
 	return this->file_name;
+}
+
+std::string Config::getIndex() const
+{
+	return this->root + "/" + this->index;
 }
 
 std::string Config::getRoot() const

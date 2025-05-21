@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:01:30 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/20 15:13:33 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:47:10 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,10 +128,10 @@ std::string	server_response(Request *request, Config *config)
 		return html_image(config->getRoot() + path, 200, config);
 	else if (path.find(".mp4") != std::string::npos)
 		return html_video(config->getRoot() + path, 200, config);
-	else if (!(request->getMethodNum() & config->getLocationMethod(path)) && config->getLocationMethod(path) != 0)
-		return html_error(405, config);
 	else if (config->checkPath(path))
 		return html_error(404, config);
+	else if (!(request->getMethodNum() & config->getLocationMethod(path)) || config->getLocationMethod(path) == 0)
+		return html_error(405, config);
 	else if (method != "GET" && method != "DELETE" && method != "POST")
 		return html_error(501, config);
 	else

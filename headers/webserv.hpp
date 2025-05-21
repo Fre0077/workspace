@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:39:26 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/19 18:51:36 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:11:08 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include "colours.hpp"
 
 int	init_server_socket(int *server_fd, Config config);
-int	check_file(std::string file_name);
+std::vector<Config>	createConfig(std::string file_name);
 std::string server_response(Request *request, Config *config);
 
 #endif

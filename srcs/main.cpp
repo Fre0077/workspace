@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/21 09:58:34 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/21 10:03:22 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ int main(int argc, char **argv)
 	}
 	init_signals();
 	//dichiarazione per la configurazioe e la reqeust
-	Config					config(argv[1]);
+	Config					config(argv[1], 1);
 	std::vector<Request>	requests;
 	std::cout << config << std::endl;
 	//inizializzazione del soicket per il server

@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:35:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/20 11:55:45 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:41:03 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ Request::Request()
 	request = "";
 	method = "";
 	path = "";
+	host = "";
 	head_length = 0;
 	body_length = 0;
 	length = 0;
@@ -68,6 +69,7 @@ std::ostream& operator<<(std::ostream& out, Request const& rhs)
 	out << "boundary: " << rhs.getBoundary() << std::endl;
 	out << "method: " << rhs.getMethod() << std::endl;
 	out << "path: " << rhs.getPath() << std::endl;
+	out << "host: " << rhs.getHost() << std::endl;
 	out << "length: " << rhs.getLength() << std::endl;
 	out << "head length: " << rhs.getHeadLength() << std::endl;
 	out << "body length: " << rhs.getBodyLength() << std::endl;
@@ -116,13 +118,17 @@ void	Request::setRequest(const char* newPart, int len)
 
 void	Request::setRequestType()
 {
+	std::string temp;
+	int			pos;
 	std::istringstream iss(request);
-	iss >> this->method >> this->path;
+	iss >> this->method >> this->path >> temp >> temp >> temp;
 	if (this->method == "DELETE")
 	{
 		this->delete_file = this->path;
 		this->path = "/delete";
 	}
+	pos = temp.find(":");
+	this->host = temp.substr(pos + 1);
 }
 
 void	Request::setHeadLength()
@@ -198,6 +204,11 @@ std::string	Request::getMethod() const
 std::string	Request::getPath() const
 {
 	return this->path;
+}
+
+std::string	Request::getHost() const
+{
+	return this->host;
 }
 
 size_t	Request::getBodyLength() const

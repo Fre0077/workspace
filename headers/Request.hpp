@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:34:33 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/20 11:55:55 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:31:17 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ class Request
 		std::string request;
 		std::string method;
 		std::string path;
+		std::string host;
 		size_t		head_length;
 		size_t		body_length;
 		size_t		length;
@@ -50,6 +51,7 @@ class Request
 		std::string	getRequest() const;
 		std::string	getMethod() const;
 		std::string	getPath() const;
+		std::string getHost() const;
 		size_t		getHeadLength() const;
 		size_t		getBodyLength() const;
 		size_t		getLength() const;
