@@ -6,7 +6,7 @@
 /*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 07:57:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/20 18:31:16 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/21 09:57:05 by fde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,23 @@ int	init_server_socket(int *server_fd, Config config)
 	return 0;
 }
 
-//std::vector<Config>	createConfig(std::string file_name)
-//{
-	
-//}
+int	get_number_server(std::string file_name)
+{
+	std::ifstream	file(file_name.c_str());
+	std::string		line;
+	int				n_server = 0;
+
+	while (std::getline(file, line))
+		if (line.find("location") == 0)
+			n_server++;
+}
+
+std::vector<Config>	create_config(std::string file_name)
+{
+	int	n_server = get_number_server(file_name);
+
+	for(int i = 1; i <= n_server; i++)
+	{
+		
+	}
+}
