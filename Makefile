@@ -35,8 +35,8 @@ VAL_FLAGS = \
 --leak-check=full \
 --show-leak-kinds=all \
 --track-origins=yes \
+--log-file=val.log
 
-# --log-file=val.log
 
 val: $(NAME) $(HEADERS)
 	clear

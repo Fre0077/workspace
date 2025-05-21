@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:14 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/20 18:40:46 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:03:44 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,11 @@ Config::Config(std::string name, int n)
 	std::string temp, temp2;
 	std::string line;
 	this->max_body_len = 8192;
-	this->port = "4243";
 	this->server_name = "";
 	this->root = "";
 	this->index = "";
 	this->method = 0;
-	int graph = 0, pre_graph = 0;
+	int graph = 0;
 	
 	this->file_name = name;
 	d_error_pages[400] = "HTTP/1.1 400 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>400 Bad request Bad Request</h1></body></html>";
@@ -43,16 +42,16 @@ Config::Config(std::string name, int n)
 	error_pages[405] = "";
 	error_pages[413] = "";
 	error_pages[501] = "";
+	n--;
 	while (std::getline(file, line))
 	{
-		//std::cout << graph << "    " << pre_graph  << "    " << n << std::endl;
+		//std::cout << graph  << "    " << n << std::endl;
 		if (line.find("}") != std::string::npos)
 			graph--;
 		if (line.find("{") != std::string::npos)
 			graph++;
-		if (graph != pre_graph && (graph == 0 || pre_graph == 0))
+		if (graph == 0 && line.find("}") != std::string::npos)
 			n--;
-		pre_graph = graph;
 		if (line == "" || line == "\t" || n != 0)
 			continue;
 		if (line.find("location") == line.find_first_not_of(" \t"))
@@ -208,6 +207,7 @@ std::ostream& operator<<(std::ostream& out, Config const& rhs)
 	out << "index: " << rhs.getIndex() << std::endl;
 	out << "port: " << rhs.getPort() << std::endl;
 	out << "root: " << rhs.getRoot() << std::endl;
+	out << "######################" END << std::endl;
 	return out;
 }
 //==============================================================================

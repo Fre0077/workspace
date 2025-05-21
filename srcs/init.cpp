@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fde-sant <fde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 07:57:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/21 09:57:05 by fde-sant         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:52:38 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,26 @@ int	get_number_server(std::string file_name)
 	int				n_server = 0;
 
 	while (std::getline(file, line))
-		if (line.find("location") == 0)
+		if (line.find("server") == 0)
 			n_server++;
+	return n_server;
 }
 
-std::vector<Config>	create_config(std::string file_name)
+int	init_config(std::string file_name, std::map<int, Config*> &configs, std::vector<pollfd> *pollfds, int n_server)
 {
-	int	n_server = get_number_server(file_name);
-
+	int	server_fd;
+	
 	for(int i = 1; i <= n_server; i++)
 	{
-		
+		Config *config = new Config(file_name, i);
+		configs[i] = config;
+		if (init_server_socket(&server_fd, *config) != 0)
+			return 1;
+		pollfd server_pollfd;
+		server_pollfd.fd = server_fd;
+		server_pollfd.events = POLLIN;
+		server_pollfd.revents = 0;
+		(*pollfds).push_back(server_pollfd);
 	}
+	return 0;
 }

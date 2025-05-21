@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/21 10:20:03 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:04:46 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,6 @@ static bool& getShutdown()
 	static bool Shutdown = false;
 	return Shutdown;
 }
-
-// void	close_server(int sig)
-// {
-// 	std::cout << RED "Server shutting down..." END << std::endl;
-// 	if (sig == SIGINT)
-// 	{
-// 		std::cout << "SIGINT received" << std::endl;
-// 		getShutdown() = true;
-// 	}
-// 	else if (sig == SIGQUIT)
-// 		std::cout << "SIGQUIT received" << std::endl;
-// }
 
 void	close_server(int sig)
 {
@@ -76,12 +64,27 @@ int close_socket(std::vector<pollfd> *pollfds, std::vector<Request> *requests, s
 	close((*pollfds)[*i].fd);
 	(*pollfds).erase((*pollfds).begin() + *i);
 	(void)requests;
-	// requests->erase(requests->begin() + (*i - 1));
 	*i -= 1;
 	return 0;
 }
 
-int client_request(std::vector<pollfd> *pollfds, Request *request, Config *config, size_t *i, std::vector<Request> *requests)
+int	check_server_fd(int fd, int n_server, std::vector<pollfd> *pollfds)
+{
+	for(int i = 0; i < n_server; i++)
+		if (fd == (*pollfds)[i].fd)
+			return 1;
+	return 0;
+}
+
+Config	*check_config(std::map<int, Config*> *configs, Request *request, int n_server)
+{
+	for(int i = 1; i <= n_server; i++)
+		if ((*configs)[i]->getPort() == request->getHost())
+			return (*configs)[i];
+	return NULL;
+}
+
+int client_request(std::vector<pollfd> *pollfds, Request *request, std::map<int, Config*> *configs, size_t *i, std::vector<Request> *requests, int n_server)
 {
 	char temp_buffer[8192];
 	int	bytes_read = 0;
@@ -123,7 +126,7 @@ int client_request(std::vector<pollfd> *pollfds, Request *request, Config *confi
 	if (bytes_read > 0)
 	{
 		//ritorno una risposta al sito
-		std::string response = server_response(request, config);
+		std::string response = server_response(request, check_config(configs, request, n_server));
 		send((*pollfds)[*i].fd, response.c_str(), response.length(), 0);
 	}
 	else if (bytes_read == 0)
@@ -151,22 +154,17 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	init_signals();
-	//dichiarazione per la configurazioe e la reqeust
-	Config					config(argv[1], 1);
+	//dichiarazione per la configurazioe e la request
+	int						n_server = get_number_server(argv[1]);
+	std::cout << RED "" << n_server << "" END << std::endl;
+	std::map<int, Config*>	configs;
+	std::vector<pollfd>		pollfds;
 	std::vector<Request>	requests;
-	std::cout << config << std::endl;
-	//inizializzazione del soicket per il server
-	int server_fd;
-	if (init_server_socket(&server_fd, config) != 0)
+	if (init_config(argv[1], configs, &pollfds, n_server)) //inizializzazione del socket per il server
 		return 1;
-	std::cout << "Server listening on port " << config.getPort() << std::endl;
-	//creare l'array per le struct del poll e aggiunto l'fd del server (0)
-	pollfd server_pollfd;
-	server_pollfd.fd = server_fd;
-	server_pollfd.events = POLLIN;
-	server_pollfd.revents = 0;
-	std::vector<pollfd> pollfds;
-	pollfds.push_back(server_pollfd);
+	for (int i = 1; i <= n_server; i++)
+		std::cout << MAGENTA "" << *configs[i] << "" END << std::endl;
+	std::cout << "Server listening on port " << "aggiungere la stampa di tutte le porte" << std::endl;
 	//loop per la gestione delle richieste
 	try
 	{
@@ -201,9 +199,9 @@ int main(int argc, char **argv)
 				}
 				if (pollfds[i].revents & POLLIN) //la request viene letta e gestita
 				{
-					if (pollfds[i].fd == server_fd) //connessione di un nuovo client
+					if (check_server_fd(pollfds[i].fd, n_server, &pollfds)) //connessione di un nuovo client
 					{
-						int fd = new_connection(server_fd);
+						int fd = new_connection(pollfds[i].fd);
 						if (fd > 0)
 						{
 							pollfd client_pollfd;
@@ -215,7 +213,7 @@ int main(int argc, char **argv)
 						}
 					}
 					else
-						if (client_request(&pollfds, &requests[i - 1], &config, &i, &requests)) //richiesta da un client già connesso
+						if (client_request(&pollfds, &requests[i - n_server], &configs, &i, &requests, n_server)) //richiesta da un client già connesso
 							return 1;
 				}
 				pollfds[i].revents = 0;
@@ -227,11 +225,10 @@ int main(int argc, char **argv)
 		std::cerr << RED "Server shutting down..." END << std::endl;
 		std::cerr << "Exception caught: " << e.what() << std::endl;
 	}
-	close(server_fd);
-	for (size_t i = 0; i < pollfds.size(); ++i)
-	{
+	for	(int i = 0; i < n_server; i++)
 		close(pollfds[i].fd);
-	}
+	for (size_t i = 0; i < pollfds.size(); ++i)
+		close(pollfds[i].fd);
 	// requests.clear();
 	pollfds.clear();
 	// config.clearConf();
