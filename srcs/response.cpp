@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:01:30 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/22 14:37:12 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/22 19:56:58 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ std::string	html_response(const std::string& path, int status, Config *config, s
 	headers << "HTTP/1.1 " + s_code.str() + " OK\r\n";
 	headers << "Content-Type: " + content_type + "\r\n";
 	headers << "Content-Length: " << file_data.size() << "\r\n";
-	headers << "Connection: close\r\n";
+	headers << "Connection: keep-alive\r\n";
 	headers << "\r\n";
 
 	std::string response = headers.str() + file_data;
@@ -47,31 +47,21 @@ std::string	html_error(int err, Config *config)
 		return html_response(config->getRoot() + "/" + config->getError_page(err), err, config, "text/html");
 }
 
-int save_file(std::string request, std::string boundary, std::string path)
+int save_file(Request *request, std::string path)
 {
-	size_t pos = request.find(boundary);
-	pos = request.find(boundary, pos + boundary.length());
-	if (pos == std::string::npos)
+	if (request->getBody() == "")
 	{
-		std::cerr << RED "Boundary not found in request" << END << std::endl;
+		std::cerr << RED "Body not found in request" << END << std::endl;
 		return 1;
 	}
-	std::string request_body = request.substr(pos + boundary.length() + 1);
-	(void)path;
-	std::string file_name = request_body.substr(0, request_body.find("\r\n"));
-	file_name = file_name.substr(file_name.find("filename=\"") + 10);
-	file_name = file_name.substr(0, file_name.find("\""));
-	file_name = path + "/copy_" + file_name;
-	std::ofstream file(file_name.c_str(), std::ios::binary);
+	std::ofstream file((path + request->getFileName()).c_str(), std::ios::binary);
 	if (!file.is_open())
 	{
 		file.close();
-		std::cerr << "Error opening " << file_name << ": " << strerror(errno) << std::endl;
+		std::cerr << "Error opening " << request->getFileName() << ": " << strerror(errno) << std::endl;
 		return 1;
 	}
-	std::string file_data = request_body.substr(request_body.find("\r\n\r\n") + 4);
-	file_data = file_data.substr(0, file_data.find("\r\n--" + boundary));
-	file.write(file_data.c_str(), file_data.size());
+	file.write(request->getBody().c_str(), request->getBody().size());
 	file.close();
 	return 0;
 }
@@ -89,8 +79,7 @@ std::string	server_response(Request *request, Config *config)
 		return html_error(413, config);
 	else if (config->checkPath(path) && request->checkPathFile())
 		return html_error(404, config);
-	else if (((!(request->getMethodNum() & config->getLocationMethod(path)) || config->getLocationMethod(path) == 8) && config->getLocationMethod(path) != 0)
-			|| (!(request->getMethodNum() & config->getMethod()) && config->getLocationMethod(path) == 0))
+	else if (((!(request->getMethodNum() & config->getLocationMethod(path)) || config->getLocationMethod(path) == 8) && config->getLocationMethod(path) != 0) || (!(request->getMethodNum() & config->getMethod()) && config->getLocationMethod(path) == 0))
 		return html_error(405, config);
 	else if (method != "GET" && method != "DELETE" && method != "POST")
 		return html_error(501, config);
@@ -98,7 +87,7 @@ std::string	server_response(Request *request, Config *config)
 	{
 		if (path == "/upload")
 		{
-			int ret = save_file(request->getRequest(), request->getBoundary(), config->getLocationRoot(path));
+			int ret = save_file(request, config->getLocationUpload(path));
 			std::cout << "ret: " << ret << std::endl;
 		}
 		return html_response(config->getLocationIndex(path), 200, config, "text/html");

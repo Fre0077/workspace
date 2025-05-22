@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/22 10:09:27 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/05/22 19:43:06 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,7 @@ int client_request(std::vector<pollfd> *pollfds, Request *request, std::map<int,
 			return 0;
 	}
 	request->setBodyLength();
+	request->setBody();
 	std::cout << *request << std::endl;
 	std::cout << request->getRequest() << std::endl;
 	//controllo il ritorno del recv
@@ -209,22 +210,25 @@ int main(int argc, char **argv)
 	init_signals();
 	//dichiarazione per la configurazioe e la request
 	int						n_server = get_number_server(argv[1]);
-	std::cout << RED "" << n_server << "" END << std::endl;
+	std::string				port_print = "";
 	std::map<int, Config*>	configs;
 	std::vector<pollfd>		pollfds;
 	std::vector<Request>	requests;
 	if (init_config(argv[1], configs, &pollfds, n_server)) //inizializzazione del socket per il server
 		return 1;
 	for (int i = 1; i <= n_server; i++)
+	{
 		std::cout << MAGENTA "" << *configs[i] << "" END << std::endl;
-	std::cout << "Server listening on port " << "aggiungere la stampa di tutte le porte" << std::endl;
+		port_print = port_print + " " + configs[i]->getPort() + ",";
+	}
+	std::cout << YELLOW "Server listening on port:" << port_print << "\n" END << std::endl;
 	//loop per la gestione delle richieste
 	std::cout << RED << exec_perl("srcs/server/map.pl 10 10 4") << END << std::endl;
 	try
 	{
 		while (1) {
 			//check del poll per verificare lo stato delle request
-			std::cout << YELLOW "=========================waiting for poll=============================" END << std::endl;
+			std::cout << YELLOW "===waiting for poll===" END << std::endl;
 			int ret = poll(pollfds.data(), pollfds.size(), -1);
 			if (ret < 0)
 			{

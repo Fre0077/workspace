@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:17 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/21 14:57:41 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/22 19:51:24 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ typedef struct s_location
 {
 	std::string root;
 	std::string index;
+	std::string upload_directory;
 	int 	method;
 }	t_location;
 
@@ -47,8 +48,9 @@ class Config
 		int			checkPath(std::string path);
 		t_location	getLocation(std::string location);
 		int			getLocationMethod(std::string location);
-		std::string getLocationRoot(std::string location);
+		std::string getLocationUpload(std::string location);
 		std::string getLocationIndex(std::string location);
+		std::string getLocationRoot(std::string location);
 		std::string getDError_page(int i);
 		std::string getError_page(int i);
 		std::string getServer_name() const;

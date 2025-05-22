@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:35:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/21 20:05:23 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/22 19:56:35 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@
 Request::Request()
 {
 	delete_file = "";
+	file_name = "";
 	boundary = "";
 	request = "";
 	method = "";
 	path = "";
 	host = "";
+	body = "";
 	head_length = 0;
 	body_length = 0;
 	length = 0;
@@ -177,6 +179,7 @@ void	Request::setBoundary()
 	first += 9;
 	size_t second = temp.find("\r\n");
 	this->boundary = temp.substr(first, second - first);
+	this->boundary = "--" + this->boundary;
 }
 
 void	Request::setLength()
@@ -194,9 +197,26 @@ void	Request::setLength()
 	this->length = stringToInt(temp);
 }
 
+void	Request::setBody()
+{
+	if (this->boundary == "")
+		return ;
+	std::string request_body = request.substr(request.find(boundary) + boundary.length() + 1);
+	std::string file = request_body.substr(0, request_body.find("\r\n"));
+	file = file.substr(file.find("filename=\"") + 10);
+	this->file_name = "/up_" + file.substr(0, file.find("\""));
+	std::string file_data = request_body.substr(request_body.find("\r\n\r\n") + 4);
+	this->body = file_data.substr(0, file_data.find("\r\n" + boundary));
+}
+
 std::string	Request::getDeleteFile() const
 {
 	return this->delete_file;
+}
+
+std::string	Request::getFileName() const
+{
+	return this->file_name;
 }
 
 std::string	Request::getBoundary() const
@@ -222,6 +242,11 @@ std::string	Request::getPath() const
 std::string	Request::getHost() const
 {
 	return this->host;
+}
+
+std::string	Request::getBody() const
+{
+	return this->body;
 }
 
 size_t	Request::getBodyLength() const

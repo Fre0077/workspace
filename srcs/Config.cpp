@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:14 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/22 14:33:52 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/22 20:00:55 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ Config::Config(std::string name, int n)
 	int graph = 0;
 	
 	this->file_name = name;
-	d_error_pages[400] = "HTTP/1.1 400 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>400 Bad request Bad Request</h1></body></html>";
+	d_error_pages[400] = "HTTP/1.1 400 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>400 Bad request</h1></body></html>";
 	d_error_pages[403] = "HTTP/1.1 403 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>403 Forbidden</h1></body></html>";
 	d_error_pages[404] = "HTTP/1.1 404 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>404 File Not Found</h1></body></html>";
 	d_error_pages[405] = "HTTP/1.1 405 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>405 Method Not Allowed</h1></body></html>";
@@ -95,11 +95,20 @@ Config::Config(std::string name, int n)
 					if (line.find("DELETE") != std::string::npos)
 						this->locations[temp].method += 4;
 				}
+				else if (line.find("upload_directory") == line.find_first_not_of(" \t"))
+				{
+					std::istringstream iss(line);
+					iss >> temp2 >> temp2;
+					removeChar(&temp2, ';');
+					removeChar(&temp2, '}');
+					this->locations[temp].upload_directory = temp2;
+				}
 			}
 			std::cout << "location: " << temp << std::endl;
 			std::cout << "root: " << this->locations[temp].root << std::endl;
 			std::cout << "index: " << this->locations[temp].index << std::endl;
 			std::cout << "method: " << this->locations[temp].method << std::endl;
+			std::cout << "uplaod: " << this->locations[temp].upload_directory << std::endl;
 			std::cout << "=========================" << std::endl;
 		}
 		if (graph != 1)
@@ -234,16 +243,21 @@ int Config::getLocationMethod(std::string location)
 	return this->locations[location].method;
 }
 
-std::string Config::getLocationRoot(std::string location)
+std::string Config::getLocationUpload(std::string location)
 {
-	if (this->locations[location].root == "")
-		return this->root;
-	return this->locations[location].root;
+	return this->locations[location].upload_directory;
 }
 
 std::string Config::getLocationIndex(std::string location)
 {
 	return this->getLocationRoot(location) + "/" + this->locations[location].index;
+}
+
+std::string Config::getLocationRoot(std::string location)
+{
+	if (this->locations[location].root == "")
+		return this->root;
+	return this->locations[location].root;
 }
 
 std::string Config::getDError_page(int i)

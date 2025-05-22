@@ -6,13 +6,13 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 07:57:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/21 15:52:38 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/22 15:06:28 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/webserv.hpp"
 
-int	init_server_socket(int *server_fd, Config config)
+int	init_server_socket(int *server_fd, Config &config)
 {
 	// 1. Create a socket
 	*server_fd = socket(AF_INET, SOCK_STREAM, 0);

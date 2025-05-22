@@ -34,6 +34,8 @@
 		<button type="button" onclick="deleteFile()">Delete</button>
 	</form>
 
+	<a href="https://tris-trick.netlify.app/index.html">Vai a Tris Trick</a><br><br>
+
 	<script>
 		function deleteFile() {
 			const path = document.getElementById("deletePath").value.trim();
@@ -61,33 +63,5 @@
 			});
 		}
 	</script>
-
-<!--
-	Delete file form
-	<h3>Delete a File</h3>
-	<form action="/delete" method="DELETE" id="deleteForm">
-		<label for="deletePath">File Path:</label>
-		<input type="text" id="deletePath" required placeholder="/uploads/file.txt">
-		<button type="submit">Delete</button>
-	</form>
-
-	<script>
-	document.getElementById("deleteForm").addEventListener("submit", function (e) {
-		e.preventDefault(); // blocca l'invio standard
-
-		const path = document.getElementById("deletePath").value.trim();
-		if (!path) {
-			alert("Inserisci un path valido.");
-			return;
-		}
-
-		fetch(path, {
-			method: 'DELETE',
-			path:"/delete"
-		})
-	});
-	</script>
--->
-
 </body>
 </html>
