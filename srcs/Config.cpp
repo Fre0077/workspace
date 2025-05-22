@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:14 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/21 20:41:42 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/22 14:33:52 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ Config::Config(std::string name, int n)
 				}
 				else if (line.find("method") == line.find_first_not_of(" \t"))
 				{
+					if (this->locations[temp].method < 8)
+						this->locations[temp].method += 8;
 					if (line.find("GET") != std::string::npos)
 						this->locations[temp].method += 1;
 					if (line.find("POST") != std::string::npos)
@@ -94,11 +96,11 @@ Config::Config(std::string name, int n)
 						this->locations[temp].method += 4;
 				}
 			}
-			//std::cout << "location: " << temp << std::endl;
-			//std::cout << "root: " << this->locations[temp].root << std::endl;
-			//std::cout << "index: " << this->locations[temp].index << std::endl;
-			//std::cout << "method: " << this->locations[temp].method << std::endl;
-			//std::cout << "=========================" << std::endl;
+			std::cout << "location: " << temp << std::endl;
+			std::cout << "root: " << this->locations[temp].root << std::endl;
+			std::cout << "index: " << this->locations[temp].index << std::endl;
+			std::cout << "method: " << this->locations[temp].method << std::endl;
+			std::cout << "=========================" << std::endl;
 		}
 		if (graph != 1)
 			continue;
