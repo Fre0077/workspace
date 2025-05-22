@@ -43,4 +43,4 @@ val: $(NAME) $(HEADERS)
 	@echo "Recompiling webserv..."
 	make re
 	@echo "Running webserv with valgrind..."
-	valgrind $(VAL_FLAGS) ./webserv config_example.config
+	valgrind $(VAL_FLAGS) ./webserv 1.config

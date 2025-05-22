@@ -3,20 +3,73 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/21 16:04:46 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/21 17:53:45 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/webserv.hpp"
 
-static bool& getShutdown()
+std::string exec_py(std::string cgi_path)
 {
-	static bool Shutdown = false;
-	return Shutdown;
+	std::system(("python3 " + cgi_path).c_str());
+	return NULL;
 }
+
+// TODO: assicurarsi che si possa usare errno
+std::string exec_perl(std::string cgi_path)
+{
+	int	std_out = dup(STDOUT_FILENO);
+	int pipefd[2];
+	if (pipe(pipefd) == -1)
+	{
+		std::cerr << "Error creating pipe: " << strerror(errno) << std::endl;
+		return NULL;
+	}
+	dup2(pipefd[1], STDOUT_FILENO);
+	close(pipefd[1]);
+	if (!access(cgi_path.c_str(), F_OK))
+	{
+		std::cerr << "File not found: " << cgi_path << std::endl;
+		return NULL;
+	}
+	int res = std::system(("perl " + cgi_path).c_str());
+	if (res == -1)
+	{
+		std::cerr << "Error executing command: " << strerror(errno) << std::endl;
+		return NULL;
+	}
+	dup2(std_out, STDOUT_FILENO);
+	close(std_out);
+	std::string result = "";
+	while (true)
+	{
+		char buffer[1024];
+		ssize_t bytes_read = read(pipefd[0], buffer, sizeof(buffer) - 1);
+		if (bytes_read <= 0)
+			break;
+		buffer[bytes_read] = '\0';
+		result += buffer;
+	}
+	close(pipefd[0]);
+	return result;
+}
+
+void init_cgi_types()
+{
+	static std::map<std::string, std::string(*)(std::string)> cgi_types;
+	cgi_types[".py"] = &exec_py;
+	cgi_types[".pl"] = &exec_perl;
+	// cgi_types[".php"] = &exec_php;
+	// cgi_types[".rb"] = &exec_ruby;
+	// cgi_types[".sh"] = &exec_sh;
+	// cgi_types[".js"] = &exec_js;
+	// cgi_types[".html"] = &exec_html;
+	// cgi_types[".htm"] = &exec_html;
+	
+}	
 
 void	close_server(int sig)
 {
@@ -166,9 +219,10 @@ int main(int argc, char **argv)
 		std::cout << MAGENTA "" << *configs[i] << "" END << std::endl;
 	std::cout << "Server listening on port " << "aggiungere la stampa di tutte le porte" << std::endl;
 	//loop per la gestione delle richieste
+	std::cout << RED << exec_perl("srcs/server/map.pl 10 10 4") << END << std::endl;
 	try
 	{
-		while (!getShutdown()) {
+		while (1) {
 			//check del poll per verificare lo stato delle request
 			std::cout << YELLOW "=========================waiting for poll=============================" END << std::endl;
 			int ret = poll(pollfds.data(), pollfds.size(), -1);
