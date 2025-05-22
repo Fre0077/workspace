@@ -1,15 +1,15 @@
-==1899864== Memcheck, a memory error detector
-==1899864== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==1899864== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==1899864== Command: ./webserv 1.config
-==1899864== Parent PID: 1899802
-==1899864== 
-==1899864== 
-==1899864== HEAP SUMMARY:
-==1899864==     in use at exit: 0 bytes in 0 blocks
-==1899864==   total heap usage: 260 allocs, 260 frees, 985,326 bytes allocated
-==1899864== 
-==1899864== All heap blocks were freed -- no leaks are possible
-==1899864== 
-==1899864== For lists of detected and suppressed errors, rerun with: -s
-==1899864== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==1903631== Memcheck, a memory error detector
+==1903631== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1903631== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==1903631== Command: ./webserv 1.config
+==1903631== Parent PID: 1903576
+==1903631== 
+==1903631== 
+==1903631== HEAP SUMMARY:
+==1903631==     in use at exit: 0 bytes in 0 blocks
+==1903631==   total heap usage: 156 allocs, 156 frees, 109,369 bytes allocated
+==1903631== 
+==1903631== All heap blocks were freed -- no leaks are possible
+==1903631== 
+==1903631== For lists of detected and suppressed errors, rerun with: -s
+==1903631== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
