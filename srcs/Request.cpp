@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:35:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/21 15:42:21 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/21 20:05:23 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,19 @@ int	Request::checkBody()
 	else
 		this->body_need = FALSE;
 	return this->body_need;
+}
+
+int	Request::checkPathFile()
+{
+	std::string temp = "." + path;
+	std::ifstream file(temp.c_str(), std::ios::binary);
+	if (!file.is_open())
+	{
+		file.close();
+		return 1;
+	}
+	file.close();
+	return 0;
 }
 
 void	Request::clearRequest()
