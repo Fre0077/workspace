@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:14 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/22 20:00:55 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/22 20:19:42 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,18 @@ Config::Config(std::string name, int n)
 	d_error_pages[403] = "HTTP/1.1 403 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>403 Forbidden</h1></body></html>";
 	d_error_pages[404] = "HTTP/1.1 404 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>404 File Not Found</h1></body></html>";
 	d_error_pages[405] = "HTTP/1.1 405 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>405 Method Not Allowed</h1></body></html>";
+	d_error_pages[406] = "HTTP/1.1 406 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>406 Not Acceptable</h1></body></html>";
 	d_error_pages[413] = "HTTP/1.1 413 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>413 Payload Too Large</h1></body></html>";
+	d_error_pages[418] = "HTTP/1.1 418 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>418 I'm a teapot</h1></body></html>";
 	d_error_pages[500] = "HTTP/1.1 500 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>500 Internal Server Error</h1></body></html>";
 	d_error_pages[501] = "HTTP/1.1 501 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>501 Not Implemented</h1></body></html>";
 	error_pages[400] = "";
 	error_pages[403] = "";
 	error_pages[404] = "";
 	error_pages[405] = "";
+	error_pages[406] = "";
 	error_pages[413] = "";
+	error_pages[418] = "";
 	error_pages[501] = "";
 	n--;
 	while (std::getline(file, line))
@@ -133,8 +137,12 @@ Config::Config(std::string name, int n)
 				this->error_pages[404] = temp;
 			else if (temp2 == "405")
 				this->error_pages[405] = temp;
+			else if (temp2 == "406")
+				this->error_pages[406] = temp;
 			else if (temp2 == "413")
 				this->error_pages[413] = temp;
+			else if (temp2 == "418")
+				this->error_pages[418] = temp;
 			else if (temp2 == "501")
 				this->error_pages[501] = temp;
 		}

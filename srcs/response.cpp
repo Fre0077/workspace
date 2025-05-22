@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:01:30 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/22 19:56:58 by fre007           ###   ########.fr       */
+/*   Updated: 2025/05/22 20:14:59 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int save_file(Request *request, std::string path)
 	if (!file.is_open())
 	{
 		file.close();
-		std::cerr << "Error opening " << request->getFileName() << ": " << strerror(errno) << std::endl;
-		return 1;
+		std::cerr << RED "Error opening " << request->getFileName() << ": " << strerror(errno) << "" END << std::endl;
+		return 2;
 	}
 	file.write(request->getBody().c_str(), request->getBody().size());
 	file.close();
@@ -88,7 +88,11 @@ std::string	server_response(Request *request, Config *config)
 		if (path == "/upload")
 		{
 			int ret = save_file(request, config->getLocationUpload(path));
-			std::cout << "ret: " << ret << std::endl;
+			std::cout << RED "ret: " END << ret << std::endl;
+			if (ret == 1)
+				return html_error(400, config);
+			else if (ret == 2)
+				return html_error(406, config);
 		}
 		return html_response(config->getLocationIndex(path), 200, config, "text/html");
 	}
