@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:01:30 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/22 20:14:59 by fre007           ###   ########.fr       */
+/*   Updated: 2025/09/15 17:07:23 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,20 @@ std::string	server_response(Request *request, Config *config)
 		return html_error(501, config);
 	else if (!config->checkPath(path))
 	{
-		if (path == "/upload")
+		if (method == "DELETE")
+		{
+			std::string full_path = "./srcs/server/upload/" + request->getDeleteFile();
+			if (remove(full_path.c_str()) == 0)
+			{
+				return html_response(config->getLocationIndex("/delete"), 200, config, "text/html");
+			}
+			else
+			{
+				std::cerr << RED "Error deleting file: " << strerror(errno) << "" END << std::endl;
+				return html_error(404, config);
+			}
+		}
+		if (path == "/upload" && method == "POST")
 		{
 			int ret = save_file(request, config->getLocationUpload(path));
 			std::cout << RED "ret: " END << ret << std::endl;

@@ -17,10 +17,10 @@ srcs/response.cpp
 
 CPPFLAGS = -Wall -Wextra -Werror -std=c++98 -g
 
-all: $(NAME) $(HEADERS)
+all: $(NAME)
 
 $(NAME): $(SRCS)
-	c++ $(CPPFLAGS) -o $(NAME) $(SRCS)
+	c++ $(CPPFLAGS) -o $(NAME) $(SRCS) -Iheaders/
 
 clean:
 
