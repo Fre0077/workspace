@@ -1,1 +1,4 @@
 srcs/server/upload
+.vscode/
+srcs/server/__pycache__
+webserv

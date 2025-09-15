@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 use warnings;
 use strict;
-die "program x y density" unless (scalar(@ARGV) == 3);
-my ($x, $y, $density) = @ARGV;
+# die "program x y density" unless (scalar(@ARGV) == 3);
+my ($x, $y, $density) = (10, 10, 5);
 print "$y.ox\n";
 for (my $i = 0; $i < $y; $i++) {
 	for (my $j = 0; $j < $x; $j++) {

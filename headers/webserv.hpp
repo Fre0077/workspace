@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:39:26 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/22 15:07:47 by fre007           ###   ########.fr       */
+/*   Updated: 2025/09/15 17:36:38 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,8 @@
 int			get_number_server(std::string file_name);
 int			init_config(std::string file_name, std::map<int, Config*> &configs, std::vector<pollfd> *pollfds, int n_server);
 std::string	server_response(Request *request, Config *config);
+
+std::string exec_perl(std::string cgi_path);
+std::string exec_py(std::string cgi_path);
 
 #endif

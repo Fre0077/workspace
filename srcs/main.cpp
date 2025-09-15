@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/05/22 19:43:06 by fre007           ###   ########.fr       */
+/*   Updated: 2025/09/15 18:14:48 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,47 +14,102 @@
 
 std::string exec_py(std::string cgi_path)
 {
-	std::system(("python3 " + cgi_path).c_str());
-	return NULL;
+    int	std_out = dup(STDOUT_FILENO);
+    int pipefd[2];
+    
+    if (pipe(pipefd) == -1)
+    {
+        std::cerr << "Error creating pipe: " << strerror(errno) << std::endl;
+        return "";
+    }
+    
+    if (access(cgi_path.c_str(), F_OK) != 0)
+    {
+        std::cerr << "File not found: " << cgi_path << std::endl;
+        close(pipefd[0]);
+        close(pipefd[1]);
+        return "";
+    }
+    
+    dup2(pipefd[1], STDOUT_FILENO);
+    close(pipefd[1]);
+    
+    int res = std::system(("python3 " + cgi_path).c_str());
+    if (res == -1)
+    {
+        std::cerr << "Error executing command: " << strerror(errno) << std::endl;
+        dup2(std_out, STDOUT_FILENO);
+        close(std_out);
+        close(pipefd[0]);
+        return "";
+    }
+    
+    dup2(std_out, STDOUT_FILENO);
+    close(std_out);
+    
+    std::string result = "";
+    char buffer[1024];
+    ssize_t bytes_read;
+    while ((bytes_read = read(pipefd[0], buffer, sizeof(buffer) - 1)) > 0)
+    {
+        buffer[bytes_read] = '\0';
+        result += buffer;
+    }
+    
+    close(pipefd[0]);
+    return result;
 }
 
-// TODO: assicurarsi che si possa usare errno
 std::string exec_perl(std::string cgi_path)
 {
-	int	std_out = dup(STDOUT_FILENO);
-	int pipefd[2];
-	if (pipe(pipefd) == -1)
-	{
-		std::cerr << "Error creating pipe: " << strerror(errno) << std::endl;
-		return NULL;
-	}
-	dup2(pipefd[1], STDOUT_FILENO);
-	close(pipefd[1]);
-	if (!access(cgi_path.c_str(), F_OK))
-	{
-		std::cerr << "File not found: " << cgi_path << std::endl;
-		return NULL;
-	}
-	int res = std::system(("perl " + cgi_path).c_str());
-	if (res == -1)
-	{
-		std::cerr << "Error executing command: " << strerror(errno) << std::endl;
-		return NULL;
-	}
-	dup2(std_out, STDOUT_FILENO);
-	close(std_out);
-	std::string result = "";
-	while (true)
-	{
-		char buffer[1024];
-		ssize_t bytes_read = read(pipefd[0], buffer, sizeof(buffer) - 1);
-		if (bytes_read <= 0)
-			break;
-		buffer[bytes_read] = '\0';
-		result += buffer;
-	}
-	close(pipefd[0]);
-	return result;
+    int	std_out = dup(STDOUT_FILENO);
+    int pipefd[2];
+    
+    if (pipe(pipefd) == -1)
+    {
+        std::cerr << "Error creating pipe: " << strerror(errno) << std::endl;
+        return "";  // Return empty string, not NULL
+    }
+    
+    // Check if file exists (fix logic error)
+    if (access(cgi_path.c_str(), F_OK) != 0)
+    {
+        std::cerr << "File not found: " << cgi_path << std::endl;
+        close(pipefd[0]);
+        close(pipefd[1]);
+        return "";  // Return empty string, not NULL
+    }
+    
+    // Redirect stdout to pipe BEFORE closing write end
+    dup2(pipefd[1], STDOUT_FILENO);
+    close(pipefd[1]);  // Close write end after redirecting
+    
+    int res = std::system(("perl " + cgi_path).c_str());
+    if (res == -1)
+    {
+        std::cerr << "Error executing command: " << strerror(errno) << std::endl;
+        dup2(std_out, STDOUT_FILENO);
+        close(std_out);
+        close(pipefd[0]);
+        return "";  // Return empty string, not NULL
+    }
+    
+    // Restore stdout
+    dup2(std_out, STDOUT_FILENO);
+    close(std_out);
+    
+    // Read from pipe
+    std::string result = "";
+    char buffer[1024];
+    ssize_t bytes_read;
+    while ((bytes_read = read(pipefd[0], buffer, sizeof(buffer) - 1)) > 0)
+    {
+        buffer[bytes_read] = '\0';
+        result += buffer;
+    }
+    
+    close(pipefd[0]);
+    return result;
 }
 
 void init_cgi_types()
@@ -223,7 +278,7 @@ int main(int argc, char **argv)
 	}
 	std::cout << YELLOW "Server listening on port:" << port_print << "\n" END << std::endl;
 	//loop per la gestione delle richieste
-	std::cout << RED << exec_perl("srcs/server/map.pl 10 10 4") << END << std::endl;
+	// std::cout << RED << exec_perl("srcs/server/map.pl 10 10 4") << END << std::endl;
 	try
 	{
 		while (1) {
