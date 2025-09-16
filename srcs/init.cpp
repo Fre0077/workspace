@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 07:57:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/22 15:06:28 by fre007           ###   ########.fr       */
+/*   Updated: 2025/09/16 12:46:14 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	init_server_socket(int *server_fd, Config &config)
 	// 3. Bind to address and port
 	struct sockaddr_in address;
 	address.sin_family = AF_INET;
-	address.sin_addr.s_addr = INADDR_ANY;
+	address.sin_addr.s_addr = htonl(INADDR_ANY); // TODO: use specific host
 	address.sin_port = htons(stringToInt(config.getPort()));
 	if (bind(*server_fd, (struct sockaddr *)&address, sizeof(address)) < 0)
 	{
@@ -75,10 +75,11 @@ int	get_number_server(std::string file_name)
 int	init_config(std::string file_name, std::map<int, Config*> &configs, std::vector<pollfd> *pollfds, int n_server)
 {
 	int	server_fd;
+	std::map <std::string, std::string> cgi = init_cgi_types();
 	
 	for(int i = 1; i <= n_server; i++)
 	{
-		Config *config = new Config(file_name, i);
+		Config *config = new Config(file_name, i, cgi);
 		configs[i] = config;
 		if (init_server_socket(&server_fd, *config) != 0)
 			return 1;

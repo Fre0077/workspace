@@ -6,125 +6,25 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/09/15 18:14:48 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/09/16 15:12:15 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/webserv.hpp"
 
-std::string exec_py(std::string cgi_path)
+std::map<std::string, std::string> init_cgi_types()
 {
-    int	std_out = dup(STDOUT_FILENO);
-    int pipefd[2];
-    
-    if (pipe(pipefd) == -1)
-    {
-        std::cerr << "Error creating pipe: " << strerror(errno) << std::endl;
-        return "";
-    }
-    
-    if (access(cgi_path.c_str(), F_OK) != 0)
-    {
-        std::cerr << "File not found: " << cgi_path << std::endl;
-        close(pipefd[0]);
-        close(pipefd[1]);
-        return "";
-    }
-    
-    dup2(pipefd[1], STDOUT_FILENO);
-    close(pipefd[1]);
-    
-    int res = std::system(("python3 " + cgi_path).c_str());
-    if (res == -1)
-    {
-        std::cerr << "Error executing command: " << strerror(errno) << std::endl;
-        dup2(std_out, STDOUT_FILENO);
-        close(std_out);
-        close(pipefd[0]);
-        return "";
-    }
-    
-    dup2(std_out, STDOUT_FILENO);
-    close(std_out);
-    
-    std::string result = "";
-    char buffer[1024];
-    ssize_t bytes_read;
-    while ((bytes_read = read(pipefd[0], buffer, sizeof(buffer) - 1)) > 0)
-    {
-        buffer[bytes_read] = '\0';
-        result += buffer;
-    }
-    
-    close(pipefd[0]);
-    return result;
-}
-
-std::string exec_perl(std::string cgi_path)
-{
-    int	std_out = dup(STDOUT_FILENO);
-    int pipefd[2];
-    
-    if (pipe(pipefd) == -1)
-    {
-        std::cerr << "Error creating pipe: " << strerror(errno) << std::endl;
-        return "";  // Return empty string, not NULL
-    }
-    
-    // Check if file exists (fix logic error)
-    if (access(cgi_path.c_str(), F_OK) != 0)
-    {
-        std::cerr << "File not found: " << cgi_path << std::endl;
-        close(pipefd[0]);
-        close(pipefd[1]);
-        return "";  // Return empty string, not NULL
-    }
-    
-    // Redirect stdout to pipe BEFORE closing write end
-    dup2(pipefd[1], STDOUT_FILENO);
-    close(pipefd[1]);  // Close write end after redirecting
-    
-    int res = std::system(("perl " + cgi_path).c_str());
-    if (res == -1)
-    {
-        std::cerr << "Error executing command: " << strerror(errno) << std::endl;
-        dup2(std_out, STDOUT_FILENO);
-        close(std_out);
-        close(pipefd[0]);
-        return "";  // Return empty string, not NULL
-    }
-    
-    // Restore stdout
-    dup2(std_out, STDOUT_FILENO);
-    close(std_out);
-    
-    // Read from pipe
-    std::string result = "";
-    char buffer[1024];
-    ssize_t bytes_read;
-    while ((bytes_read = read(pipefd[0], buffer, sizeof(buffer) - 1)) > 0)
-    {
-        buffer[bytes_read] = '\0';
-        result += buffer;
-    }
-    
-    close(pipefd[0]);
-    return result;
-}
-
-void init_cgi_types()
-{
-	static std::map<std::string, std::string(*)(std::string)> cgi_types;
-	cgi_types[".py"] = &exec_py;
-	cgi_types[".pl"] = &exec_perl;
+	std::map<std::string, std::string> cgi_types;
+	cgi_types[".py"] = "/usr/bin/python3";
+	cgi_types[".pl"] = "/usr/bin/perl";
 	// cgi_types[".php"] = &exec_php;
 	// cgi_types[".rb"] = &exec_ruby;
 	// cgi_types[".sh"] = &exec_sh;
 	// cgi_types[".js"] = &exec_js;
 	// cgi_types[".html"] = &exec_html;
 	// cgi_types[".htm"] = &exec_html;
-	
-}	
+	return cgi_types;
+}
 
 void	close_server(int sig)
 {
@@ -235,8 +135,8 @@ int client_request(std::vector<pollfd> *pollfds, Request *request, std::map<int,
 	if (bytes_read > 0)
 	{
 		//ritorno una risposta al sito
-		std::string response = server_response(request, check_config(configs, request, n_server));
-		send((*pollfds)[*i].fd, response.c_str(), response.length(), 0);
+		request->response = server_response(request, check_config(configs, request, n_server));
+		// send((*pollfds)[*i].fd, response.c_str(), response.length(), 0);
 	}
 	else if (bytes_read == 0)
 		close_socket(pollfds, requests, i);
@@ -326,8 +226,23 @@ int main(int argc, char **argv)
 						}
 					}
 					else
+					{
 						if (client_request(&pollfds, &requests[i - n_server], &configs, &i, &requests, n_server)) //richiesta da un client già connesso
 							return 1;
+						pollfds[i].events = POLLIN | POLLOUT;
+					}
+				}
+				else if (pollfds[i].revents & POLLOUT && requests[i - n_server].response != "")
+				{
+					ssize_t bytes_sent = send(pollfds[i].fd, requests[i - n_server].response.c_str(), requests[i - n_server].response.length(), 0);
+					if (bytes_sent > 0)
+					{
+						requests[i - n_server].response.erase(0, bytes_sent);
+						if (requests[i - n_server].response.empty())
+						{
+							pollfds[i].events = POLLIN;
+						}
+					}
 				}
 				pollfds[i].revents = 0;
 			}

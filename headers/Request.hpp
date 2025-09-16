@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:34:33 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/22 19:35:34 by fre007           ###   ########.fr       */
+/*   Updated: 2025/09/16 15:25:00 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "Extern.hpp"
 # include "colours.hpp"
+# include "Config.hpp"
 
 class Request
 {
@@ -34,6 +35,7 @@ class Request
 		int			body_need;
 
 	public:
+		std::string response;
 		Request();
 		Request(Request const &copy);
 		~Request();
@@ -41,7 +43,7 @@ class Request
 
 		int			checkHead();
 		int			checkBody();
-		int			checkPathFile();
+		int			checkPathFile(t_location loc);
 		void		clearRequest();
 		void		setRequest(const char* newPart, int len);
 		void		setRequestType();

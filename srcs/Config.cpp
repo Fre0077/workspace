@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:14 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/22 20:19:42 by fre007           ###   ########.fr       */
+/*   Updated: 2025/09/16 12:32:25 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 //==============================================================================
 Config::Config() {}
 
-Config::Config(std::string name, int n)
+Config::Config(std::string name, int n, std::map<std::string, std::string> cgi) : cgi_types(cgi)
 {
 	std::ifstream file(name.c_str());
-	std::string temp, temp2;
+	std::string temp, temp2, temp3;
 	std::string line;
 	this->max_body_len = 8192;
 	this->server_name = "";
@@ -29,15 +29,15 @@ Config::Config(std::string name, int n)
 	int graph = 0;
 	
 	this->file_name = name;
-	d_error_pages[400] = "HTTP/1.1 400 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>400 Bad request</h1></body></html>";
-	d_error_pages[403] = "HTTP/1.1 403 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>403 Forbidden</h1></body></html>";
-	d_error_pages[404] = "HTTP/1.1 404 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>404 File Not Found</h1></body></html>";
-	d_error_pages[405] = "HTTP/1.1 405 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>405 Method Not Allowed</h1></body></html>";
-	d_error_pages[406] = "HTTP/1.1 406 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>406 Not Acceptable</h1></body></html>";
-	d_error_pages[413] = "HTTP/1.1 413 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>413 Payload Too Large</h1></body></html>";
-	d_error_pages[418] = "HTTP/1.1 418 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>418 I'm a teapot</h1></body></html>";
-	d_error_pages[500] = "HTTP/1.1 500 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>500 Internal Server Error</h1></body></html>";
-	d_error_pages[501] = "HTTP/1.1 501 OK\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: keep-alive\r\n\r\n<html><body><h1>501 Not Implemented</h1></body></html>";
+	d_error_pages[400] = "HTTP/1.1 400 Bad Request\r\nContent-Type: text/html\r\nContent-Length: 50\r\nConnection: close\r\n\r\n<html><body><h1>400 Bad request</h1></body></html>";
+	d_error_pages[403] = "HTTP/1.1 403 Forbidden\r\nContent-Type: text/html\r\nContent-Length: 48\r\nConnection: close\r\n\r\n<html><body><h1>403 Forbidden</h1></body></html>";
+	d_error_pages[404] = "HTTP/1.1 404 Not Found\r\nContent-Type: text/html\r\nContent-Length: 53\r\nConnection: close\r\n\r\n<html><body><h1>404 File Not Found</h1></body></html>";
+	d_error_pages[405] = "HTTP/1.1 405 Method Not Allowed\r\nContent-Type: text/html\r\nContent-Length: 57\r\nConnection: close\r\n\r\n<html><body><h1>405 Method Not Allowed</h1></body></html>";
+	d_error_pages[406] = "HTTP/1.1 406 Not Acceptable\r\nContent-Type: text/html\r\nContent-Length: 53\r\nConnection: close\r\n\r\n<html><body><h1>406 Not Acceptable</h1></body></html>";
+	d_error_pages[413] = "HTTP/1.1 413 Payload Too Large\r\nContent-Type: text/html\r\nContent-Length: 56\r\nConnection: close\r\n\r\n<html><body><h1>413 Payload Too Large</h1></body></html>";
+	d_error_pages[418] = "HTTP/1.1 418 I'm a teapot\r\nContent-Type: text/html\r\nContent-Length: 51\r\nConnection: close\r\n\r\n<html><body><h1>418 I'm a teapot</h1></body></html>";
+	d_error_pages[500] = "HTTP/1.1 500 Internal Server Error\r\nContent-Type: text/html\r\nContent-Length: 60\r\nConnection: close\r\n\r\n<html><body><h1>500 Internal Server Error</h1></body></html>";
+	d_error_pages[501] = "HTTP/1.1 501 Not Implemented\r\nContent-Type: text/html\r\nContent-Length: 54\r\nConnection: close\r\n\r\n<html><body><h1>501 Not Implemented</h1></body></html>";
 	error_pages[400] = "";
 	error_pages[403] = "";
 	error_pages[404] = "";
@@ -107,12 +107,21 @@ Config::Config(std::string name, int n)
 					removeChar(&temp2, '}');
 					this->locations[temp].upload_directory = temp2;
 				}
+				else if (line.find("return") == line.find_first_not_of(" \t"))
+				{
+					std::istringstream iss(line);
+					iss >> temp2 >> temp2 >> temp3;
+					removeChar(&temp3, ';');
+					removeChar(&temp3, '}');
+					this->locations[temp].redirection = temp2 + " " + temp3;
+				}
 			}
 			std::cout << "location: " << temp << std::endl;
 			std::cout << "root: " << this->locations[temp].root << std::endl;
 			std::cout << "index: " << this->locations[temp].index << std::endl;
 			std::cout << "method: " << this->locations[temp].method << std::endl;
 			std::cout << "uplaod: " << this->locations[temp].upload_directory << std::endl;
+			std::cout << "redirection: " << this->locations[temp].redirection << std::endl;
 			std::cout << "=========================" << std::endl;
 		}
 		if (graph != 1)
@@ -301,6 +310,11 @@ std::string Config::getRoot() const
 std::string Config::getPort() const
 {
 	return this->port;
+}
+
+std::map<std::string, std::string> Config::getCgi_types() const
+{
+	return this->cgi_types;
 }
 
 size_t Config::getMax_body_len() const

@@ -6,13 +6,13 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:01:30 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/09/15 18:17:53 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/09/16 15:34:52 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/webserv.hpp"
 
-std::string	html_response(const std::string& path, int status, Config *config, std::string content_type)
+std::string	html_response(const std::string& path, int status, Config *config, std::string content_type, std::string conn)
 {
 	std::ifstream file(path.c_str(), std::ios::binary);
 	if (!file.is_open())
@@ -28,10 +28,11 @@ std::string	html_response(const std::string& path, int status, Config *config, s
 	std::stringstream s_code;
 	s_code << status;
 	std::ostringstream headers;
-	headers << "HTTP/1.1 " + s_code.str() + " OK\r\n";
+	// std::cout << "Status Message: " << get_status_message(status) << std::endl;
+	headers << "HTTP/1.1 " + s_code.str() + " " + get_status_message(status) + "\r\n";
 	headers << "Content-Type: " + content_type + "\r\n";
 	headers << "Content-Length: " << file_data.size() << "\r\n";
-	headers << "Connection: keep-alive\r\n";
+	headers << "Connection: " + conn + "\r\n";
 	headers << "\r\n";
 
 	std::string response = headers.str() + file_data;
@@ -44,7 +45,8 @@ std::string	html_error(int err, Config *config)
 	if (config->getError_page(err) == "")
 		return config->getDError_page(err);
 	else
-		return html_response(config->getRoot() + "/" + config->getError_page(err), err, config, "text/html");
+		return html_response(config->getRoot() + "/" + config->getError_page(err), err, config, "text/html", "close");
+	// std::cout << config->getRoot() + "/" + config->getError_page(err) << std::endl;
 }
 
 int save_file(Request *request, std::string path)
@@ -87,18 +89,54 @@ std::string create_cgi_response(const std::string& cgi_output)
     return headers.str() + cgi_output;
 }
 
+std::string generate_directory_listing(std::string full_path, std::string path)
+{
+	std::string html = "<html><head><title>Index of " + path + "</title></head><body>";
+	html += "<h1>Index of " + path + "</h1><ul>";
+
+	DIR *dir = opendir(full_path.c_str());
+	if (dir == NULL)
+	{
+		std::cerr << RED "Error opening directory: " << strerror(errno) << "" END << std::endl;
+		return html_error(500, NULL); // Handle error appropriately
+	}
+
+	struct dirent *entry;
+	while ((entry = readdir(dir)) != NULL)
+	{
+		std::string name = entry->d_name;
+		if (name != ".")
+		{
+			html += "<li><a href=\"" + path + "/" + name + "\">" + name + "</a></li>";
+		}
+	}
+	closedir(dir);
+
+	html += "</ul></body></html>";
+
+	std::ostringstream headers;
+
+	headers << "HTTP/1.1 200 OK\r\n";
+	headers << "Content-Type: text/html\r\n";
+	headers << "Content-Length: " << html.length() << "\r\n";
+	headers << "Connection: keep-alive\r\n";
+	headers << "\r\n";
+
+	return headers.str() + html;
+}
+
 std::string	server_response(Request *request, Config *config)
 {
 	std::string method = request->getMethod(), path = request->getPath();
 	
 	std::cout << GREEN "" << request->getPath() <<"" END << std::endl;
 	std::cout << GREEN "----------" << config->checkPath(path) <<"---------" END << std::endl;
-	std::cout << GREEN "----------" << request->checkPathFile() <<"---------" END << std::endl;
+	std::cout << GREEN "----------" << request->checkPathFile(config->getLocation(path)) <<"---------" END << std::endl;
 	if (path == "/favicon.ico")
 		return "HTTP/1.1 204 No Content\r\n\r\n";
 	else if (config->getMax_body_len() <= request->getBodyLength())
 		return html_error(413, config);
-	else if (config->checkPath(path) && request->checkPathFile())
+	else if (config->checkPath(path) || request->checkPathFile(config->getLocation(path)))
 		return html_error(404, config);
 	else if (((!(request->getMethodNum() & config->getLocationMethod(path)) || config->getLocationMethod(path) == 8) && config->getLocationMethod(path) != 0) || (!(request->getMethodNum() & config->getMethod()) && config->getLocationMethod(path) == 0))
 		return html_error(405, config);
@@ -111,7 +149,7 @@ std::string	server_response(Request *request, Config *config)
 			std::string full_path = "./srcs/server/upload/" + request->getDeleteFile();
 			if (remove(full_path.c_str()) == 0)
 			{
-				return html_response(config->getLocationIndex("/delete"), 200, config, "text/html");
+				return html_response(config->getLocationIndex("/delete"), 200, config, "text/html", "keep-alive");
 			}
 			else
 			{
@@ -128,18 +166,12 @@ std::string	server_response(Request *request, Config *config)
 			else if (ret == 2)
 				return html_error(406, config);
 		}
-		else if (method == "POST" && extension(path) == ".pl")
+		else if (method == "POST" && config->getCgi_types().find(extension(path)) != config->getCgi_types().end())
 		{
-			std::string full_path = config->getLocationRoot(path) + path;  // Fix path construction
+			std::string full_path = config->getLocationRoot(path) + path;
 			std::cout << RED "Executing " << full_path << " file..." END << std::endl;
 			
-			if (access(full_path.c_str(), F_OK) != 0)
-			{
-				std::cerr << RED "File not found: " << full_path << "" END << std::endl;
-				return html_error(404, config);
-			}
-			
-			std::string result = exec_perl(full_path);
+			std::string result = exec_cgi(full_path, request, config->getCgi_types()[extension(path)]);
 			if (result.empty())
 			{
 				std::cerr << RED "CGI execution failed or returned empty result" << END << std::endl;
@@ -149,31 +181,18 @@ std::string	server_response(Request *request, Config *config)
 			std::cout << RED "CGI Output:\n" << result << END << std::endl;
 			return create_cgi_response(result);
 		}
-		else if (method == "POST" && extension(path) == ".py")
-		{
-			std::string full_path = config->getLocationRoot(path) + path;  // Fix path construction
-			std::cout << RED "Executing " << full_path << " file..." END << std::endl;
-			
-			if (access(full_path.c_str(), F_OK) != 0)
-			{
-				std::cerr << RED "File not found: " << full_path << "" END << std::endl;
-				return html_error(404, config);
-			}
-			
-			std::string result = exec_py(full_path);
-			if (result.empty())
-			{
-				std::cerr << RED "CGI execution failed or returned empty result" << END << std::endl;
-				return html_error(500, config);
-			}
-			
-			std::cout << RED "CGI Output:\n" << result << END << std::endl;
-			return create_cgi_response(result);
-		}
-		return html_response(config->getLocationIndex(path), 200, config, "text/html");
+		return html_response(config->getLocationIndex(path), 200, config, "text/html", "keep-alive");
 	}
 	else if (path.find(".mp4") != std::string::npos)
-		return html_response("." + path, 200, config, "video/mp4");
+		return html_response("." + path, 200, config, "video/mp4", "keep-alive");
 	else
-		return html_response("." + path, 200, config, "");
+	{
+		std::string full_path = "." + path;
+		struct stat path_stat;
+		if (stat(full_path.c_str(), &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
+		{
+			return generate_directory_listing(full_path, path);
+		}
+		return html_response("." + path, 200, config, "", "keep-alive");
+	}
 }

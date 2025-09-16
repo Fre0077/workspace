@@ -8,6 +8,7 @@ headers/Request.hpp \
 headers/webserv.hpp
 
 SRCS = \
+srcs/CGI.cpp \
 srcs/Config.cpp \
 srcs/Extern.cpp \
 srcs/init.cpp \

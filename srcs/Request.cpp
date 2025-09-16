@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:35:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/05/22 19:56:35 by fre007           ###   ########.fr       */
+/*   Updated: 2025/09/16 15:34:46 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ Request::Request()
 	length = 0;
 	head_need = TRUE;
 	body_need = FALSE;
+	response = "";
 }
 
 Request::Request(Request const& copy)
@@ -101,9 +102,10 @@ int	Request::checkBody()
 	return this->body_need;
 }
 
-int	Request::checkPathFile()
+int	Request::checkPathFile(t_location loc)
 {
-	std::string temp = "." + path;
+	// std::string temp = loc.getRoot() + loc.getPath();
+	std::string temp = loc.root + "/" + loc.index;
 	std::ifstream file(temp.c_str(), std::ios::binary);
 	if (!file.is_open())
 	{
@@ -113,6 +115,17 @@ int	Request::checkPathFile()
 	file.close();
 	return 0;
 }
+// {
+// 	std::string temp = "." + path;
+// 	std::ifstream file(temp.c_str(), std::ios::binary);
+// 	if (!file.is_open())
+// 	{
+// 		file.close();
+// 		return 1;
+// 	}
+// 	file.close();
+// 	return 0;
+// }
 
 void	Request::clearRequest()
 {
