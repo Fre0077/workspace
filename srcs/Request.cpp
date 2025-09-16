@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:35:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/09/16 15:34:46 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/09/16 17:44:26 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,6 +255,40 @@ std::string	Request::getPath() const
 std::string	Request::getHost() const
 {
 	return this->host;
+}
+
+std::string Request::getHostHeader() const
+{
+	// Estrae l'header "Host:" dalla richiesta HTTP
+	std::istringstream iss(request);
+	std::string line;
+	
+	while (std::getline(iss, line))
+	{
+		// Controlla se la riga inizia con "Host:"
+		if (line.find("Host:") == 0 || line.find("host:") == 0)
+		{
+			// Rimuove "Host: " e spazi
+			std::string host_line = line.substr(5);
+			while (!host_line.empty() && (host_line[0] == ' ' || host_line[0] == '\t'))
+				host_line = host_line.substr(1);
+			while (!host_line.empty() && (host_line[host_line.size() - 1] == '\r' || host_line[host_line.size() - 1] == '\n'))
+				host_line = host_line.substr(0, host_line.size() - 1);
+			
+			// Rimuove la porta se presente (daddy_christmas:4246 -> daddy_christmas)
+			size_t colon_pos = host_line.find(':');
+			if (colon_pos != std::string::npos)
+				return host_line.substr(0, colon_pos);
+			return host_line;
+		}
+	}
+	return "localhost"; // Default se non trova Host header
+}
+
+int Request::getPortFromRequest() const
+{
+	// Converte la porta (che è salvata come string in host) in int
+	return std::atoi(this->host.c_str());
 }
 
 std::string	Request::getBody() const

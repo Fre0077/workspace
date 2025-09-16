@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/09/16 15:12:15 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/09/16 17:36:57 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,31 @@ int	check_server_fd(int fd, int n_server, std::vector<pollfd> *pollfds)
 
 Config	*check_config(std::map<int, Config*> *configs, Request *request, int n_server)
 {
+	std::string request_hostname = request->getHostHeader();
+	int request_port = request->getPortFromRequest();
+	
+	std::cout << GREEN "Looking for server: hostname=" << request_hostname << " port=" << request_port << END << std::endl;
+	
+	// Passo 1: Cerca corrispondenza esatta (porta + server_name)
 	for(int i = 1; i <= n_server; i++)
-		if ((*configs)[i]->getPort() == request->getHost())
+	{
+		if ((atoi((*configs)[i]->getPort().c_str())) == request_port && (*configs)[i]->getServer_name() == request_hostname)
+		{
+			std::cout << GREEN "Found exact match: " << (*configs)[i]->getServer_name() << END << std::endl;
 			return (*configs)[i];
+		}
+	}
+	
+	// Passo 2: Se non trova corrispondenza esatta, usa il primo server per quella porta
+	for(int i = 1; i <= n_server; i++)
+	{
+		if ((atoi((*configs)[i]->getPort().c_str())) == request_port)
+		{
+			std::cout << YELLOW "Using default server for port " << request_port << ": " << (*configs)[i]->getServer_name() << END << std::endl;
+			return (*configs)[i];
+		}
+	}
+	
 	return NULL;
 }
 

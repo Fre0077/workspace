@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:01:30 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/09/16 15:34:52 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/09/16 16:57:15 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ std::string	html_response(const std::string& path, int status, Config *config, s
 	std::stringstream s_code;
 	s_code << status;
 	std::ostringstream headers;
-	// std::cout << "Status Message: " << get_status_message(status) << std::endl;
 	headers << "HTTP/1.1 " + s_code.str() + " " + get_status_message(status) + "\r\n";
 	headers << "Content-Type: " + content_type + "\r\n";
 	headers << "Content-Length: " << file_data.size() << "\r\n";
@@ -181,10 +180,13 @@ std::string	server_response(Request *request, Config *config)
 			std::cout << RED "CGI Output:\n" << result << END << std::endl;
 			return create_cgi_response(result);
 		}
+		std::string ext = extension(path);
+		if (ext == ".mp4")
+			return html_response("." + path, 200, config, "video/mp4", "keep-alive");
+		else if (ext == ".jpg" || ext == ".jpeg" || ext == ".png")
+			return html_response("." + path, 200, config, "image/" + ext.substr(1), "keep-alive");
 		return html_response(config->getLocationIndex(path), 200, config, "text/html", "keep-alive");
 	}
-	else if (path.find(".mp4") != std::string::npos)
-		return html_response("." + path, 200, config, "video/mp4", "keep-alive");
 	else
 	{
 		std::string full_path = "." + path;

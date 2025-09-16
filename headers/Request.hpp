@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:34:33 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/09/16 15:25:00 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/09/16 17:31:51 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ class Request
 		std::string	getMethod() const;
 		std::string	getPath() const;
 		std::string getHost() const;
+		std::string getHostHeader() const;
+		int			getPortFromRequest() const;
 		std::string getBody() const;
 		size_t		getHeadLength() const;
 		size_t		getBodyLength() const;

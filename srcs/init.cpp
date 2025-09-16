@@ -6,11 +6,12 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 07:57:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/09/16 12:46:14 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/09/16 17:42:02 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/webserv.hpp"
+#include <set>
 
 int	init_server_socket(int *server_fd, Config &config)
 {
@@ -34,7 +35,7 @@ int	init_server_socket(int *server_fd, Config &config)
 	// 3. Bind to address and port
 	struct sockaddr_in address;
 	address.sin_family = AF_INET;
-	address.sin_addr.s_addr = htonl(INADDR_ANY); // TODO: use specific host
+	address.sin_addr.s_addr = htonl(INADDR_ANY);
 	address.sin_port = htons(stringToInt(config.getPort()));
 	if (bind(*server_fd, (struct sockaddr *)&address, sizeof(address)) < 0)
 	{
@@ -76,18 +77,34 @@ int	init_config(std::string file_name, std::map<int, Config*> &configs, std::vec
 {
 	int	server_fd;
 	std::map <std::string, std::string> cgi = init_cgi_types();
+	std::set<int> used_ports; // Per tracciare le porte già usate
 	
 	for(int i = 1; i <= n_server; i++)
 	{
 		Config *config = new Config(file_name, i, cgi);
 		configs[i] = config;
-		if (init_server_socket(&server_fd, *config) != 0)
-			return 1;
-		pollfd server_pollfd;
-		server_pollfd.fd = server_fd;
-		server_pollfd.events = POLLIN;
-		server_pollfd.revents = 0;
-		(*pollfds).push_back(server_pollfd);
+		
+		int port = atoi(config->getPort().c_str());
+		
+		// Controlla se esiste già un socket per questa porta
+		if (used_ports.find(port) == used_ports.end())
+		{
+			// Prima volta che vediamo questa porta, crea il socket
+			if (init_server_socket(&server_fd, *config) != 0)
+				return 1;
+			pollfd server_pollfd;
+			server_pollfd.fd = server_fd;
+			server_pollfd.events = POLLIN;
+			server_pollfd.revents = 0;
+			(*pollfds).push_back(server_pollfd);
+			used_ports.insert(port);
+			
+			std::cout << GREEN "Created socket for port " << config->getPort() << " (server: " << config->getServer_name() << ")" << END << std::endl;
+		}
+		else
+		{
+			std::cout << YELLOW "Port " << config->getPort() << " already has socket, sharing for server: " << config->getServer_name() << END << std::endl;
+		}
 	}
 	return 0;
 }
