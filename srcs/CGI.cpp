@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 09:35:36 by alborghi          #+#    #+#             */
-/*   Updated: 2025/09/16 12:14:37 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/09/16 18:27:21 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,18 +93,54 @@ std::string exec_cgi(std::string cgi_path, Request *request, std::string interpr
 	else if (pid > 0)
 	{
 		close(pipe_fd[1]);
-        waitpid(pid, NULL, 0);
-        
-        std::string result;
-        char buffer[1024];
-        ssize_t bytes;
-        while ((bytes = read(pipe_fd[0], buffer, sizeof(buffer) - 1)) > 0)
-        {
-            buffer[bytes] = '\0';
-            result += buffer;
-        }
-        close(pipe_fd[0]);
-        return result.substr(result.find("<body>") + 6, result.find("</body>") - (result.find("<body>") + 6));
+		
+		int status;
+		int timeout_seconds = 5;
+		int elapsed = 0;
+		
+		// Check if child has finished every second for 5 seconds
+		while (elapsed < timeout_seconds)
+		{
+			int result = waitpid(pid, &status, WNOHANG);
+			if (result > 0)
+			{
+				// Child process finished normally
+				break;
+			}
+			else if (result == 0)
+			{
+				// Child still running, wait 1 second
+				sleep(1);
+				elapsed++;
+			}
+			else
+			{
+				// Error occurred
+				std::cerr << "waitpid error: " << strerror(errno) << std::endl;
+				break;
+			}
+		}
+		
+		// If we've waited 5 seconds and child is still running, kill it
+		if (elapsed >= timeout_seconds)
+		{
+			std::cout << "CGI script timed out after " << timeout_seconds << " seconds, killing process " << pid << std::endl;
+			kill(pid, SIGKILL);
+			waitpid(pid, &status, 0); // Clean up zombie process
+			close(pipe_fd[0]);
+			return ""; // Return empty or error response
+		}
+		
+		std::string result;
+		char buffer[1024];
+		ssize_t bytes;
+		while ((bytes = read(pipe_fd[0], buffer, sizeof(buffer) - 1)) > 0)
+		{
+			buffer[bytes] = '\0';
+			result += buffer;
+		}
+		close(pipe_fd[0]);
+		return result.substr(result.find("<body>") + 6, result.find("</body>") - (result.find("<body>") + 6));
 	}
 	return "";
 }
