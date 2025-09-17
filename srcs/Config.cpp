@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:14 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/09/17 12:40:22 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/09/17 14:27:03 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,11 @@ Config::Config(std::string name, int n, std::map<std::string, std::string> cgi) 
 				{
 					if (this->locations[temp].method < 8)
 						this->locations[temp].method += 8;
-					if (line.find("GET") != std::string::npos)
+					if (line.find("GET") != std::string::npos && (this->method & 1) == 1)
 						this->locations[temp].method += 1;
-					if (line.find("POST") != std::string::npos)
+					if (line.find("POST") != std::string::npos && (this->method & 2) == 2)
 						this->locations[temp].method += 2;
-					if (line.find("DELETE") != std::string::npos)
+					if (line.find("DELETE") != std::string::npos && (this->method & 4) == 4)
 						this->locations[temp].method += 4;
 				}
 				else if (line.find("upload_directory") == line.find_first_not_of(" \t"))
@@ -259,7 +259,7 @@ t_location Config::getLocation(std::string location)
 int Config::getLocationMethod(std::string location)
 {
 	if (this->checkPath(location))
-		return -1;
+		return 0;
 	return this->locations[location].method;
 }
 

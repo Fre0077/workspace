@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:01:30 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/09/17 12:35:37 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/09/17 14:14:10 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,11 @@ std::string	server_response(Request *request, Config *config)
 		return html_error(413, config);
 	else if (!checkDirList("." + path) && (config->checkPath(path) || request->checkPathFile(config->getLocation(path))))
 		return html_error(404, config);
-	else if (((!(request->getMethodNum() & config->getLocationMethod(path)) || config->getLocationMethod(path) == 8) && config->getLocationMethod(path) != 0) || (!(request->getMethodNum() & config->getMethod()) && config->getLocationMethod(path) == 0))
+	else if (((!(request->getMethodNum() & config->getLocationMethod(path))
+		|| config->getLocationMethod(path) == 8)
+		&& config->getLocationMethod(path) != 0)
+		|| (!(request->getMethodNum() & config->getMethod())
+		&& config->getLocationMethod(path) == 0))
 		return html_error(405, config);
 	else if (method != "GET" && method != "DELETE" && method != "POST")
 		return html_error(501, config);
