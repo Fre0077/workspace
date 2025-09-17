@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:14 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/09/16 22:05:10 by fre007           ###   ########.fr       */
+/*   Updated: 2025/09/17 12:40:22 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,6 +250,9 @@ int	Config::checkPath(std::string path)
 
 t_location Config::getLocation(std::string location)
 {
+	// return this->locations[location];
+	if (this->locations.find(location) == this->locations.end())
+		return t_location();
 	return this->locations[location];
 }
 
@@ -262,16 +265,22 @@ int Config::getLocationMethod(std::string location)
 
 std::string Config::getLocationUpload(std::string location)
 {
+	if (this->checkPath(location))
+		return "";
 	return this->locations[location].upload_directory;
 }
 
 std::string Config::getLocationIndex(std::string location)
 {
+	if (this->checkPath(location))
+		return this->root + "/" + this->index;
 	return this->getLocationRoot(location) + "/" + this->locations[location].index;
 }
 
 std::string Config::getLocationRoot(std::string location)
 {
+	if (this->checkPath(location))
+		return this->root;
 	if (this->locations[location].root == "")
 		return this->root;
 	return this->locations[location].root;

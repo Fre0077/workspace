@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:01:30 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/09/16 22:51:10 by fre007           ###   ########.fr       */
+/*   Updated: 2025/09/17 12:35:37 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,14 @@ int save_file(Request *request, std::string path)
 		std::cerr << RED "Body not found in request" << END << std::endl;
 		return 1;
 	}
+
+	struct stat info;
+	if (stat(path.c_str(), &info) != 0 || !(info.st_mode & S_IFDIR))
+	{
+		std::cerr << RED "Directory " << path << " does not exist." << END << std::endl;
+		return 2;
+	}
+
 	std::ofstream file((path + request->getFileName()).c_str(), std::ios::binary);
 	if (!file.is_open())
 	{
@@ -124,6 +132,14 @@ std::string generate_directory_listing(std::string full_path, std::string path)
 	return headers.str() + html;
 }
 
+int checkDirList(std::string full_path)
+{
+	struct stat path_stat;
+	if (stat(full_path.c_str(), &path_stat) != 0)
+		return 0;
+	return 1;
+}
+
 std::string	server_response(Request *request, Config *config)
 {
 	std::string method = request->getMethod(), path = request->getPath();
@@ -135,14 +151,16 @@ std::string	server_response(Request *request, Config *config)
 		return "HTTP/1.1 204 No Content\r\n\r\n";
 	else if (config->getMax_body_len() <= request->getBodyLength())
 		return html_error(413, config);
-	else if (config->checkPath(path) || request->checkPathFile(config->getLocation(path)))
+	else if (!checkDirList("." + path) && (config->checkPath(path) || request->checkPathFile(config->getLocation(path))))
 		return html_error(404, config);
 	else if (((!(request->getMethodNum() & config->getLocationMethod(path)) || config->getLocationMethod(path) == 8) && config->getLocationMethod(path) != 0) || (!(request->getMethodNum() & config->getMethod()) && config->getLocationMethod(path) == 0))
 		return html_error(405, config);
 	else if (method != "GET" && method != "DELETE" && method != "POST")
 		return html_error(501, config);
-	else if (!config->checkPath(path))
+	else if (path == "/" || !config->checkPath(path))
 	{
+		if (path == "/")
+			return html_response(config->getLocationIndex(path), 200, config, "text/html", "keep-alive");
 		if (method == "DELETE")
 		{
 			std::string full_path = "./srcs/server/upload/" + request->getDeleteFile();

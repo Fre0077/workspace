@@ -6,7 +6,7 @@
 /*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:35:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/09/16 17:44:26 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/09/17 12:03:05 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int	Request::checkPathFile(t_location loc)
 	file.close();
 	return 0;
 }
+
 // {
 // 	std::string temp = "." + path;
 // 	std::ifstream file(temp.c_str(), std::ios::binary);
