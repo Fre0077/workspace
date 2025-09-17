@@ -6,7 +6,7 @@
 /*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/09/16 22:50:57 by fre007           ###   ########.fr       */
+/*   Updated: 2025/09/17 13:47:43 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,6 @@ int client_request(std::vector<pollfd> *pollfds, Request *request, std::map<int,
 	{
 		std::cerr << RED "Errore nella lettura: " END << strerror(errno) << std::endl;
 	}
-	request->clearRequest();
 	return 0;
 }
 
@@ -208,6 +207,13 @@ int main(int argc, char **argv)
 		while (1) {
 			//check del poll per verificare lo stato delle request
 			std::cout << YELLOW "===waiting for poll===" END << std::endl;
+			for (size_t i = 0; i < pollfds.size(); ++i)
+			{
+				std::cout << "i: " << i << std::endl;
+				std::cout << "pollfds[i].fd: " << pollfds[i].fd << std::endl;
+				std::cout << "pollfds[i].events: " << pollfds[i].events << std::endl;
+				std::cout << "pollfds[i].revents: " << pollfds[i].revents << std::endl;
+			}
 			int ret = poll(pollfds.data(), pollfds.size(), -1);
 			if (ret < 0)
 			{
@@ -216,6 +222,7 @@ int main(int argc, char **argv)
 			}
 			//ciclo per la lettura della request dei singoli client
 			size_t size = pollfds.size();
+			std::cout << YELLOW "===post poll===" END << std::endl;
 			for (size_t i = 0; i < size; ++i)
 			{
 				std::cout << "i: " << i << std::endl;
@@ -259,13 +266,17 @@ int main(int argc, char **argv)
 				else if (pollfds[i].revents & POLLOUT && requests[i - n_socket].response != "")
 				{
 					ssize_t bytes_sent = send(pollfds[i].fd, requests[i - n_socket].response.c_str(), requests[i - n_socket].response.length(), 0);
-					if (bytes_sent > 0)
-					{
+					if (bytes_sent > 0) {
 						requests[i - n_socket].response.erase(0, bytes_sent);
-						if (requests[i - n_socket].response.empty())
-						{
+						if (requests[i - n_socket].response.empty()) {
+							requests[i - n_socket].clearRequest();
 							pollfds[i].events = POLLIN;
 						}
+					}
+					else {
+						requests[i - n_socket].response.clear();
+						requests[i - n_socket].clearRequest();
+						pollfds[i].events = POLLIN;
 					}
 				}
 				pollfds[i].revents = 0;

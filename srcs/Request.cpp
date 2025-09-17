@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:35:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/09/17 12:03:05 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/09/17 13:21:27 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ int	Request::checkPathFile(t_location loc)
 
 void	Request::clearRequest()
 {
+	
 	boundary.clear();
 	request.clear();
 	method.clear();
