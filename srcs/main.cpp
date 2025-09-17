@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/09/17 13:55:40 by fre007           ###   ########.fr       */
+/*   Updated: 2025/09/17 14:02:42 by alborghi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,21 +263,26 @@ int main(int argc, char **argv)
 						pollfds[i].events = POLLIN | POLLOUT;
 					}
 				}
-				else if (pollfds[i].revents & POLLOUT && requests[i - n_socket].response != "")
+				else if (pollfds[i].revents & POLLOUT)
 				{
-					ssize_t bytes_sent = send(pollfds[i].fd, requests[i - n_socket].response.c_str(), requests[i - n_socket].response.length(), 0);
-					if (bytes_sent > 0) {
-						requests[i - n_socket].response.erase(0, bytes_sent);
-						if (requests[i - n_socket].response.empty()) {
+					if (requests[i - n_socket].response != "")
+					{
+						ssize_t bytes_sent = send(pollfds[i].fd, requests[i - n_socket].response.c_str(), requests[i - n_socket].response.length(), 0);
+						if (bytes_sent > 0) {
+							requests[i - n_socket].response.erase(0, bytes_sent);
+							if (requests[i - n_socket].response.empty()) {
+								requests[i - n_socket].clearRequest();
+								pollfds[i].events = POLLIN;
+							}
+						}
+						else {
+							requests[i - n_socket].response.clear();
 							requests[i - n_socket].clearRequest();
 							pollfds[i].events = POLLIN;
 						}
 					}
-					else {
-						requests[i - n_socket].response.clear();
-						requests[i - n_socket].clearRequest();
+					else
 						pollfds[i].events = POLLIN;
-					}
 				}
 			}
 		}
