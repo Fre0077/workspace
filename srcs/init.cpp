@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 07:57:32 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/09/16 17:42:02 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/09/16 22:25:54 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,27 @@ int	get_number_server(std::string file_name)
 	return n_server;
 }
 
-int	init_config(std::string file_name, std::map<int, Config*> &configs, std::vector<pollfd> *pollfds, int n_server)
+int	init_config(std::string file_name, std::map<int, Config*> &configs, std::vector<pollfd> *pollfds, int n_server, int &n_socket)
 {
 	int	server_fd;
+	int new_servern = 0;
 	std::map <std::string, std::string> cgi = init_cgi_types();
-	std::set<int> used_ports; // Per tracciare le porte già usate
+	std::map<int, int> used_ports; // Per tracciare le porte già usate
 	
 	for(int i = 1; i <= n_server; i++)
 	{
 		Config *config = new Config(file_name, i, cgi);
+		
+		for (std::map<int, Config*>::iterator it = configs.begin(); it != configs.end(); ++it)
+		{
+			if (it->second->getServer_name() == config->getServer_name())
+			{
+				std::cerr << RED "Error: duplicate server_name '" << config->getServer_name() << "'" END << std::endl;
+				delete config;
+				return 1;
+			}
+		}
+		
 		configs[i] = config;
 		
 		int port = atoi(config->getPort().c_str());
@@ -97,14 +109,17 @@ int	init_config(std::string file_name, std::map<int, Config*> &configs, std::vec
 			server_pollfd.events = POLLIN;
 			server_pollfd.revents = 0;
 			(*pollfds).push_back(server_pollfd);
-			used_ports.insert(port);
-			
+			used_ports[port] = server_fd;
+			config->setFd(server_fd);
+			new_servern++;
 			std::cout << GREEN "Created socket for port " << config->getPort() << " (server: " << config->getServer_name() << ")" << END << std::endl;
 		}
 		else
 		{
+			config->setFd(used_ports[port]);
 			std::cout << YELLOW "Port " << config->getPort() << " already has socket, sharing for server: " << config->getServer_name() << END << std::endl;
 		}
 	}
+	n_socket = new_servern;
 	return 0;
 }

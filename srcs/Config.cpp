@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:14 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/09/16 12:32:25 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/09/16 22:05:10 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -337,4 +337,12 @@ void Config::clearConf()
 	this->root.clear();
 	this->port.clear();
 	std::cout << RED "Config clearConf called" END << std::endl;
+}
+
+void	Config::setFd(int newfd) {
+	this->fd = newfd;
+}
+
+int	Config::getFd() {
+	return this->fd;
 }

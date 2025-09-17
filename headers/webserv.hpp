@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:39:26 by alborghi          #+#    #+#             */
-/*   Updated: 2025/09/16 12:10:38 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/09/16 20:10:08 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <set>
 
 int			get_number_server(std::string file_name);
-int			init_config(std::string file_name, std::map<int, Config*> &configs, std::vector<pollfd> *pollfds, int n_server);
+int			init_config(std::string file_name, std::map<int, Config*> &configs, std::vector<pollfd> *pollfds, int n_server, int &n_socket);
 std::string	server_response(Request *request, Config *config);
 
 std::string exec_cgi(std::string cgi_path, Request *request, std::string interpreter = "");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:43:17 by fde-sant          #+#    #+#             */
-/*   Updated: 2025/09/16 11:41:03 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/09/16 21:55:27 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ class Config
 		std::string port;
 		size_t		max_body_len;
 		int			method;
+		int			fd;
 		
 	public:
 		Config();
@@ -64,6 +65,8 @@ class Config
 		size_t 		getMax_body_len() const;
 		int 		getMethod() const;
 		void		clearConf();
+		void		setFd(int newfd);
+		int			getFd();
 };
 
 std::ostream& operator<<(std::ostream& out, Config const& rhs);

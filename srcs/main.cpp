@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alborghi <alborghi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fre007 <fre007@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:34:58 by alborghi          #+#    #+#             */
-/*   Updated: 2025/09/16 17:36:57 by alborghi         ###   ########.fr       */
+/*   Updated: 2025/09/16 22:50:57 by fre007           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int new_connection(int server_fd)
 	std::cout << CYAN "NEW CONNECTION" END << std::endl;
 	struct sockaddr_in client_address;
 	socklen_t client_addr_len = sizeof(client_address);
+	std::cout << "server_fd = " << server_fd << std::endl;
 	int client_fd = accept(server_fd, (struct sockaddr *)&client_address, &client_addr_len);
 	if (client_fd < 0)
 	{
@@ -110,7 +111,7 @@ Config	*check_config(std::map<int, Config*> *configs, Request *request, int n_se
 			return (*configs)[i];
 		}
 	}
-	
+
 	return NULL;
 }
 
@@ -187,16 +188,17 @@ int main(int argc, char **argv)
 	init_signals();
 	//dichiarazione per la configurazioe e la request
 	int						n_server = get_number_server(argv[1]);
+	int						n_socket;
 	std::string				port_print = "";
 	std::map<int, Config*>	configs;
 	std::vector<pollfd>		pollfds;
 	std::vector<Request>	requests;
-	if (init_config(argv[1], configs, &pollfds, n_server)) //inizializzazione del socket per il server
+	if (init_config(argv[1], configs, &pollfds, n_server, n_socket)) //inizializzazione del socket per il server
 		return 1;
 	for (int i = 1; i <= n_server; i++)
 	{
 		std::cout << MAGENTA "" << *configs[i] << "" END << std::endl;
-		port_print = port_print + " " + configs[i]->getPort() + ",";
+		port_print = port_print + " " + configs[i]->getServer_name() + ":" + configs[i]->getPort() + ",";
 	}
 	std::cout << YELLOW "Server listening on port:" << port_print << "\n" END << std::endl;
 	//loop per la gestione delle richieste
@@ -234,7 +236,7 @@ int main(int argc, char **argv)
 				}
 				if (pollfds[i].revents & POLLIN) //la request viene letta e gestita
 				{
-					if (check_server_fd(pollfds[i].fd, n_server, &pollfds)) //connessione di un nuovo client
+					if (check_server_fd(pollfds[i].fd, n_socket, &pollfds)) //connessione di un nuovo client
 					{
 						int fd = new_connection(pollfds[i].fd);
 						if (fd > 0)
@@ -249,18 +251,18 @@ int main(int argc, char **argv)
 					}
 					else
 					{
-						if (client_request(&pollfds, &requests[i - n_server], &configs, &i, &requests, n_server)) //richiesta da un client già connesso
+						if (client_request(&pollfds, &requests[i - n_socket], &configs, &i, &requests, n_server)) //richiesta da un client già connesso
 							return 1;
 						pollfds[i].events = POLLIN | POLLOUT;
 					}
 				}
-				else if (pollfds[i].revents & POLLOUT && requests[i - n_server].response != "")
+				else if (pollfds[i].revents & POLLOUT && requests[i - n_socket].response != "")
 				{
-					ssize_t bytes_sent = send(pollfds[i].fd, requests[i - n_server].response.c_str(), requests[i - n_server].response.length(), 0);
+					ssize_t bytes_sent = send(pollfds[i].fd, requests[i - n_socket].response.c_str(), requests[i - n_socket].response.length(), 0);
 					if (bytes_sent > 0)
 					{
-						requests[i - n_server].response.erase(0, bytes_sent);
-						if (requests[i - n_server].response.empty())
+						requests[i - n_socket].response.erase(0, bytes_sent);
+						if (requests[i - n_socket].response.empty())
 						{
 							pollfds[i].events = POLLIN;
 						}
