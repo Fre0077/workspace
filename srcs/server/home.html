@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Home Page</title>
+</head>
+<body>
+	<h1>Welcome to the Home Page</h1>
+	<p>This is a simple HTML page served by a web server.</p>
+
+	<!-- Button to go to hello page -->
+	<button onclick="window.location.href='/hello'">Go to Hello World</button><br><br>
+	<button onclick="window.location.href='/javascript'">Go to Java Script</button><br><br>
+	<button onclick="window.location.href='/image'">Go to an image page</button><br><br>
+	<button onclick="window.location.href='/video'">Go to an video page</button><br><br>
+
+	<!-- File upload form -->
+	<h3>Upload a File</h3>
+	<form action="/upload" method="POST" enctype="multipart/form-data">
+		<input type="file" name="file" required>
+		<button type="submit">Upload</button>
+	</form><br>
+
+	<!-- Delete file form -->
+	<h3>Delete a File</h3>
+	<form id="deleteForm">
+		<label for="deletePath">File Path:</label>
+		<input type="text" id="deletePath" required placeholder="/uploads/file.txt">
+		<button type="button" onclick="deleteFile()">Delete</button>
+	</form>
+	<br>
+
+	<h3>Execute map.pl</h3>
+	<button onclick="executeMap()">Run map.pl</button><br><br>
+
+	<h3>Is this your number?</h3>
+	<button onclick="yourNumber()">Find out!</button><br><br>
+
+	<h3>Go to root Directory</h3>
+	<button onclick="window.location.href='/srcs'">Root</button><br><br>
+
+	<a href="https://tris-trick.netlify.app/index.html"><p>Vai a Tris Trick</p></a><br><br>
+
+	<script>
+		function deleteFile() {
+			const path = document.getElementById("deletePath").value.trim();
+			if (!path) {
+				alert("Please enter a valid file path.");
+				return;
+			}
+
+			fetch(path, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+			.then(response => {
+				if (response.ok) {
+					window.location.href = '/delete'; // Redirect to delete success page and do a fart
+				} else {
+					alert("Failed to delete the file.");
+				}
+			})
+			.catch(error => {
+				console.error('Error:', error);
+				alert("An error occurred while deleting the file.");
+			});
+		}
+
+		function executeMap() {
+			fetch('/map.pl', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+			.then(response => response.text())
+			.then(response => {
+				alert(response);
+			})
+			.catch(error => {
+				console.error('Error:', error);
+				alert("An error occurred while executing map.pl.");
+			});
+		}
+
+		function yourNumber() {
+			fetch('/random_number.py', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+			.then(response => response.text())
+			.then(data => {
+				alert(data);
+			})
+			.catch(error => {
+				console.error('Error:', error);
+				alert("An error occurred while fetching your number.");
+			});
+		}
+	</script>
+</body>
+</html>
